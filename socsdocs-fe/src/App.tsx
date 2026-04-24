@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useDopamineStore from './store/useDopamineStore';
 
 import { Shadertoy } from 'react-shadertoy';
@@ -16,7 +14,7 @@ function App() {
   return (
     <>
       <Shadertoy className='hero-background' fragmentShader="back.glsl" style={{ width: '100%', height: '100%' }} />
-      <PageTitle text="cool title" level={level as 1 | 2 | 3 | 4 | 5} />
+      <PageTitle text="cool title" level={level} />
       
       <div style={{ position: 'relative', zIndex: 1, padding: '20px' }}>
         <label htmlFor="dopamine-slider" style={{ color: 'white', display: 'block' }}>

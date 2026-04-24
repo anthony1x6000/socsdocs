@@ -1,4 +1,4 @@
-export type HeadingLevel = 1 | 2 | 3 | 4 | 5;
+export type HeadingLevel = number;
 
 export const titleLevelStyle: Record<HeadingLevel, string> = {
   5: "text-4xl font-bold text-slate-900",

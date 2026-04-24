@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 
 :root {
     --hero-filter-invert: invert(0);
@@ -28,8 +29,4 @@ body:after {
 @keyframes Static {
     0% { background-position: 0px 0px; }
     100% { background-position: 0px 4px; }
-}
-
-.pageTitle {
-    @apply text-red-500 text-[15rem] font-bold font-sans;
 }
