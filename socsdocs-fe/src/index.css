@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+:root {
+    --hero-filter-invert: invert(0);
+}
+
+.hero-background {
+    @apply fixed top-0 left-0 w-screen h-screen -z-10;
+    filter: var(--hero-filter-invert);
+}
+
+body {
+    @apply text-white;
+}
+
+body:after {
+    content: "";
+    @apply absolute left-0 top-0 w-full h-full pointer-events-none z-[1000];
+    background-image: url('scan.png');
+    background-repeat: repeat;
+    background-position: 0px 0px;
+    animation-name: Static;
+    animation-duration: 0.8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(4);
+}
+
+@keyframes Static {
+    0% { background-position: 0px 0px; }
+    100% { background-position: 0px 4px; }
+}
+
+.pageTitle {
+    @apply text-red-500 text-[15rem] font-bold font-sans;
+}
