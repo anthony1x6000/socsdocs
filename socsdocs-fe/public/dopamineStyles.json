@@ -1,0 +1,28 @@
+{
+  "titleLevelStyle": {
+    "1": "text-lg font-normal text-white-500",
+    "2": "text-xl font-medium text-white-600",
+    "3": "text-2xl font-medium text-white-700",
+    "4": "text-3xl font-semibold text-white-800",
+    "5": "text-4xl font-bold text-white-900"
+  },
+  "titleLevelAnimation": {
+    "1": {},
+    "2": {
+      "animate": { "y": [-2, 2, -2] },
+      "transition": { "repeat": "Infinity", "duration": 1.5, "ease": "easeInOut" }
+    },
+    "3": {
+      "animate": { "x": [-1, 1, -1], "y": [-1, 1, -1] },
+      "transition": { "repeat": "Infinity", "duration": 0.2, "ease": "linear" }
+    },
+    "4": {
+      "animate": { "x": [-2, 2, -3, 3, -2, 2], "y": [-2, 2, -3, 3, -2, 2] },
+      "transition": { "repeat": "Infinity", "duration": 0.1, "ease": "linear" }
+    },
+    "5": {
+      "animate": { "x": [-4, 4, -6, 6, -4, 4], "y": [-4, 4, -6, 6, -4, 4] },
+      "transition": { "repeat": "Infinity", "duration": 0.05, "ease": "linear" }
+    }
+  }
+}
