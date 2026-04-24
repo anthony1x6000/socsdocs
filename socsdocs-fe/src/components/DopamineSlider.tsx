@@ -1,8 +1,15 @@
 import useDopamineStore from "../store/useDopamineStore";
 
+import { Howl } from 'howler';
+
 export function Slider() {
     const setLevel = useDopamineStore((state) => state.setLevel);
     const value = useDopamineStore((state) => state.level);
+
+    const slideSound = new Howl({
+        src: ['sfx/bong.mp3'],
+        volume: 0.5,
+    });
 
     return (
         <>
@@ -17,6 +24,7 @@ export function Slider() {
             value={value}
             onChange={(e) => {
                 const newValue = Number(e.target.value);
+                slideSound.play();
                 setLevel(newValue);
             }}
             />
