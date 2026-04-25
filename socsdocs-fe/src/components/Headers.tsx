@@ -1,13 +1,14 @@
-import type { HeadingLevel } from './dopamineLevelStyles';
+import useDopamineStore from '../store/useDopamineStore';
 import { titleLevelStyle, titleLevelAnimation } from './dopamineLevelStyles';
 import { motion } from 'framer-motion';
 
 interface HeaderProps {
   text: string;
-  level?: HeadingLevel;
 }
 
-export function Header({ text, level = 1 }: HeaderProps) {
+export function Header({ text }: HeaderProps) {
+    const level = useDopamineStore((state) => state.level);
+    
     return (
         <h1 className={titleLevelStyle[level]}>
             <motion.span className="inline-block" {...titleLevelAnimation[level]}>

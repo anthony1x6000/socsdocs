@@ -1,15 +1,19 @@
-import type { HeadingLevel } from './dopamineLevelStyles';
+import useDopamineStore from '../store/useDopamineStore';
 import { titleLevelStyle, titleLevelAnimation } from './dopamineLevelStyles';
+import type { DopamineLevel } from './dopamineLevelStyles';
 import { motion } from 'framer-motion';
 
 interface PageTitleProps {
   text: string;
-  level?: HeadingLevel;
+  level?: DopamineLevel;
 }
 
-export function PageTitle({ text, level = 1 }: PageTitleProps) {
-  const className = titleLevelStyle[level] || titleLevelStyle[1]; // Fallback to level 1 if level is not provided or invalid
-  const animationProps = titleLevelAnimation[level] || titleLevelAnimation[1];
+export function PageTitle({ text, level: levelProp }: PageTitleProps) {
+  const storeLevel = useDopamineStore((state) => state.level) as DopamineLevel;
+  const level = levelProp ?? storeLevel;
+  
+  const className = titleLevelStyle[level];
+  const animationProps = titleLevelAnimation[level];
 
   return (
     <h1 className={className}>

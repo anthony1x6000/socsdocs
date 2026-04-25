@@ -1,30 +1,25 @@
 import type { MotionProps } from "framer-motion";
 import stylesData from "../assets/dopamineStyles.json";
 
-export type HeadingLevel = number;
+export type DopamineLevel = 1 | 2 | 3 | 4 | 5;
 
-// 1. Create an empty box to hold our styles
-export const titleLevelStyle: Record<HeadingLevel, string> = {};
-
-// 2. Go through the JSON data, changing the text keys into numbers, and save them in the box
-for (const [key, value] of Object.entries(stylesData.titleLevelStyle)) {
-  const levelNumber = Number(key);
-  titleLevelStyle[levelNumber] = value;
-}
-
-// 3. Create an empty box to hold our animations
-export const titleLevelAnimation: Record<HeadingLevel, MotionProps> = {};
-
-// 4. Go through the JSON data for animations
-for (const [key, value] of Object.entries(stylesData.titleLevelAnimation)) {
-  const levelNumber = Number(key);
-  const animation = { ...value } as any; // Make a copy so we can safely edit it
-
-  // JSON only supports the text word "Infinity", but Framer Motion needs the math concept of Infinity.
-  if (animation.transition && animation.transition.repeat === "Infinity") {
-    animation.transition.repeat = Infinity; // Swap the word out for the math concept!
+const fixAnimation = (animation: any): MotionProps => {
+  const fixed = { ...animation };
+  if (fixed.transition?.repeat === "Infinity") {
+    fixed.transition.repeat = Infinity;
   }
+  return fixed;
+};
 
-  // Save the fixed animation into our box
-  titleLevelAnimation[levelNumber] = animation;
-}
+export const titleLevelStyle = stylesData.titleLevelStyle as Record<string | number, string>;
+export const buttonStyle = stylesData.buttonStyle as Record<string | number, string>;
+export const sliderStyle = stylesData.sliderStyle as Record<string | number, string>;
+export const bodyFrameStyle = stylesData.bodyFrameStyle as Record<string | number, string>;
+
+export const titleLevelAnimation: Record<string | number, MotionProps> = {
+  1: fixAnimation(stylesData.titleLevelAnimation["1"]),
+  2: fixAnimation(stylesData.titleLevelAnimation["2"]),
+  3: fixAnimation(stylesData.titleLevelAnimation["3"]),
+  4: fixAnimation(stylesData.titleLevelAnimation["4"]),
+  5: fixAnimation(stylesData.titleLevelAnimation["5"]),
+};

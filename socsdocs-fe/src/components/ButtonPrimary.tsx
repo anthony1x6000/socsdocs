@@ -1,4 +1,6 @@
 import { twMerge } from "tailwind-merge";
+import useDopamineStore from "../store/useDopamineStore";
+import { buttonStyle } from "./dopamineLevelStyles";
 
 interface ButtonProps {
     text: string;
@@ -7,13 +9,14 @@ interface ButtonProps {
 }
 
 export function Button({ text, onClick, className }: ButtonProps) {
+    const level = useDopamineStore((state) => state.level);
+    
     return (
         <button 
             onClick={onClick}
             className={twMerge(
-                // default styles 
-                "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors",
-                // extra styles down here
+                "px-4 py-2 text-white font-semibold rounded hover:opacity-80 transition-all",
+                buttonStyle[level],
                 className
             )}
         >
