@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
 import { getDopamineConfig } from "../../assets/dopamineStyles";
 
-import { useCurrentSong } from "../BackgroundMusic";
+import { useCurrentSong } from "../../utils/songContext";
 
 import useDopamineStore from "../../store/useDopamineStore";
 
