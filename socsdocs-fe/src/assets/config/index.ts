@@ -6,6 +6,7 @@ export * from "./types";
 export * from "./colors";
 export * from "./animations";
 export * from "./baseStyles";
+export * from "./componentStyles";
 export { songs as levelSongs };
 
 export const getDopamineConfig = (level: number): DopamineConfig => {
