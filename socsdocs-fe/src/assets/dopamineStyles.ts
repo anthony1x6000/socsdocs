@@ -69,7 +69,7 @@ export const ANIM_BG_SHIFT: MotionProps = {
 
 export const hoverScale = (scale: number) => ({ whileHover: { scale }, whileTap: { scale: 1 - (scale - 1) } });
 
-export const BASE_TITLE_STYLE = "transition-all";
+export const BASE_TITLE_STYLE = "transition-all font-title";
 export const BASE_HEADER_STYLE = "";
 export const BASE_BUTTON_STYLE = "px-4 py-2 text-white font-semibold rounded hover:opacity-80";
 export const BASE_SLIDER_STYLE = "transition-all w-full";
@@ -78,7 +78,7 @@ export const BASE_SETTINGS_BAR_STYLE = "absolute bottom-0 w-full mix-blend-hard-
 
 const titleSize = "text-5xl";
 const titleStyles: Record<DopamineLevel, string> = {
-  1: `${titleSize} font-normal ${LEVEL_1_COLORS.text}`,
+  1: `${titleSize} font-medium ${LEVEL_1_COLORS.text}`,
   2: `${titleSize} font-medium ${LEVEL_2_COLORS.text}`,
   3: `${titleSize} font-medium ${LEVEL_3_COLORS.text}`,
   4: `${titleSize} font-semibold ${LEVEL_4_COLORS.text}`,
@@ -222,19 +222,19 @@ const songs: Record<DopamineLevel, string[]> = {
 export const levelSongs = songs;
 
 export const getDopamineConfig = (level: number): DopamineConfig => {
-  const l = Math.min(Math.max(Math.floor(level), 1), 5) as DopamineLevel;
+  const specifiedLevel = Math.min(Math.max(Math.floor(level), 1), 5) as DopamineLevel;
   return {
-    titleStyle: titleStyles[l],
-    headerStyle: headerStyles[l],
-    titleAnimation: titleAnimations[l],
-    buttonStyle: buttonStyles[l],
-    buttonAnimation: buttonAnimations[l],
-    sliderStyle: sliderStyles[l],
-    sliderAnimation: sliderAnimations[l],
-    bodyFrameStyle: bodyFrameStyles[l],
-    bodyFrameAnimation: bodyFrameAnimations[l],
-    settingsBarStyle: settingsBarStyles[l],
-    settingsBarAnimation: settingsBarAnimations[l],
-    songs: songs[l],
+    titleStyle: titleStyles[specifiedLevel],
+    headerStyle: headerStyles[specifiedLevel],
+    titleAnimation: titleAnimations[specifiedLevel],
+    buttonStyle: buttonStyles[specifiedLevel],
+    buttonAnimation: buttonAnimations[specifiedLevel],
+    sliderStyle: sliderStyles[specifiedLevel],
+    sliderAnimation: sliderAnimations[specifiedLevel],
+    bodyFrameStyle: bodyFrameStyles[specifiedLevel],
+    bodyFrameAnimation: bodyFrameAnimations[specifiedLevel],
+    settingsBarStyle: settingsBarStyles[specifiedLevel],
+    settingsBarAnimation: settingsBarAnimations[specifiedLevel],
+    songs: songs[specifiedLevel],
   };
 };
