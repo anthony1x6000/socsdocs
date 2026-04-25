@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Slider } from '../components/DopamineSlider';
+import { Slider } from '../components/ui/DopamineSlider';
 
 const meta: Meta<typeof Slider> = {
   title: 'Components/Slider',
