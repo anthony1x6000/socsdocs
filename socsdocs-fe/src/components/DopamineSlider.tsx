@@ -1,4 +1,5 @@
 import useDopamineStore from "../store/useDopamineStore";
+import { twMerge } from "tailwind-merge";
 
 import { Howl } from 'howler';
 
@@ -21,9 +22,10 @@ export function Slider() {
     return (
         <>
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '20px' }}>
-
             <input
+            className={twMerge(
+                "accent-red-500"
+            )}
             id="dopamine-slider"
             type="range"
             min={1}
@@ -39,7 +41,6 @@ export function Slider() {
                 setLevel(newValue);
             }}
             />
-        </div>
 
         </>
     );

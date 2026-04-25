@@ -13,7 +13,7 @@ export function Button({ text, onClick, className }: ButtonProps) {
             className={twMerge(
                 // default styles 
                 "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors",
-                // extra styles down here 
+                // extra styles down here
                 className
             )}
         >
