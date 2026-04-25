@@ -17,4 +17,5 @@ export interface DopamineConfig {
   songs: string[];
   textAnimation: MotionProps;
   backgroundAnimation: MotionProps;
+  isInverted: boolean;
 }
