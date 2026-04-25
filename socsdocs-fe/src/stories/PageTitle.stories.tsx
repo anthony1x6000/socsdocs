@@ -7,6 +7,13 @@ const meta: Meta<typeof PageTitle> = {
   title: 'Components/PageTitle',
   component: PageTitle,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'black', padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     text: 'Default Title',
     level: 1,
