@@ -17,13 +17,15 @@ const slideFinish = new Howl({
 
 interface SliderProps {
     className?: string;
+    level?: number;
 }
 
 const baseStyle = "transition-all w-full";
 
-export function Slider({ className }: SliderProps) {
+export function Slider({ className, level: propLevel }: SliderProps) {
     const setLevel = useDopamineStore((state) => state.setLevel);
-    const value = useDopamineStore((state) => state.level);
+    const storeLevel = useDopamineStore((state) => state.level);
+    const value = propLevel ?? storeLevel;
     const { sliderStyle, sliderAnimation } = getDopamineConfig(value);
     const lastPlayTime = useRef(0);
 

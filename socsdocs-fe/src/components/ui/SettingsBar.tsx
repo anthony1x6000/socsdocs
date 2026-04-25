@@ -9,8 +9,9 @@ import useDopamineStore from "../../store/useDopamineStore";
 
 const baseStyle = "absolute bottom-0 w-full mix-blend-hard-light h-[2.5em]";
 
-export function SettingsBar() {
-    const level = useDopamineStore((state) => state.level);
+export function SettingsBar({ level: propLevel }: { level?: number }) {
+    const storeLevel = useDopamineStore((state) => state.level);
+    const level = propLevel ?? storeLevel;
     const { settingsBarStyle, settingsBarAnimation } = getDopamineConfig(level);
     const currentSong = useCurrentSong();
 
