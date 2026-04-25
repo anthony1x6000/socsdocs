@@ -3,6 +3,8 @@ import { twMerge } from 'tailwind-merge';
 import { Text } from './Text';
 import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 
+import { headerWeights } from '../../assets/config';
+
 /**
  * Props for the Header component.
  */
@@ -33,6 +35,7 @@ export function Header({
         >
             <Text 
               intensity={currentIntensity}
+              className='{headerWeights[currentIntensity]}'
             >
               {text}
             </Text>
