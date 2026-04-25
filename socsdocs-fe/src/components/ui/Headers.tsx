@@ -1,5 +1,5 @@
 import useDopamineStore from "../../store/useDopamineStore";
-import { titleLevelStyle, titleLevelAnimation } from './dopamineLevelStyles';
+import { getDopamineConfig } from './dopamineLevelStyles';
 import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,10 +12,11 @@ const baseStyle = "";
 
 export function Header({ text, className }: HeaderProps) {
     const level = useDopamineStore((state) => state.level);
+    const { titleStyle, titleAnimation } = getDopamineConfig(level);
     
     return (
-        <h1 className={twMerge(baseStyle, titleLevelStyle[level], className)}>
-            <motion.span className="inline-block" {...titleLevelAnimation[level]}>
+        <h1 className={twMerge(baseStyle, titleStyle, className)}>
+            <motion.span className="inline-block" {...titleAnimation}>
                 {text}
             </motion.span>
         </h1>
