@@ -1,6 +1,7 @@
 import Slider from "./DopamineSlider";
 import { twMerge } from "tailwind-merge";
 import { BASE_SETTINGS_BAR_STYLE } from "../../assets/config/baseStyles";
+import { primaryColors } from "../../assets/config";
 import { Text } from "./Text";
 import { ElementMoveable } from "./Moveables";
 import { useSong } from "../../utils/useSong";
@@ -21,6 +22,7 @@ interface SettingsBarProps {
 export function SettingsBar({ intensity = 1, intensityOnHover }: SettingsBarProps) {
     const globalLevel = useDopamineStore((state) => state.level);
     const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
+    const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
     const { currentSong } = useSong();
 
     return (
@@ -30,6 +32,7 @@ export function SettingsBar({ intensity = 1, intensityOnHover }: SettingsBarProp
                 type="settingsBar"
                 className={twMerge(
                     BASE_SETTINGS_BAR_STYLE,
+                    primaryColors[level],
                     "flex items-center px-4 gap-[4em] h-[4em]"
                 )}
             >

@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { BASE_BUTTON_STYLE } from "../../assets/config/baseStyles";
+import { primaryColors } from "../../assets/config";
 import { Text } from "./Text";
 import { ElementMoveable } from "./Moveables";
 import { useDopamineIntensity } from "../../store/useDopamineIntensity";
@@ -27,12 +28,13 @@ export function Button({
   intensityOnHover
 }: ButtonProps) {
     const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
+    const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
     
     return (
         <ElementMoveable
             intensity={currentIntensity}
             type="button"
-            className={twMerge(BASE_BUTTON_STYLE, className)}
+            className={twMerge(BASE_BUTTON_STYLE, primaryColors[level], className)}
         >
             <button 
                 onClick={onClick}

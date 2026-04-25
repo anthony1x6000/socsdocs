@@ -5,12 +5,7 @@ import type { DopamineLevel } from '../../assets/config/types';
 import { useResetMotion } from '../../utils/useResetMotion';
 import { 
   textAnimations, 
-  textColors, 
-  fontWeights, 
   elementAnimations, 
-  primaryColors, 
-  accentColors, 
-  secondaryColors, 
   bodyAnims 
 } from '../../assets/config';
 
@@ -30,7 +25,7 @@ export const TextMoveable: React.FC<MoveableProps> = ({ children, intensity, cla
 
   return (
     <motion.span 
-      className={twMerge("inline-block", textColors[level], fontWeights[level], className)} 
+      className={twMerge("inline-block", className)} 
       {...motionProps}
     >
       {children}
@@ -50,15 +45,9 @@ export const ElementMoveable: React.FC<ElementMoveableProps> = ({
 }) => {
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
 
-  let typeStyle = "";
   let typeAnim: any = {};
 
-  if (type === 'button' || type === 'settingsBar') {
-    typeStyle = primaryColors[level];
-  } else if (type === 'slider') {
-    typeStyle = accentColors[level];
-  } else if (type === 'bodyFrame') {
-    typeStyle = secondaryColors[level];
+  if (type === 'bodyFrame') {
     typeAnim = bodyAnims[level];
   }
 
@@ -76,7 +65,7 @@ export const ElementMoveable: React.FC<ElementMoveableProps> = ({
 
   return (
     <motion.div 
-      className={twMerge(typeStyle, className)} 
+      className={className} 
       {...motionProps}
     >
       {children}
