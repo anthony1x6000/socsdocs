@@ -10,6 +10,7 @@ import {
   ANIM_BOUNCE_MILD, ANIM_BOUNCE_INTENSE, ANIM_SKEW_1,
   ANIM_BG_SHIFT, ANIM_SCALE_PULSE
 } from '../../assets/config/animations';
+import { useResetMotion } from '../../utils/useResetMotion';
 
 interface MoveableProps {
   children: React.ReactNode;
@@ -19,12 +20,11 @@ interface MoveableProps {
 
 /**
  * Wrapper for text elements that applies float, jitter, and shake based on intensity.
- * Also handles level-based text colors and font weights.
  */
 export const TextMoveable: React.FC<MoveableProps> = ({ children, intensity, className }) => {
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
   
-  const animations = {
+  const animations: Record<number, any> = {
     1: ANIM_NONE,
     2: ANIM_FLOAT,
     3: ANIM_JITTER_MILD,
@@ -48,10 +48,12 @@ export const TextMoveable: React.FC<MoveableProps> = ({ children, intensity, cla
     5: "font-bold",
   };
 
+  const motionProps = useResetMotion("text", intensity, animations[level]);
+
   return (
     <motion.span 
       className={twMerge("inline-block", textColors[level], fontWeights[level], className)} 
-      {...animations[level]}
+      {...motionProps}
     >
       {children}
     </motion.span>
@@ -64,14 +66,13 @@ interface ElementMoveableProps extends MoveableProps {
 
 /**
  * Wrapper for block-level elements that applies skew and bounce based on intensity.
- * Handles level-based background colors and padding.
  */
 export const ElementMoveable: React.FC<ElementMoveableProps> = ({ 
   children, intensity, className, type 
 }) => {
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
 
-  const animations = {
+  const animations: Record<number, any> = {
     1: ANIM_NONE,
     2: ANIM_NONE,
     3: ANIM_BOUNCE_MILD,
@@ -80,7 +81,7 @@ export const ElementMoveable: React.FC<ElementMoveableProps> = ({
   };
 
   let typeStyle = "";
-  let typeAnim = {};
+  let typeAnim: any = {};
 
   if (type === 'button' || type === 'settingsBar') {
     const primaryColors = {
@@ -110,7 +111,7 @@ export const ElementMoveable: React.FC<ElementMoveableProps> = ({
     };
     typeStyle = secondaryColors[level];
     
-    const bodyAnims = {
+    const bodyAnims: Record<number, any> = {
       1: ANIM_NONE,
       2: ANIM_NONE,
       3: ANIM_BG_SHIFT,
@@ -120,11 +121,22 @@ export const ElementMoveable: React.FC<ElementMoveableProps> = ({
     typeAnim = bodyAnims[level];
   }
 
+  const baseAnim = animations[level];
+  const combinedAnim = {
+    ...baseAnim,
+    animate: {
+      ...(baseAnim.animate || {}),
+      ...(typeAnim.animate || {})
+    },
+    transition: typeAnim.transition || baseAnim.transition
+  };
+
+  const motionProps = useResetMotion(type || "element", intensity, combinedAnim);
+
   return (
     <motion.div 
       className={twMerge(typeStyle, className)} 
-      {...animations[level]}
-      {...typeAnim}
+      {...motionProps}
     >
       {children}
     </motion.div>

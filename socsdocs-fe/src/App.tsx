@@ -11,6 +11,7 @@ import Subtitle from './components/ui/Subtitle';
 import FlexBox from './components/ui/FlexBox';
 import HorizontalLine from './components/ui/HorizontalLine';
 import { useDopamineIntensity } from './store/useDopamineIntensity';
+import { useResetMotion } from './utils/useResetMotion';
 import LoginPage from './pages/LoginPage';
 
 function HomePage() {
@@ -30,8 +31,10 @@ function HomePage() {
 }
 
 function App() {
-  const { config } = useDopamineIntensity();
+  const { intensity, config } = useDopamineIntensity();
   const { backgroundAnimation, isInverted } = config;
+
+  const bgMotionProps = useResetMotion("bg", intensity, backgroundAnimation);
 
   return (
     <div className={twMerge(
@@ -40,7 +43,7 @@ function App() {
     )}>
       <motion.div 
         className='hero-background'
-        {...backgroundAnimation}
+        {...bgMotionProps}
       >
         <Shadertoy fragmentShader="back.glsl" style={{ width: '100%', height: '100%' }} />
       </motion.div>
