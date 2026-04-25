@@ -1,8 +1,10 @@
+import { useRef } from "react";
 import useDopamineStore from "../../store/useDopamineStore";
 import { twMerge } from "tailwind-merge";
 import { Howl } from 'howler';
 import { bongSound, bongFinish } from "../Sfx";
-import { getDopamineConfig } from "./dopamineLevelStyles";
+import { getDopamineConfig } from "../../assets/dopamineStyles";
+import { motion } from "framer-motion";
 
 const slideSound = new Howl({
     src: [bongSound],
@@ -22,10 +24,13 @@ const baseStyle = "transition-all w-full";
 export function Slider({ className }: SliderProps) {
     const setLevel = useDopamineStore((state) => state.setLevel);
     const value = useDopamineStore((state) => state.level);
-    const { sliderStyle } = getDopamineConfig(value);
+    const { sliderStyle, sliderAnimation } = getDopamineConfig(value);
+    const lastPlayTime = useRef(0);
 
     return (
-        <input
+        <motion.input
+            key={value}
+            initial={{ x: 0, y: 0, scale: 1, rotate: 0, skewX: 0 }}
             className={twMerge(
                 baseStyle,
                 sliderStyle,
@@ -38,13 +43,18 @@ export function Slider({ className }: SliderProps) {
             value={value}
             onChange={(e) => {
                 const newValue = Number(e.target.value);
-                if (newValue != 5) {
-                    slideSound.play();
-                } else {
-                    slideFinish.play();
+                const now = Date.now();
+                if (now - lastPlayTime.current >= 500) {
+                    lastPlayTime.current = now;
+                    if (newValue != 5) {
+                        slideSound.play();
+                    } else {
+                        slideFinish.play();
+                    }
+                    setLevel(newValue);
                 }
-                setLevel(newValue);
             }}
+            {...sliderAnimation}
         />
     );
 }
