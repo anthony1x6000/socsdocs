@@ -1,5 +1,5 @@
 import useDopamineStore from "../../store/useDopamineStore";
-import { getDopamineConfig } from './dopamineLevelStyles';
+import { getDopamineConfig } from '../../assets/dopamineStyles';
 import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 
