@@ -12,7 +12,7 @@ const meta: Meta<typeof PageTitle> = {
     },
   },
   args: {
-    text: 'Dopamine Title',
+    text: 'socsdocs',
   },
   decorators: [
     (Story) => (
