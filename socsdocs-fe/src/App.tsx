@@ -2,7 +2,6 @@ import { Shadertoy } from 'react-shadertoy';
 
 import {PageTitle} from './components/ui/Title';
 import {Button} from './components/ui/ButtonPrimary';
-import {Slider} from './components/ui/DopamineSlider';
 
 import { BackgroundMusic } from './components/BackgroundMusic';
 
