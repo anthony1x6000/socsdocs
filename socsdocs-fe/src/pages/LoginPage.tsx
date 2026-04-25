@@ -1,11 +1,13 @@
 import { PageTitle } from '../components/ui/Title';
 import FlexBox from '../components/ui/FlexBox';
 import Subtitle from '../components/ui/Subtitle';
+import { HeroBackground } from '../components/ui/HeroBackground';
 import { Link } from 'react-router-dom';
 
 export default function LoginPage() {
   return (
     <>
+      <HeroBackground />
       <PageTitle className='mt-[3em]' />
       
       <FlexBox className='mt-[2em] flex-col items-center gap-[1em]'>
