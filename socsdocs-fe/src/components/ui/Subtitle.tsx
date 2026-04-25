@@ -1,3 +1,5 @@
+import {Text} from "./Text"
+
 interface SubtitleProps {
     text: string;
     className?: string;
@@ -5,6 +7,6 @@ interface SubtitleProps {
 
 export default function Subtitle({ text, className }: SubtitleProps) {
     return (
-        <span className={className}>{text}</span>
+        <Text text={text} className={className} />
     );
 }

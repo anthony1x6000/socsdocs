@@ -15,6 +15,7 @@ export interface DopamineConfig {
   settingsBarStyle: string;
   settingsBarAnimation: MotionProps;
   songs: string[];
+  textAnimation: MotionProps;
 }
 
 // --- GLOBAL COLOR PALETTES (4 distinct colors per level) ---
@@ -95,6 +96,14 @@ const headerStyles: Record<DopamineLevel, string> = {
 };
 
 const titleAnimations: Record<DopamineLevel, MotionProps> = {
+  1: ANIM_NONE,
+  2: ANIM_FLOAT,
+  3: ANIM_JITTER_MILD,
+  4: ANIM_JITTER_INTENSE,
+  5: ANIM_SHAKE,
+};
+
+const textAnimations: Record<DopamineLevel, MotionProps> = {
   1: ANIM_NONE,
   2: ANIM_FLOAT,
   3: ANIM_JITTER_MILD,
@@ -236,5 +245,6 @@ export const getDopamineConfig = (level: number): DopamineConfig => {
     settingsBarStyle: settingsBarStyles[specifiedLevel],
     settingsBarAnimation: settingsBarAnimations[specifiedLevel],
     songs: songs[specifiedLevel],
+    textAnimation: textAnimations[specifiedLevel],
   };
 };
