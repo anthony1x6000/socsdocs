@@ -7,8 +7,8 @@ import type { MotionProps } from "framer-motion";
  */
 export const createJitter = (intensity: number = 1, duration: number = 0.2): MotionProps => ({
   animate: { 
-    x: [-intensity, intensity, -intensity], 
-    y: [-intensity, intensity, -intensity] 
+    x: [-intensity, intensity, 0], 
+    y: [-intensity, intensity, 0] 
   },
   transition: { repeat: Infinity, duration, ease: "linear" },
 });
@@ -20,8 +20,8 @@ export const createJitter = (intensity: number = 1, duration: number = 0.2): Mot
  */
 export const createShake = (intensity: number = 4, duration: number = 0.05): MotionProps => ({
   animate: { 
-    x: [-intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity], 
-    y: [-intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity] 
+    x: [-intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity, 0], 
+    y: [-intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity, 0] 
   },
   transition: { repeat: Infinity, duration, ease: "linear" },
 });
@@ -44,8 +44,8 @@ export const createBounce = (height: number = 2, duration: number = 2): MotionPr
 export const createSkew = (intensity: number = 3, duration: number = 0.1): MotionProps => ({
   animate: { 
     y: [0, -(intensity * 2), 0], 
-    skewX: [-intensity, intensity, -intensity], 
-    skewY: [-(intensity / 3), intensity / 3, -(intensity / 3)] 
+    skewX: [-intensity, intensity, 0], 
+    skewY: [-(intensity / 3), intensity / 3, 0] 
   },
   transition: { repeat: Infinity, duration },
 });
@@ -93,6 +93,16 @@ export const ANIM_SKEW = ANIM_SKEW_5; // Alias for backward compatibility
 export const ANIM_BG_SHIFT: MotionProps = {
   animate: { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] },
   transition: { repeat: Infinity, duration: 5 }
+};
+
+export const RESET_TRANSFORM = {
+  x: 0,
+  y: 0,
+  scale: 1,
+  rotate: 0,
+  skewX: 0,
+  skewY: 0,
+  opacity: 1
 };
 
 export const hoverScale = (scale: number) => ({ whileHover: { scale }, whileTap: { scale: 1 - (scale - 1) } });
