@@ -5,12 +5,14 @@ import './index.css'
 import App from './App.tsx'
 import { DopamineProvider } from './store/DopamineProvider'
 import { SongProvider } from './utils/SongProvider'
+import { BackgroundMusic } from './components/BackgroundMusic'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <DopamineProvider>
         <SongProvider>
+          <BackgroundMusic />
           <App />
         </SongProvider>
       </DopamineProvider>

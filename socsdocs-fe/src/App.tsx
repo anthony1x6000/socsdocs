@@ -4,8 +4,6 @@ import { Routes, Route, Link } from 'react-router-dom';
 
 import {PageTitle} from './components/ui/Title';
 
-import { BackgroundMusic } from './components/BackgroundMusic';
-
 import './App.css';
 import {SettingsBar} from './components/ui/SettingsBar';
 import Subtitle from './components/ui/Subtitle';
@@ -36,7 +34,6 @@ function App() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
-      <BackgroundMusic />
       <motion.div 
         className='hero-background'
         {...backgroundAnimation}
