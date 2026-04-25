@@ -7,7 +7,7 @@ import { useCurrentSong } from "../BackgroundMusic";
 
 import useDopamineStore from "../../store/useDopamineStore";
 
-const baseStyle = "absolute bottom-0 w-full mix-blend-hard-light h-[5%]";
+const baseStyle = "absolute bottom-0 w-full mix-blend-hard-light h-[2.5em]";
 
 export function SettingsBar() {
     const level = useDopamineStore((state) => state.level);
