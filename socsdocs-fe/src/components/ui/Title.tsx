@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 
 interface PageTitleProps {
-  text: string;
+  text?: string;
   className?: string;
 }
 
@@ -15,7 +15,7 @@ export function PageTitle({ text, className }: PageTitleProps) {
   return (
     <h1 className={twMerge(BASE_TITLE_STYLE, titleStyle, className)}>
       <motion.span key={level} initial={{ x: 0, y: 0, rotate: 0 }} className="inline-block" {...titleAnimation}>
-        {text}
+        socsdocs{text ? ` ${text}` : ''}
       </motion.span>
     </h1>
   );
