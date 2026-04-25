@@ -18,7 +18,6 @@ function App() {
       <PageTitle text="cool title" level={level} />
       <Button text="Button click me!" onClick={() => console.log("Button clicked!")} />
 
-
       <Slider />
     </>
   )

@@ -1,5 +1,5 @@
 import type { MotionProps } from "framer-motion";
-import stylesData from "../../public/dopamineStyles.json";
+import stylesData from "../assets/dopamineStyles.json";
 
 export type HeadingLevel = number;
 

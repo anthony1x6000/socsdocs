@@ -7,6 +7,11 @@ const meta: Meta<typeof PageTitle> = {
   title: 'Components/PageTitle',
   component: PageTitle,
   tags: ['autodocs'],
+  args: {
+    text: 'Default Title',
+    level: 1,
+  },
+  render: (args) => <PageTitle {...args} />,
   argTypes: {
     level: {
       control: { type: 'select' },
