@@ -13,6 +13,8 @@ const slideFinish = new Howl({
     volume: 0.5,
 });
 
+const baseStyle = "transition-all";
+
 export function Slider() {
     const setLevel = useDopamineStore((state) => state.setLevel);
     const value = useDopamineStore((state) => state.level);
@@ -20,7 +22,7 @@ export function Slider() {
     return (
         <input
             className={twMerge(
-                "transition-all",
+                baseStyle,
                 sliderStyle[value]
             )}
             id="dopamine-slider"

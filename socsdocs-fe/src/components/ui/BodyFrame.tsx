@@ -8,12 +8,14 @@ interface BodyFrameProps {
   className?: string;
 }
 
+const baseStyle = "transition-all duration-300";
+
 export function BodyFrame({ children, className }: BodyFrameProps) {
   const level = useDopamineStore((state) => state.level);
 
   return (
     <div className={twMerge(
-      "transition-all duration-300",
+      baseStyle,
       bodyFrameStyle[level],
       className
     )}>

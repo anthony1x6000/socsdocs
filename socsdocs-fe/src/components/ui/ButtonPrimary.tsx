@@ -8,6 +8,8 @@ interface ButtonProps {
     className?: string;
 }
 
+const baseStyle = "px-4 py-2 text-white font-semibold rounded hover:opacity-80 transition-all";
+
 export function Button({ text, onClick, className }: ButtonProps) {
     const level = useDopamineStore((state) => state.level);
     
@@ -15,7 +17,7 @@ export function Button({ text, onClick, className }: ButtonProps) {
         <button 
             onClick={onClick}
             className={twMerge(
-                "px-4 py-2 text-white font-semibold rounded hover:opacity-80 transition-all",
+                baseStyle,
                 buttonStyle[level],
                 className
             )}
