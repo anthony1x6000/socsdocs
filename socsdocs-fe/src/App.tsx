@@ -1,5 +1,3 @@
-import { Shadertoy } from 'react-shadertoy';
-import { motion } from 'framer-motion';
 import { Routes, Route, Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
@@ -11,7 +9,7 @@ import Subtitle from './components/ui/Subtitle';
 import FlexBox from './components/ui/FlexBox';
 import HorizontalLine from './components/ui/HorizontalLine';
 import { useDopamineIntensity } from './store/useDopamineIntensity';
-import { useResetMotion } from './utils/useResetMotion';
+import { HeroBackground } from './components/ui/HeroBackground';
 import LoginPage from './pages/LoginPage';
 
 function HomePage() {
@@ -31,22 +29,15 @@ function HomePage() {
 }
 
 function App() {
-  const { intensity, config } = useDopamineIntensity();
-  const { backgroundAnimation, isInverted } = config;
-
-  const bgMotionProps = useResetMotion("bg", intensity, backgroundAnimation);
+  const { config } = useDopamineIntensity();
+  const { isInverted } = config;
 
   return (
     <div className={twMerge(
       "relative h-screen w-screen overflow-hidden transition-[filter] duration-700",
       isInverted && "invert"
     )}>
-      <motion.div 
-        className='hero-background'
-        {...bgMotionProps}
-      >
-        <Shadertoy fragmentShader="back.glsl" style={{ width: '100%', height: '100%' }} />
-      </motion.div>
+      <HeroBackground />
       
       <Routes>
         <Route path="/" element={<HomePage />} />
