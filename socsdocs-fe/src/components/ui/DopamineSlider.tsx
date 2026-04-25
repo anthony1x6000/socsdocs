@@ -3,8 +3,8 @@ import useDopamineStore from "../../store/useDopamineStore";
 import { twMerge } from "tailwind-merge";
 import { Howl } from 'howler';
 import { bongSound, bongFinish } from "../Sfx";
-import { BASE_SLIDER_STYLE } from "../../assets/dopamineStyles";
-import { motion } from "framer-motion";
+import { BASE_SLIDER_STYLE } from "../../assets/config/baseStyles";
+import { ElementMoveable } from "./Moveables";
 import { useDopamineIntensity } from "../../store/useDopamineIntensity";
 
 const slideSound = new Howl({
@@ -18,10 +18,6 @@ const slideFinish = new Howl({
 
 /**
  * Props for the Slider component.
- * @interface SliderProps
- * @property {string} [className] - Optional additional CSS classes.
- * @property {number} [intensity=1] - Multiplier for the global dopamine level.
- * @property {number} [intensityOnHover] - Absolute override for the dopamine level when hovered (1-5).
  */
 interface SliderProps {
     className?: string;
@@ -30,15 +26,7 @@ interface SliderProps {
 }
 
 /**
- * Interactive slider to control the global dopamine level.
- * Features audio feedback and dopamine-driven animations.
- * The intensity prop acts as a multiplier for its own visual feedback level.
- * 
- * @param {SliderProps} props - Component props.
- * @returns {JSX.Element} A motion.input of type range.
- * 
- * @example
- * <Slider className="my-custom-slider" intensity={2} />
+ * Interactive slider wrapped in ElementMoveable.
  */
 export function Slider({ 
   className,
@@ -47,41 +35,39 @@ export function Slider({
 }: SliderProps) {
     const setLevel = useDopamineStore((state) => state.setLevel);
     const globalValue = useDopamineStore((state) => state.level);
-    const { intensity: currentIntensity, config, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-    const { sliderStyle, sliderAnimation } = config;
+    const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
     const lastPlayTime = useRef(0);
 
     return (
-        <motion.input
-            key={currentIntensity}
-            initial={{ x: 0, y: 0, scale: 1, rotate: 0, skewX: 0 }}
-            className={twMerge(
-                BASE_SLIDER_STYLE,
-                sliderStyle,
-                className
-            )}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            id="dopamine-slider"
-            type="range"
-            min={1}
-            max={5}
-            value={globalValue}
-            onChange={(e) => {
-                const newValue = Number(e.target.value);
-                const now = Date.now();
-                if (now - lastPlayTime.current >= 500) {
-                    lastPlayTime.current = now;
-                    if (newValue != 5) {
-                        slideSound.play();
-                    } else {
-                        slideFinish.play();
+        <ElementMoveable
+            intensity={currentIntensity}
+            type="slider"
+            className={twMerge(BASE_SLIDER_STYLE, className)}
+        >
+            <input
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                id="dopamine-slider"
+                type="range"
+                min={1}
+                max={5}
+                value={globalValue}
+                className="w-full h-full bg-transparent appearance-none cursor-pointer"
+                onChange={(e) => {
+                    const newValue = Number(e.target.value);
+                    const now = Date.now();
+                    if (now - lastPlayTime.current >= 500) {
+                        lastPlayTime.current = now;
+                        if (newValue != 5) {
+                            slideSound.play();
+                        } else {
+                            slideFinish.play();
+                        }
+                        setLevel(newValue);
                     }
-                    setLevel(newValue);
-                }
-            }}
-            {...sliderAnimation}
-        />
+                }}
+            />
+        </ElementMoveable>
     );
 }
 

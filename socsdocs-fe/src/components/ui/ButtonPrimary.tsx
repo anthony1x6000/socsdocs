@@ -1,16 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { BASE_BUTTON_STYLE } from "../../assets/dopamineStyles";
+import { BASE_BUTTON_STYLE } from "../../assets/config/baseStyles";
 import { Text } from "./Text";
+import { ElementMoveable } from "./Moveables";
 import { useDopamineIntensity } from "../../store/useDopamineIntensity";
 
 /**
  * Props for the Button component.
- * @interface ButtonProps
- * @property {string} text - The label text for the button.
- * @property {() => void} onClick - Callback function when the button is clicked.
- * @property {string} [className] - Optional additional CSS classes.
- * @property {number} [intensity=1] - Multiplier for the global dopamine level.
- * @property {number} [intensityOnHover] - Absolute override for the dopamine level when hovered (1-5).
  */
 interface ButtonProps {
     text: string;
@@ -21,14 +16,8 @@ interface ButtonProps {
 }
 
 /**
- * Primary action button with dopamine-driven styling and animations.
- * The intensity prop acts as a multiplier for the global dopamine level.
- * 
- * @param {ButtonProps} props - Component props.
- * @returns {JSX.Element} A button containing animated Text.
- * 
- * @example
- * <Button text="Click Me" onClick={() => console.log('clicked')} intensity={2} />
+ * Primary action button wrapped in ElementMoveable.
+ * Movement is delegated to ElementMoveable, while text uses Text component (TextMoveable).
  */
 export function Button({ 
   text, 
@@ -37,27 +26,25 @@ export function Button({
   intensity = 1,
   intensityOnHover
 }: ButtonProps) {
-    const { intensity: currentIntensity, config, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-    const { buttonStyle } = config;
+    const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
     
     return (
-        <button 
-            onClick={onClick}
-            className={twMerge(
-                BASE_BUTTON_STYLE,
-                buttonStyle,
-                className
-            )}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+        <ElementMoveable
+            intensity={currentIntensity}
+            type="button"
+            className={twMerge(BASE_BUTTON_STYLE, className)}
         >
-            <Text 
-              animationType="button" 
-              intensity={currentIntensity}
+            <button 
+                onClick={onClick}
+                className="w-full h-full"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
             >
-              {text}
-            </Text>
-        </button>
+                <Text intensity={currentIntensity}>
+                  {text}
+                </Text>
+            </button>
+        </ElementMoveable>
     );
 }
 
