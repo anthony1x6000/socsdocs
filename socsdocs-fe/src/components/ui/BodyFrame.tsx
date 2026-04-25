@@ -1,5 +1,6 @@
 import React from 'react';
 import { BASE_BODY_FRAME_STYLE } from '../../assets/config/baseStyles';
+import { secondaryColors } from '../../assets/config';
 import { twMerge } from 'tailwind-merge';
 import { ElementMoveable } from './Moveables';
 import { useDopamineIntensity } from '../../store/useDopamineIntensity';
@@ -24,6 +25,7 @@ export function BodyFrame({
   intensityOnHover
 }: BodyFrameProps) {
   const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
+  const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
 
   return (
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -32,6 +34,7 @@ export function BodyFrame({
         type="bodyFrame"
         className={twMerge(
           BASE_BODY_FRAME_STYLE,
+          secondaryColors[level],
           className
         )}
       >

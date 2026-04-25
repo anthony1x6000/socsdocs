@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { Howl } from 'howler';
 import { bongSound, bongFinish } from "../Sfx";
 import { BASE_SLIDER_STYLE } from "../../assets/config/baseStyles";
+import { accentColors } from "../../assets/config";
 import { ElementMoveable } from "./Moveables";
 import { useDopamineIntensity } from "../../store/useDopamineIntensity";
 
@@ -36,13 +37,14 @@ export function Slider({
     const setLevel = useDopamineStore((state) => state.setLevel);
     const globalValue = useDopamineStore((state) => state.level);
     const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
+    const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
     const lastPlayTime = useRef(0);
 
     return (
         <ElementMoveable
             intensity={currentIntensity}
             type="slider"
-            className={twMerge(BASE_SLIDER_STYLE, className)}
+            className={twMerge(BASE_SLIDER_STYLE, accentColors[level], className)}
         >
             <input
                 onMouseEnter={handleMouseEnter}

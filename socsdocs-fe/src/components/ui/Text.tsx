@@ -1,6 +1,8 @@
 import React from 'react';
 import { TextMoveable } from './Moveables';
 import { useDopamineIntensity } from '../../store/useDopamineIntensity';
+import { textColors, fontWeights } from '../../assets/config';
+import { twMerge } from 'tailwind-merge';
 
 /**
  * Props for the Text component.
@@ -22,6 +24,7 @@ export function Text({
   intensityOnHover
 }: TextProps) {
   const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
+  const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
 
   return (
     <span 
@@ -31,7 +34,7 @@ export function Text({
     >
       <TextMoveable 
         intensity={currentIntensity}
-        className={className}
+        className={twMerge(textColors[level], fontWeights[level], className)}
       >
         {children}
       </TextMoveable>
