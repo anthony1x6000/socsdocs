@@ -30,5 +30,6 @@ export const getDopamineConfig = (level: number): DopamineConfig => {
     songs: songs[specifiedLevel],
     textAnimation: textAnimations[specifiedLevel],
     backgroundAnimation: backgroundAnimations[specifiedLevel],
+    isInverted: specifiedLevel >= 5,
   };
 };

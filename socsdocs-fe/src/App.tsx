@@ -1,6 +1,7 @@
 import { Shadertoy } from 'react-shadertoy';
 import { motion } from 'framer-motion';
 import { Routes, Route, Link } from 'react-router-dom';
+import { twMerge } from 'tailwind-merge';
 
 import {PageTitle} from './components/ui/Title';
 
@@ -30,10 +31,13 @@ function HomePage() {
 
 function App() {
   const { config } = useDopamineIntensity();
-  const { backgroundAnimation } = config;
+  const { backgroundAnimation, isInverted } = config;
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <div className={twMerge(
+      "relative h-screen w-screen overflow-hidden transition-[filter] duration-700",
+      isInverted && "invert"
+    )}>
       <motion.div 
         className='hero-background'
         {...backgroundAnimation}
