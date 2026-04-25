@@ -95,9 +95,9 @@ const buttonStyles: Record<DopamineLevel, string> = {
 const buttonAnimations: Record<DopamineLevel, MotionProps> = {
   1: ANIM_NONE,
   2: hoverScale(1.05),
-  3: { ...hoverScale(1.1), ...ANIM_JITTER_MILD },
-  4: { ...hoverScale(1.15), ...ANIM_JITTER_INTENSE },
-  5: { ...hoverScale(1.2), ...ANIM_SHAKE },
+  3: { ...hoverScale(1.1), ...ANIM_BOUNCE_MILD },
+  4: { ...hoverScale(1.15), ...ANIM_BOUNCE_INTENSE },
+  5: { ...hoverScale(1.2), ...ANIM_SKEW },
 };
 
 const sliderStyles: Record<DopamineLevel, string> = {
