@@ -1,13 +1,11 @@
 import Slider from "./DopamineSlider";
 import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
-import { getDopamineConfig } from "../../assets/dopamineStyles";
+import { getDopamineConfig, BASE_SETTINGS_BAR_STYLE } from "../../assets/dopamineStyles";
 
 import { useSong } from "../../utils/useSong";
 
 import useDopamineStore from "../../store/useDopamineStore";
-
-const baseStyle = "absolute bottom-0 w-full mix-blend-hard-light h-[2.5em]";
 
 export function SettingsBar() {
     const level = useDopamineStore((state) => state.level);
@@ -19,7 +17,7 @@ export function SettingsBar() {
             key={level}
             initial={{ x: 0, y: 0, scale: 1, rotate: 0, skewX: 0, opacity: 1 }}
             className={twMerge(
-                baseStyle,
+                BASE_SETTINGS_BAR_STYLE,
                 settingsBarStyle,
                 "flex items-center px-4 gap-[4em]"
             )}
