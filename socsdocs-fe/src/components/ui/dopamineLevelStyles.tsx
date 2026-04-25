@@ -1,5 +1,5 @@
 import type { MotionProps } from "framer-motion";
-import stylesData from "../assets/dopamineStyles.json";
+import stylesData from "../../assets/dopamineStyles.json";
 
 export type DopamineLevel = 1 | 2 | 3 | 4 | 5;
 

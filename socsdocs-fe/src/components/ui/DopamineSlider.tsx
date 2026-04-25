@@ -1,7 +1,7 @@
-import useDopamineStore from "../store/useDopamineStore";
+import useDopamineStore from "../../store/useDopamineStore";
 import { twMerge } from "tailwind-merge";
 import { Howl } from 'howler';
-import { bongSound, bongFinish } from "../components/Sfx";
+import { bongSound, bongFinish } from "../Sfx";
 import { sliderStyle } from "./dopamineLevelStyles";
 
 const slideSound = new Howl({
