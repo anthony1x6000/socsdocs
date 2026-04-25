@@ -7,18 +7,6 @@ const meta: Meta<typeof PageTitle> = {
   title: 'Components/PageTitle',
   component: PageTitle,
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <div style={{ backgroundColor: 'black', padding: '2rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
-  args: {
-    text: 'Default Title',
-    level: 1,
-  },
-  render: (args) => <PageTitle {...args} />,
   argTypes: {
     level: {
       control: { type: 'select' },
@@ -29,7 +17,25 @@ const meta: Meta<typeof PageTitle> = {
       control: 'text',
       description: 'The text displayed inside the heading',
     },
+    backgroundColor: {
+      control: 'inline-radio',
+      options: ['black', 'white'],
+      description: 'Toggles the background color of the preview',
+    },
   },
+  args: {
+    text: 'Default Title',
+    level: 1,
+    backgroundColor: 'black',
+  },
+  decorators: [
+    (Story, context) => (
+      <div style={{ backgroundColor: context.args.backgroundColor, padding: '2rem', minHeight: '100px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => <PageTitle {...args} />,
 };
 
 export default meta;
