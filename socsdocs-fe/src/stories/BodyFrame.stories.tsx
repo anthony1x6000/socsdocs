@@ -17,15 +17,23 @@ const meta: Meta<typeof BodyFrame> = {
 export default meta;
 type Story = StoryObj<typeof BodyFrame>;
 
-export const Default: Story = {
+export const Level1: Story = {
   args: {
-    children: <div className="text-white">Content inside BodyFrame</div>,
+    children: <div className="text-white">Dopamine Level 1 Content</div>,
   },
+  parameters: { dopamineLevel: 1 },
 };
 
-export const CustomClass: Story = {
+export const Level3: Story = {
   args: {
-    className: 'border-2 border-red-500',
-    children: <div className="text-white">With custom border</div>,
+    children: <div className="text-white">Dopamine Level 3 Content</div>,
   },
+  parameters: { dopamineLevel: 3 },
+};
+
+export const Level5: Story = {
+  args: {
+    children: <div className="text-white">Dopamine Level 5 Content</div>,
+  },
+  parameters: { dopamineLevel: 5 },
 };
