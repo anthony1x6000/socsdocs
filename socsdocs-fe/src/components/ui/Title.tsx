@@ -3,6 +3,8 @@ import { twMerge } from 'tailwind-merge';
 import { Text } from './Text';
 import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 
+import { titleWeights } from '../../assets/config';
+
 /**
  * Props for the PageTitle component.
  */
@@ -15,7 +17,7 @@ interface PageTitleProps {
 
 /**
  * Main title component.
- * Delegating color, animation, and weight to Text component (TextMoveable).
+ * Delegating color, animation, and weight to Text component.
  */
 export function PageTitle({ 
   text = "SOCSDOCS", 
@@ -31,7 +33,7 @@ export function PageTitle({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Text 
+      <Text className={titleWeights[currentIntensity]}
         intensity={currentIntensity}
       >
         {text}
