@@ -6,14 +6,12 @@ import { twMerge } from 'tailwind-merge';
 interface HeaderProps {
   text: string;
   className?: string;
-  level?: number;
 }
 
 const baseStyle = "";
 
-export function Header({ text, className, level: propLevel }: HeaderProps) {
-    const storeLevel = useDopamineStore((state) => state.level);
-    const level = propLevel ?? storeLevel;
+export function Header({ text, className }: HeaderProps) {
+    const level = useDopamineStore((state) => state.level);
     const { titleStyle, titleAnimation } = getDopamineConfig(level);
     
     return (

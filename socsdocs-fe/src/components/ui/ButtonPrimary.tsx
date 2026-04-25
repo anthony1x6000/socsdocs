@@ -7,14 +7,12 @@ interface ButtonProps {
     text: string;
     onClick: () => void; 
     className?: string;
-    level?: number;
 }
 
 const baseStyle = "px-4 py-2 text-white font-semibold rounded hover:opacity-80";
 
-export function Button({ text, onClick, className, level: propLevel }: ButtonProps) {
-    const storeLevel = useDopamineStore((state) => state.level);
-    const level = propLevel ?? storeLevel;
+export function Button({ text, onClick, className }: ButtonProps) {
+    const level = useDopamineStore((state) => state.level);
     const { buttonStyle, buttonAnimation } = getDopamineConfig(level);
     
     return (
