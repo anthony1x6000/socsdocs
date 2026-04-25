@@ -16,123 +16,136 @@ export interface DopamineConfig {
   songs: string[];
 }
 
+// --- GLOBAL COLOR PALETTES (4 distinct colors per level) ---
+export const LEVEL_1_COLORS = { text: "text-white-500", primary: "bg-blue-500", secondary: "bg-gray-100", accent: "accent-blue-500" };
+export const LEVEL_2_COLORS = { text: "text-white-600", primary: "bg-blue-600", secondary: "bg-gray-200", accent: "accent-blue-600" };
+export const LEVEL_3_COLORS = { text: "text-white-700", primary: "bg-blue-700", secondary: "bg-gray-300", accent: "accent-blue-700" };
+export const LEVEL_4_COLORS = { text: "text-white-800", primary: "bg-blue-800", secondary: "bg-gray-400", accent: "accent-blue-800" };
+export const LEVEL_5_COLORS = { text: "text-white-900", primary: "bg-red-600",  secondary: "bg-gray-500", accent: "accent-red-600" };
+
+// --- GLOBAL ANIMATIONS ---
+export const ANIM_NONE: MotionProps = {};
+export const ANIM_FLOAT: MotionProps = {
+  animate: { y: [-2, 2, -2] },
+  transition: { repeat: Infinity, duration: 1.5, ease: "easeInOut" },
+};
+export const ANIM_PULSE: MotionProps = {
+  animate: { opacity: [0.8, 1, 0.8] },
+  transition: { repeat: Infinity, duration: 2 },
+};
+export const ANIM_SCALE_PULSE: MotionProps = {
+  animate: { scale: [1, 1.02, 1] },
+  transition: { repeat: Infinity, duration: 3 },
+};
+export const ANIM_JITTER_MILD: MotionProps = {
+  animate: { x: [-1, 1, -1], y: [-1, 1, -1] },
+  transition: { repeat: Infinity, duration: 0.2, ease: "linear" },
+};
+export const ANIM_JITTER_INTENSE: MotionProps = {
+  animate: { x: [-2, 2, -3, 3, -2, 2], y: [-2, 2, -3, 3, -2, 2] },
+  transition: { repeat: Infinity, duration: 0.1, ease: "linear" },
+};
+export const ANIM_SHAKE: MotionProps = {
+  animate: { x: [-4, 4, -6, 6, -4, 4], y: [-4, 4, -6, 6, -4, 4] },
+  transition: { repeat: Infinity, duration: 0.05, ease: "linear" },
+};
+export const ANIM_BOUNCE_MILD: MotionProps = {
+  animate: { y: [0, -2, 0] },
+  transition: { repeat: Infinity, duration: 2 },
+};
+export const ANIM_BOUNCE_INTENSE: MotionProps = {
+  animate: { y: [0, -4, 0], opacity: [0.9, 1, 0.9] },
+  transition: { repeat: Infinity, duration: 1 },
+};
+export const ANIM_SKEW: MotionProps = {
+  animate: { y: [0, -6, 0], skewX: [-3, 3, -3], skewY: [-1, 1, -1] },
+  transition: { repeat: Infinity, duration: 0.1 },
+};
+export const ANIM_BG_SHIFT: MotionProps = {
+  animate: { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] },
+  transition: { repeat: Infinity, duration: 5 }
+};
+
+export const hoverScale = (scale: number) => ({ whileHover: { scale }, whileTap: { scale: 1 - (scale - 1) } });
+
 const titleStyles: Record<DopamineLevel, string> = {
-  1: "text-lg font-normal text-white-500",
-  2: "text-xl font-medium text-white-600",
-  3: "text-2xl font-medium text-white-700",
-  4: "text-3xl font-semibold text-white-800",
-  5: "text-4xl font-bold text-white-900",
+  1: `text-lg font-normal ${LEVEL_1_COLORS.text}`,
+  2: `text-xl font-medium ${LEVEL_2_COLORS.text}`,
+  3: `text-2xl font-medium ${LEVEL_3_COLORS.text}`,
+  4: `text-3xl font-semibold ${LEVEL_4_COLORS.text}`,
+  5: `text-4xl font-bold ${LEVEL_5_COLORS.text}`,
 };
 
 const titleAnimations: Record<DopamineLevel, MotionProps> = {
-  1: {},
-  2: {
-    animate: { y: [-2, 2, -2] },
-    transition: { repeat: Infinity, duration: 1.5, ease: "easeInOut" },
-  },
-  3: {
-    animate: { x: [-1, 1, -1], y: [-1, 1, -1] },
-    transition: { repeat: Infinity, duration: 0.2, ease: "linear" },
-  },
-  4: {
-    animate: { x: [-2, 2, -3, 3, -2, 2], y: [-2, 2, -3, 3, -2, 2] },
-    transition: { repeat: Infinity, duration: 0.1, ease: "linear" },
-  },
-  5: {
-    animate: { x: [-4, 4, -6, 6, -4, 4], y: [-4, 4, -6, 6, -4, 4] },
-    transition: { repeat: Infinity, duration: 0.05, ease: "linear" },
-  },
+  1: ANIM_NONE,
+  2: ANIM_FLOAT,
+  3: ANIM_JITTER_MILD,
+  4: ANIM_JITTER_INTENSE,
+  5: ANIM_SHAKE,
 };
 
 const buttonStyles: Record<DopamineLevel, string> = {
-  1: "bg-blue-500",
-  2: "bg-blue-600",
-  3: "bg-blue-700",
-  4: "bg-blue-800",
-  5: "bg-blue-900",
+  1: LEVEL_1_COLORS.primary,
+  2: LEVEL_2_COLORS.primary,
+  3: LEVEL_3_COLORS.primary,
+  4: LEVEL_4_COLORS.primary,
+  5: LEVEL_5_COLORS.primary,
 };
 
-const hoverScale = (scale: number) => ({ whileHover: { scale }, whileTap: { scale: 1 - (scale - 1) } });
-
 const buttonAnimations: Record<DopamineLevel, MotionProps> = {
-  1: {},
+  1: ANIM_NONE,
   2: hoverScale(1.05),
-  3: {
-    ...hoverScale(1.1),
-    animate: { x: [-0.5, 0.5, -0.5] },
-    transition: { repeat: Infinity, duration: 0.3 },
-  },
-  4: {
-    ...hoverScale(1.15),
-    animate: { x: [-1, 1, -1], skewX: [-1, 1, -1] },
-    transition: { repeat: Infinity, duration: 0.15 },
-  },
-  5: {
-    ...hoverScale(1.2),
-    animate: { x: [-2, 2, -2], skewX: [-3, 3, -3] },
-    transition: { repeat: Infinity, duration: 0.08 },
-  },
+  3: { ...hoverScale(1.1), ...ANIM_JITTER_MILD },
+  4: { ...hoverScale(1.15), ...ANIM_JITTER_INTENSE },
+  5: { ...hoverScale(1.2), ...ANIM_SHAKE },
 };
 
 const sliderStyles: Record<DopamineLevel, string> = {
-  1: "accent-blue-500",
-  2: "accent-blue-600",
-  3: "accent-blue-700",
-  4: "accent-blue-800",
-  5: "accent-red-500",
+  1: LEVEL_1_COLORS.accent,
+  2: LEVEL_2_COLORS.accent,
+  3: LEVEL_3_COLORS.accent,
+  4: LEVEL_4_COLORS.accent,
+  5: LEVEL_5_COLORS.accent,
 };
 
-const jitter = (intensity: number, duration: number): MotionProps => ({
-  animate: { x: [-intensity, intensity, -intensity] },
-  transition: { repeat: Infinity, duration },
-});
-
 const sliderAnimations: Record<DopamineLevel, MotionProps> = {
-  1: {},
-  2: { animate: { opacity: [0.8, 1, 0.8] }, transition: { repeat: Infinity, duration: 2 } },
-  3: jitter(1, 0.4),
-  4: jitter(2, 0.2),
-  5: {
-    animate: { x: [-3, 3, -3], rotate: [-1, 1, -1] },
-    transition: { repeat: Infinity, duration: 0.1 },
-  },
+  1: ANIM_NONE,
+  2: ANIM_PULSE,
+  3: ANIM_JITTER_MILD,
+  4: ANIM_JITTER_INTENSE,
+  5: ANIM_SHAKE,
 };
 
 const bodyFrameStyles: Record<DopamineLevel, string> = {
-  1: "p-4 bg-gray-100",
-  2: "p-6 bg-gray-200",
-  3: "p-8 bg-gray-300",
-  4: "p-10 bg-gray-400",
-  5: "p-12 bg-gray-500",
+  1: `p-4 ${LEVEL_1_COLORS.secondary}`,
+  2: `p-6 ${LEVEL_2_COLORS.secondary}`,
+  3: `p-8 ${LEVEL_3_COLORS.secondary}`,
+  4: `p-10 ${LEVEL_4_COLORS.secondary}`,
+  5: `p-12 ${LEVEL_5_COLORS.secondary}`,
 };
 
 const bodyFrameAnimations: Record<DopamineLevel, MotionProps> = {
-  1: {},
-  2: {},
-  3: { animate: { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }, transition: { repeat: Infinity, duration: 5 } },
-  4: { animate: { scale: [1, 1.01, 1] }, transition: { repeat: Infinity, duration: 3 } },
-  5: { animate: { scale: [1, 1.02, 1], rotate: [-0.1, 0.1, -0.1] }, transition: { repeat: Infinity, duration: 1 } },
+  1: ANIM_NONE,
+  2: ANIM_NONE,
+  3: ANIM_BG_SHIFT,
+  4: ANIM_SCALE_PULSE,
+  5: ANIM_SHAKE,
 };
 
 const settingsBarStyles: Record<DopamineLevel, string> = {
-  1: "bg-blue-500",
-  2: "bg-blue-600",
-  3: "bg-blue-700",
-  4: "bg-blue-800",
-  5: "bg-red-600",
+  1: LEVEL_1_COLORS.primary,
+  2: LEVEL_2_COLORS.primary,
+  3: LEVEL_3_COLORS.primary,
+  4: LEVEL_4_COLORS.primary,
+  5: LEVEL_5_COLORS.primary,
 };
 
-const barBounce = (y: number, duration: number): MotionProps => ({
-  animate: { y: [0, -y, 0] },
-  transition: { repeat: Infinity, duration },
-});
-
 const settingsBarAnimations: Record<DopamineLevel, MotionProps> = {
-  1: {},
-  2: {},
-  3: barBounce(2, 2),
-  4: { ...barBounce(4, 1), animate: { ...barBounce(4, 1).animate as any, opacity: [0.9, 1, 0.9] } },
-  5: { animate: { y: [0, -6, 0], skewY: [-1, 1, -1] }, transition: { repeat: Infinity, duration: 0.5 } },
+  1: ANIM_NONE,
+  2: ANIM_NONE,
+  3: ANIM_BOUNCE_MILD,
+  4: ANIM_BOUNCE_INTENSE,
+  5: ANIM_SKEW,
 };
 
 const songs: Record<DopamineLevel, string[]> = {
