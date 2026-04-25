@@ -3,7 +3,7 @@ import useDopamineStore from '../store/useDopamineStore';
 import { Howl } from 'howler';
 import { getMusicUrl } from '../utils/media';
 import { levelSongs, type DopamineLevel } from '../assets/dopamineStyles';
-import { useCurrentSong, setCurrentSong } from '../utils/songContext';
+import { useSong } from '../utils/useSong';
 
 const FADE_DURATION = 950;
 const INITIAL_FADE_DURATION = 450;
@@ -76,7 +76,7 @@ export function BackgroundMusic() {
      * (null) defaults to null 
      */
     const currentSong = useRef<Howl | null>(null);
-    const activeSong = useCurrentSong();
+    const { currentSong: activeSong, setCurrentSong } = useSong();
 
     function playMusic(src: string): Howl {
         const sound = new Howl({ src: [src], loop: true, volume: 0 });
@@ -129,7 +129,7 @@ export function BackgroundMusic() {
     useEffect(() => {
         const songName = getRandomSong(level);
         setCurrentSong(songName);
-    }, [level]);
+    }, [level, setCurrentSong]);
         
     /**
      * Effect hook that handles playing or transitioning to the active song.
