@@ -3,9 +3,10 @@ import type { DopamineLevel } from "./types";
 import { LEVEL_1_COLORS, LEVEL_2_COLORS, LEVEL_3_COLORS, LEVEL_4_COLORS, LEVEL_5_COLORS } from "./colors";
 import { 
   ANIM_NONE, ANIM_FLOAT, ANIM_JITTER_MILD, ANIM_JITTER_INTENSE, ANIM_SHAKE, 
-  ANIM_PULSE, hoverScale, ANIM_BOUNCE_MILD, ANIM_BOUNCE_INTENSE, ANIM_SKEW,
-  ANIM_BG_SHIFT, ANIM_SCALE_PULSE,
-  ANIM_SHAKE_1, ANIM_SHAKE_2, ANIM_SHAKE_3, ANIM_SHAKE_4, ANIM_SHAKE_5
+  ANIM_PULSE, hoverScale, ANIM_BOUNCE_MILD, ANIM_BOUNCE_INTENSE, 
+  ANIM_SKEW_5, ANIM_BG_SHIFT, ANIM_SCALE_PULSE,
+  ANIM_SHAKE_1, ANIM_SHAKE_2, ANIM_SHAKE_3, ANIM_SHAKE_4, ANIM_SHAKE_5,
+  ANIM_SKEW_1
 } from "./animations";
 
 const titleSize = "text-5xl";
@@ -55,7 +56,7 @@ export const buttonAnimations: Record<DopamineLevel, MotionProps> = {
   2: hoverScale(1.05),
   3: { ...hoverScale(1.1), ...ANIM_BOUNCE_MILD },
   4: { ...hoverScale(1.15), ...ANIM_BOUNCE_INTENSE },
-  5: { ...hoverScale(1.2), ...ANIM_SKEW },
+  5: { ...hoverScale(1.2), ...ANIM_SKEW_5 },
 };
 
 export const sliderStyles: Record<DopamineLevel, string> = {
@@ -103,7 +104,7 @@ export const settingsBarAnimations: Record<DopamineLevel, MotionProps> = {
   2: ANIM_NONE,
   3: ANIM_BOUNCE_MILD,
   4: ANIM_BOUNCE_INTENSE,
-  5: ANIM_SKEW,
+  5: ANIM_SKEW_1,
 };
 
 export const backgroundAnimations: Record<DopamineLevel, MotionProps> = {
