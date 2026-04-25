@@ -7,18 +7,10 @@ const meta: Meta<typeof Button> = {
   tags: ['autodocs'],
   argTypes: {
     onClick: { action: 'clicked' },
-    backgroundColor: {
-      control: 'inline-radio',
-      options: ['black', 'white'],
-      description: 'Toggles the background color of the preview',
-    },
-  },
-  args: {
-    backgroundColor: 'black',
   },
   decorators: [
-    (Story, context) => (
-      <div style={{ backgroundColor: context.args.backgroundColor, padding: '2rem', minHeight: '100px' }}>
+    (Story) => (
+      <div style={{ backgroundColor: 'black', padding: '2rem', minHeight: '100px' }}>
         <Story />
       </div>
     ),
