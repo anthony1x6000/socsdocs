@@ -8,7 +8,7 @@ import './App.css';
 import {SettingsBar} from './components/ui/SettingsBar';
 import Subtitle from './components/ui/Subtitle';
 import FlexBox from './components/ui/FlexBox';
-import VerticalLine from './components/ui/VerticalLine';
+import HorizontalLine from './components/ui/HorizontalLine';
 
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
         <Subtitle text="LOGIN" />
         <Subtitle text="SIGN UP" />
       </FlexBox>
-      <VerticalLine />
+      <HorizontalLine />
 
       <SettingsBar />
     </div>
