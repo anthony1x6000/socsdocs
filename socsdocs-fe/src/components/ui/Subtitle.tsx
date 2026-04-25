@@ -7,6 +7,6 @@ interface SubtitleProps {
 
 export default function Subtitle({ text, className }: SubtitleProps) {
     return (
-        <Text text={text} className={className} />
+        <Text className={className}>{text}</Text>
     );
 }

@@ -2,6 +2,7 @@ import Slider from "./DopamineSlider";
 import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
 import { getDopamineConfig, BASE_SETTINGS_BAR_STYLE } from "../../assets/dopamineStyles";
+import { Text } from "./Text";
 
 import { useSong } from "../../utils/useSong";
 
@@ -24,8 +25,8 @@ export function SettingsBar() {
             {...settingsBarAnimation}
         >
             <Slider className="w-[35%]" />
-            <div>Vibrancy Level: {level}</div>
-            <div>Song: {currentSong || "None"}</div>
+            <Text>Vibrancy Level: {level}</Text>
+            <Text>Song: {currentSong || "None"}</Text>
         </motion.div>
     )
 }
