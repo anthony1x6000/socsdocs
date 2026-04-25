@@ -1,5 +1,5 @@
 import React from 'react';
-import useDopamineStore from '../store/useDopamineStore';
+import useDopamineStore from "../../store/useDopamineStore";
 import { bodyFrameStyle } from './dopamineLevelStyles';
 import { twMerge } from 'tailwind-merge';
 

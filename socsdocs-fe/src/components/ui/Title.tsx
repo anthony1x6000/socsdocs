@@ -1,4 +1,4 @@
-import useDopamineStore from '../store/useDopamineStore';
+import useDopamineStore from "../../store/useDopamineStore";
 import { titleLevelStyle, titleLevelAnimation } from './dopamineLevelStyles';
 import type { DopamineLevel } from './dopamineLevelStyles';
 import { motion } from 'framer-motion';

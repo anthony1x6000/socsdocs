@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import useDopamineStore from "../store/useDopamineStore";
+import useDopamineStore from "../../store/useDopamineStore";
 import { buttonStyle } from "./dopamineLevelStyles";
 
 interface ButtonProps {
