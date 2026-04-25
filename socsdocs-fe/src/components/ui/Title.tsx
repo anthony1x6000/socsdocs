@@ -6,15 +6,13 @@ import { twMerge } from 'tailwind-merge';
 
 interface PageTitleProps {
   text: string;
-  level?: DopamineLevel;
   className?: string;
 }
 
 const baseStyle = "transition-all";
 
-export function PageTitle({ text, level: levelProp, className }: PageTitleProps) {
-  const storeLevel = useDopamineStore((state) => state.level) as DopamineLevel;
-  const level = levelProp ?? storeLevel;
+export function PageTitle({ text, className }: PageTitleProps) {
+  const level = useDopamineStore((state) => state.level) as DopamineLevel;
   
   const animationProps = titleLevelAnimation[level];
 
