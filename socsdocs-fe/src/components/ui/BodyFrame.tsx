@@ -7,14 +7,12 @@ import { motion } from 'framer-motion';
 interface BodyFrameProps {
   children: React.ReactNode;
   className?: string;
-  level?: number;
 }
 
 const baseStyle = "transition-all duration-300";
 
-export function BodyFrame({ children, className, level: propLevel }: BodyFrameProps) {
-  const storeLevel = useDopamineStore((state) => state.level);
-  const level = propLevel ?? storeLevel;
+export function BodyFrame({ children, className }: BodyFrameProps) {
+  const level = useDopamineStore((state) => state.level);
   const { bodyFrameStyle, bodyFrameAnimation } = getDopamineConfig(level);
 
   return (
