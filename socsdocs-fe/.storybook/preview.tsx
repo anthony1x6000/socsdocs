@@ -1,8 +1,8 @@
+/// <reference types="vite/client" />
 import type { Preview } from '@storybook/react-vite'
 import '../src/index.css';
 import { DopamineProvider } from '../src/store/DopamineProvider';
 import { SongProvider } from '../src/utils/SongProvider';
-import React from 'react';
 
 const preview: Preview = {
   parameters: {
@@ -20,12 +20,24 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const level = context.parameters.dopamineLevel ?? context.args.level;
-      const content = React.createElement(SongProvider, null, React.createElement(Story));
+      const content = (
+        <SongProvider>
+          <Story />
+        </SongProvider>
+      );
       
       if (level !== undefined) {
-        return React.createElement(DopamineProvider, { initialLevel: Number(level) }, content);
+        return (
+          <DopamineProvider initialLevel={Number(level)}>
+            {content}
+          </DopamineProvider>
+        );
       }
-      return React.createElement(DopamineProvider, null, content);
+      return (
+        <DopamineProvider>
+          {content}
+        </DopamineProvider>
+      );
     },
   ],
 };
