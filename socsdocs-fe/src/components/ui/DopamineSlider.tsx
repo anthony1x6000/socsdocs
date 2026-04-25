@@ -3,7 +3,7 @@ import useDopamineStore from "../../store/useDopamineStore";
 import { twMerge } from "tailwind-merge";
 import { Howl } from 'howler';
 import { bongSound, bongFinish } from "../Sfx";
-import { getDopamineConfig } from "../../assets/dopamineStyles";
+import { getDopamineConfig, BASE_SLIDER_STYLE } from "../../assets/dopamineStyles";
 import { motion } from "framer-motion";
 
 const slideSound = new Howl({
@@ -19,8 +19,6 @@ interface SliderProps {
     className?: string;
 }
 
-const baseStyle = "transition-all w-full";
-
 export function Slider({ className }: SliderProps) {
     const setLevel = useDopamineStore((state) => state.setLevel);
     const value = useDopamineStore((state) => state.level);
@@ -32,7 +30,7 @@ export function Slider({ className }: SliderProps) {
             key={value}
             initial={{ x: 0, y: 0, scale: 1, rotate: 0, skewX: 0 }}
             className={twMerge(
-                baseStyle,
+                BASE_SLIDER_STYLE,
                 sliderStyle,
                 className
             )}

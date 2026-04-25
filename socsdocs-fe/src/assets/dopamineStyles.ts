@@ -4,6 +4,7 @@ export type DopamineLevel = 1 | 2 | 3 | 4 | 5;
 
 export interface DopamineConfig {
   titleStyle: string;
+  headerStyle: string;
   titleAnimation: MotionProps;
   buttonStyle: string;
   buttonAnimation: MotionProps;
@@ -68,12 +69,29 @@ export const ANIM_BG_SHIFT: MotionProps = {
 
 export const hoverScale = (scale: number) => ({ whileHover: { scale }, whileTap: { scale: 1 - (scale - 1) } });
 
+export const BASE_TITLE_STYLE = "transition-all";
+export const BASE_HEADER_STYLE = "";
+export const BASE_BUTTON_STYLE = "px-4 py-2 text-white font-semibold rounded hover:opacity-80";
+export const BASE_SLIDER_STYLE = "transition-all w-full";
+export const BASE_BODY_FRAME_STYLE = "transition-all duration-300";
+export const BASE_SETTINGS_BAR_STYLE = "absolute bottom-0 w-full mix-blend-hard-light h-[2.5em]";
+
+const titleSize = "text-5xl";
 const titleStyles: Record<DopamineLevel, string> = {
-  1: `text-lg font-normal ${LEVEL_1_COLORS.text}`,
-  2: `text-xl font-medium ${LEVEL_2_COLORS.text}`,
-  3: `text-2xl font-medium ${LEVEL_3_COLORS.text}`,
-  4: `text-3xl font-semibold ${LEVEL_4_COLORS.text}`,
-  5: `text-4xl font-bold ${LEVEL_5_COLORS.text}`,
+  1: `${titleSize} font-normal ${LEVEL_1_COLORS.text}`,
+  2: `${titleSize} font-medium ${LEVEL_2_COLORS.text}`,
+  3: `${titleSize} font-medium ${LEVEL_3_COLORS.text}`,
+  4: `${titleSize} font-semibold ${LEVEL_4_COLORS.text}`,
+  5: `${titleSize} font-bold ${LEVEL_5_COLORS.text}`,
+};
+
+const headerSize = "text-3xl";
+const headerStyles: Record<DopamineLevel, string> = {
+  1: `${headerSize} font-normal ${LEVEL_1_COLORS.text}`,
+  2: `${headerSize} font-medium ${LEVEL_2_COLORS.text}`,
+  3: `${headerSize} font-medium ${LEVEL_3_COLORS.text}`,
+  4: `${headerSize} font-semibold ${LEVEL_4_COLORS.text}`,
+  5: `${headerSize} font-bold ${LEVEL_5_COLORS.text}`,
 };
 
 const titleAnimations: Record<DopamineLevel, MotionProps> = {
@@ -207,6 +225,7 @@ export const getDopamineConfig = (level: number): DopamineConfig => {
   const l = Math.min(Math.max(Math.floor(level), 1), 5) as DopamineLevel;
   return {
     titleStyle: titleStyles[l],
+    headerStyle: headerStyles[l],
     titleAnimation: titleAnimations[l],
     buttonStyle: buttonStyles[l],
     buttonAnimation: buttonAnimations[l],

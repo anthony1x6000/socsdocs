@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import useDopamineStore from "../../store/useDopamineStore";
-import { getDopamineConfig } from "../../assets/dopamineStyles";
+import { getDopamineConfig, BASE_BUTTON_STYLE } from "../../assets/dopamineStyles";
 import { motion } from "framer-motion";
 
 interface ButtonProps {
@@ -8,8 +8,6 @@ interface ButtonProps {
     onClick: () => void; 
     className?: string;
 }
-
-const baseStyle = "px-4 py-2 text-white font-semibold rounded hover:opacity-80";
 
 export function Button({ text, onClick, className }: ButtonProps) {
     const level = useDopamineStore((state) => state.level);
@@ -21,7 +19,7 @@ export function Button({ text, onClick, className }: ButtonProps) {
             initial={{ x: 0, y: 0, scale: 1, rotate: 0, skewX: 0, opacity: 1 }}
             onClick={onClick}
             className={twMerge(
-                baseStyle,
+                BASE_BUTTON_STYLE,
                 buttonStyle,
                 className
             )}
