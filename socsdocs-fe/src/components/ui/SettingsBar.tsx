@@ -42,13 +42,13 @@ export function SettingsBar({ intensity = 1, intensityOnHover }: SettingsBarProp
             className={twMerge(
                 BASE_SETTINGS_BAR_STYLE,
                 settingsBarStyle,
-                "flex items-center px-4 gap-[4em]"
+                "flex items-center px-4 gap-[4em] h-[4em]"
             )}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             {...settingsBarAnimation}
         >
-            <Slider className="w-[35%]" />
+            <Slider className="w-[10em]" />
             <Text intensity={currentIntensity}>Vibrancy Level: {globalLevel}</Text>
             <Text intensity={currentIntensity}>Song: {currentSong || "None"}</Text>
         </motion.div>

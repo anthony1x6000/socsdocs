@@ -36,6 +36,20 @@ export const createBounce = (height: number = 2, duration: number = 2): MotionPr
   transition: { repeat: Infinity, duration },
 });
 
+/**
+ * Creates a skew animation with configurable intensity and duration.
+ * @param intensity - Base multiplier for skew and translation.
+ * @param duration - Cycle duration in seconds.
+ */
+export const createSkew = (intensity: number = 3, duration: number = 0.1): MotionProps => ({
+  animate: { 
+    y: [0, -(intensity * 2), 0], 
+    skewX: [-intensity, intensity, -intensity], 
+    skewY: [-(intensity / 3), intensity / 3, -(intensity / 3)] 
+  },
+  transition: { repeat: Infinity, duration },
+});
+
 // --- GLOBAL ANIMATIONS ---
 export const ANIM_NONE: MotionProps = {};
 
@@ -68,10 +82,13 @@ export const ANIM_SHAKE_5 = createShake(4, 0.05);
 export const ANIM_BOUNCE_MILD = createBounce(2, 2);
 export const ANIM_BOUNCE_INTENSE = createBounce(4, 2);
 
-export const ANIM_SKEW: MotionProps = {
-  animate: { y: [0, -6, 0], skewX: [-3, 3, -3], skewY: [-1, 1, -1] },
-  transition: { repeat: Infinity, duration: 0.1 },
-};
+export const ANIM_SKEW_1 = createSkew(0.5, 0.5);
+export const ANIM_SKEW_2 = createSkew(1, 0.4);
+export const ANIM_SKEW_3 = createSkew(1.5, 0.3);
+export const ANIM_SKEW_4 = createSkew(2, 0.2);
+export const ANIM_SKEW_5 = createSkew(3, 0.1);
+
+export const ANIM_SKEW = ANIM_SKEW_5; // Alias for backward compatibility
 
 export const ANIM_BG_SHIFT: MotionProps = {
   animate: { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] },
