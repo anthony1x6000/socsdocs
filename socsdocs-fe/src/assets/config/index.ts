@@ -3,7 +3,8 @@ import { songs } from "./songs";
 import { 
   titleStyles, headerStyles, titleAnimations, textAnimations,
   buttonStyles, buttonAnimations, sliderStyles, sliderAnimations,
-  bodyFrameStyles, bodyFrameAnimations, settingsBarStyles, settingsBarAnimations
+  bodyFrameStyles, bodyFrameAnimations, settingsBarStyles, settingsBarAnimations,
+  backgroundAnimations
 } from "./componentStyles";
 
 export * from "./types";
@@ -28,5 +29,6 @@ export const getDopamineConfig = (level: number): DopamineConfig => {
     settingsBarAnimation: settingsBarAnimations[specifiedLevel],
     songs: songs[specifiedLevel],
     textAnimation: textAnimations[specifiedLevel],
+    backgroundAnimation: backgroundAnimations[specifiedLevel],
   };
 };

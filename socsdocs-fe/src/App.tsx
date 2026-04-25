@@ -1,4 +1,6 @@
 import { Shadertoy } from 'react-shadertoy';
+import { motion } from 'framer-motion';
+import { Routes, Route, Link } from 'react-router-dom';
 
 import {PageTitle} from './components/ui/Title';
 
@@ -9,21 +11,43 @@ import {SettingsBar} from './components/ui/SettingsBar';
 import Subtitle from './components/ui/Subtitle';
 import FlexBox from './components/ui/FlexBox';
 import HorizontalLine from './components/ui/HorizontalLine';
+import { useDopamineIntensity } from './store/useDopamineIntensity';
+import LoginPage from './pages/LoginPage';
 
-
-function App() {
+function HomePage() {
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
-      <BackgroundMusic />
-      <Shadertoy className='hero-background' fragmentShader="back.glsl" style={{ width: '100%', height: '100%' }} />
-      
+    <>
       <PageTitle className='mt-[3em]'/>
       <FlexBox className='gap-[2em]'>
         <Subtitle text="COME HERE TO STUDY" />
-        <Subtitle text="LOGIN" />
+        <Link to="/login" style={{ textDecoration: 'none' }}>
+          <Subtitle text="LOGIN" />
+        </Link>
         <Subtitle text="SIGN UP" />
       </FlexBox>
       <HorizontalLine />
+    </>
+  );
+}
+
+function App() {
+  const { config } = useDopamineIntensity();
+  const { backgroundAnimation } = config;
+
+  return (
+    <div className="relative h-screen w-screen overflow-hidden">
+      <BackgroundMusic />
+      <motion.div 
+        className='hero-background'
+        {...backgroundAnimation}
+      >
+        <Shadertoy fragmentShader="back.glsl" style={{ width: '100%', height: '100%' }} />
+      </motion.div>
+      
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
 
       <SettingsBar />
     </div>
