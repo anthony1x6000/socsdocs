@@ -24,5 +24,26 @@
       "animate": { "x": [-4, 4, -6, 6, -4, 4], "y": [-4, 4, -6, 6, -4, 4] },
       "transition": { "repeat": "Infinity", "duration": 0.05, "ease": "linear" }
     }
+  },
+  "buttonStyle": {
+    "1": "bg-blue-500",
+    "2": "bg-blue-600",
+    "3": "bg-blue-700",
+    "4": "bg-blue-800",
+    "5": "bg-blue-900"
+  },
+  "sliderStyle": {
+    "1": "accent-blue-500",
+    "2": "accent-blue-600",
+    "3": "accent-blue-700",
+    "4": "accent-blue-800",
+    "5": "accent-red-500"
+  },
+  "bodyFrameStyle": {
+    "1": "p-4 bg-gray-100",
+    "2": "p-6 bg-gray-200",
+    "3": "p-8 bg-gray-300",
+    "4": "p-10 bg-gray-400",
+    "5": "p-12 bg-gray-500"
   }
 }
