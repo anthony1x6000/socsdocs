@@ -1,15 +1,10 @@
-import { BASE_HEADER_STYLE } from '../../assets/dopamineStyles';
+import { BASE_HEADER_STYLE } from '../../assets/config/baseStyles';
 import { twMerge } from 'tailwind-merge';
 import { Text } from './Text';
 import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 
 /**
  * Props for the Header component.
- * @interface HeaderProps
- * @property {string} text - The text content of the header.
- * @property {string} [className] - Optional additional CSS classes.
- * @property {number} [intensity=1] - Multiplier for the global dopamine level.
- * @property {number} [intensityOnHover] - Absolute override for the dopamine level when hovered (1-5).
  */
 interface HeaderProps {
   text: string;
@@ -20,14 +15,7 @@ interface HeaderProps {
 
 /**
  * Secondary header component.
- * Uses dopamine-driven styles and animations for a consistent look.
- * The intensity prop acts as a multiplier for the global dopamine level.
- * 
- * @param {HeaderProps} props - Component props.
- * @returns {JSX.Element} A h1 element containing animated Text.
- * 
- * @example
- * <Header text="Section Title" intensity={1.5} />
+ * Delegating color, animation, and weight to Text component (TextMoveable).
  */
 export function Header({ 
   text, 
@@ -35,17 +23,15 @@ export function Header({
   intensity = 1,
   intensityOnHover
 }: HeaderProps) {
-    const { intensity: currentIntensity, config, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-    const { headerStyle } = config;
+    const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
 
     return (
         <h1 
-          className={twMerge(BASE_HEADER_STYLE, headerStyle, className)}
+          className={twMerge(BASE_HEADER_STYLE, "text-3xl", className)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
             <Text 
-              animationType="title" 
               intensity={currentIntensity}
             >
               {text}
