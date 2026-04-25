@@ -1,4 +1,4 @@
-export const BASE_TITLE_STYLE = "transition-all font-title";
+export const BASE_TITLE_STYLE = "transition-all font-title lowercase";
 export const BASE_HEADER_STYLE = "";
 export const BASE_BUTTON_STYLE = "px-4 py-2 text-white font-semibold rounded hover:opacity-80";
 export const BASE_SLIDER_STYLE = "transition-all w-full";
