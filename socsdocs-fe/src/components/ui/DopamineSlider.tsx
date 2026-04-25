@@ -9,11 +9,11 @@ import { useDopamineIntensity } from "../../store/useDopamineIntensity";
 
 const slideSound = new Howl({
     src: [bongSound],
-    volume: 0.5,
+    volume: 1,
 });
 const slideFinish = new Howl({
     src: [bongFinish],
-    volume: 0.5,
+    volume: 2,
 });
 
 /**

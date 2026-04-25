@@ -7,7 +7,7 @@ import { useSong } from '../utils/useSong';
 
 const FADE_DURATION = 950;
 const INITIAL_FADE_DURATION = 450;
-const TARGET_VOLUME = 0.5;
+const TARGET_VOLUME = 0.35;
 
 /**
  * Type guard to check if a number is a valid DopamineLevel (1-5).
