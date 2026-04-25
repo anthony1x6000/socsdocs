@@ -65,18 +65,3 @@ export const accentColors: Record<number, string> = {
   5: LEVEL_5_COLORS.accent,
 };
 
-export const secondaryColors: Record<number, string> = {
-  1: `p-4 ${LEVEL_1_COLORS.secondary}`,
-  2: `p-6 ${LEVEL_2_COLORS.secondary}`,
-  3: `p-8 ${LEVEL_3_COLORS.secondary}`,
-  4: `p-10 ${LEVEL_4_COLORS.secondary}`,
-  5: `p-12 ${LEVEL_5_COLORS.secondary}`,
-};
-
-export const bodyAnims: Record<number, any> = {
-  1: ANIM_NONE,
-  2: ANIM_NONE,
-  3: ANIM_BG_SHIFT,
-  4: ANIM_SCALE_PULSE,
-  5: ANIM_SHAKE,
-};

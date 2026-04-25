@@ -5,8 +5,7 @@ import type { DopamineLevel } from '../../assets/config/types';
 import { useResetMotion } from '../../utils/useResetMotion';
 import { 
   textAnimations, 
-  elementAnimations, 
-  bodyAnims 
+  elementAnimations
 } from '../../assets/config';
 
 interface MoveableProps {
@@ -34,7 +33,7 @@ export const TextMoveable: React.FC<MoveableProps> = ({ children, intensity, cla
 };
 
 interface ElementMoveableProps extends MoveableProps {
-  type?: 'button' | 'slider' | 'bodyFrame' | 'settingsBar';
+  type?: 'button' | 'slider' | 'settingsBar';
 }
 
 /**
@@ -45,23 +44,9 @@ export const ElementMoveable: React.FC<ElementMoveableProps> = ({
 }) => {
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
 
-  let typeAnim: any = {};
-
-  if (type === 'bodyFrame') {
-    typeAnim = bodyAnims[level];
-  }
-
   const baseAnim = elementAnimations[level];
-  const combinedAnim = {
-    ...baseAnim,
-    animate: {
-      ...(baseAnim?.animate || {}),
-      ...(typeAnim?.animate || {})
-    },
-    transition: typeAnim?.transition || baseAnim?.transition
-  };
 
-  const motionProps = useResetMotion(type || "element", intensity, combinedAnim);
+  const motionProps = useResetMotion(type || "element", intensity, baseAnim);
 
   return (
     <motion.div 
