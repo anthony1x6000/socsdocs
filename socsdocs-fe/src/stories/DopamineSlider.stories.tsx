@@ -7,7 +7,7 @@ const meta: Meta<typeof Slider> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ backgroundColor: 'black', padding: '3rem', minHeight: '200px' }}>
+      <div style={{ backgroundColor: 'black', padding: '2rem', minHeight: '100px' }}>
         <Story />
       </div>
     ),
@@ -17,4 +17,14 @@ const meta: Meta<typeof Slider> = {
 export default meta;
 type Story = StoryObj<typeof Slider>;
 
-export const Default: Story = {};
+export const Level1: Story = {
+  parameters: { dopamineLevel: 1 },
+};
+
+export const Level3: Story = {
+  parameters: { dopamineLevel: 3 },
+};
+
+export const Level5: Story = {
+  parameters: { dopamineLevel: 5 },
+};
