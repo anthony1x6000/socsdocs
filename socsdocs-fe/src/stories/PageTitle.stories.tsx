@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PageTitle } from '../components/ui/Title';
-import { DopamineProvider } from '../store/DopamineProvider';
 
 const meta: Meta<typeof PageTitle> = {
   title: 'Components/PageTitle',
@@ -15,6 +14,13 @@ const meta: Meta<typeof PageTitle> = {
   args: {
     text: 'Dopamine Title',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'black', padding: '2rem', minHeight: '100px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
@@ -23,51 +29,21 @@ type Story = StoryObj<typeof PageTitle>;
 export const Default: Story = {};
 
 export const Level1: Story = {
-  decorators: [
-    (Story) => (
-      <DopamineProvider initialLevel={1}>
-        <Story />
-      </DopamineProvider>
-    ),
-  ],
+  parameters: { dopamineLevel: 1 },
 };
 
 export const Level2: Story = {
-  decorators: [
-    (Story) => (
-      <DopamineProvider initialLevel={2}>
-        <Story />
-      </DopamineProvider>
-    ),
-  ],
+  parameters: { dopamineLevel: 2 },
 };
 
 export const Level3: Story = {
-  decorators: [
-    (Story) => (
-      <DopamineProvider initialLevel={3}>
-        <Story />
-      </DopamineProvider>
-    ),
-  ],
+  parameters: { dopamineLevel: 3 },
 };
 
 export const Level4: Story = {
-  decorators: [
-    (Story) => (
-      <DopamineProvider initialLevel={4}>
-        <Story />
-      </DopamineProvider>
-    ),
-  ],
+  parameters: { dopamineLevel: 4 },
 };
 
 export const Level5: Story = {
-  decorators: [
-    (Story) => (
-      <DopamineProvider initialLevel={5}>
-        <Story />
-      </DopamineProvider>
-    ),
-  ],
+  parameters: { dopamineLevel: 5 },
 };

@@ -17,14 +17,27 @@ const meta: Meta<typeof Header> = {
 export default meta;
 type Story = StoryObj<typeof Header>;
 
-export const Default: Story = {
-  args: {
-    text: 'Standard Header',
-  },
+export const Level1: Story = {
+  args: { text: 'Dopamine Level 1' },
+  parameters: { dopamineLevel: 1 },
 };
 
-export const LongText: Story = {
-  args: {
-    text: 'A Much Longer Header for Testing Layout',
-  },
+export const Level2: Story = {
+  args: { text: 'Dopamine Level 2' },
+  parameters: { dopamineLevel: 2 },
+};
+
+export const Level3: Story = {
+  args: { text: 'Dopamine Level 3' },
+  parameters: { dopamineLevel: 3 },
+};
+
+export const Level4: Story = {
+  args: { text: 'Dopamine Level 4' },
+  parameters: { dopamineLevel: 4 },
+};
+
+export const Level5: Story = {
+  args: { text: 'Dopamine Level 5' },
+  parameters: { dopamineLevel: 5 },
 };
