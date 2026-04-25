@@ -24,11 +24,25 @@ export const Level1: Story = {
   parameters: { dopamineLevel: 1 },
 };
 
+export const Level2: Story = {
+  args: {
+    children: <div className="text-white">Dopamine Level 2 Content</div>,
+  },
+  parameters: { dopamineLevel: 2 },
+};
+
 export const Level3: Story = {
   args: {
     children: <div className="text-white">Dopamine Level 3 Content</div>,
   },
   parameters: { dopamineLevel: 3 },
+};
+
+export const Level4: Story = {
+  args: {
+    children: <div className="text-white">Dopamine Level 4 Content</div>,
+  },
+  parameters: { dopamineLevel: 4 },
 };
 
 export const Level5: Story = {
