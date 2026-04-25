@@ -59,6 +59,12 @@ export const ANIM_JITTER_INTENSE = createJitter(2, 0.1);
 
 export const ANIM_SHAKE = createShake(4, 0.05);
 
+export const ANIM_SHAKE_1 = ANIM_NONE;
+export const ANIM_SHAKE_2 = createJitter(0.5, 0.2);
+export const ANIM_SHAKE_3 = createJitter(1, 0.15);
+export const ANIM_SHAKE_4 = createShake(2, 0.1);
+export const ANIM_SHAKE_5 = createShake(4, 0.05);
+
 export const ANIM_BOUNCE_MILD = createBounce(2, 2);
 export const ANIM_BOUNCE_INTENSE = createBounce(4, 2);
 

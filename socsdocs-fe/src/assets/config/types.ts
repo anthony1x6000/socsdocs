@@ -16,4 +16,5 @@ export interface DopamineConfig {
   settingsBarAnimation: MotionProps;
   songs: string[];
   textAnimation: MotionProps;
+  backgroundAnimation: MotionProps;
 }
