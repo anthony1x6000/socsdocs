@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import useDopamineStore from '../store/useDopamineStore';
 import { Howl } from 'howler';
 import { getMusicUrl } from '../utils/media';
 import { levelSongs, type DopamineLevel } from '../assets/dopamineStyles';
+import { useCurrentSong, setCurrentSong } from '../utils/songContext';
 
 const FADE_DURATION = 950;
 const INITIAL_FADE_DURATION = 450;
@@ -44,32 +45,6 @@ function getRandomSong(level: number): string | null {
     return null;
 }
 
-let currentSongName: string | null = null;
-const songChangeListeners = new Set<(song: string | null) => void>();
-
-export function getCurrentSong() {
-    return currentSongName;
-}
-
-export function setCurrentSong(songName: string | null) {
-    if (currentSongName !== songName) {
-        currentSongName = songName;
-        songChangeListeners.forEach((listener) => listener(songName));
-    }
-}
-
-export function useCurrentSong() {
-    const [song, setSong] = useState(currentSongName);
-    useEffect(() => {
-        const handleSongChange = (newSong: string | null) => setSong(newSong);
-        songChangeListeners.add(handleSongChange);
-        return () => {
-            songChangeListeners.delete(handleSongChange);
-        };
-    }, []);
-    return song;
-}
-
 /**
  * Smoothly fades out a song and unloads it from memory after the fade completes.
  * 
@@ -94,7 +69,7 @@ function fadeOutAndStop(song: Howl, duration = FADE_DURATION): Promise<void> {
  * based on the current dopamine level from the store.
  */
 export function BackgroundMusic() {
-    const level = useDopamineStore((state: any) => state.level);
+    const level = useDopamineStore((state) => state.level);
     /**
      * useRef to store a mutable value. This stores the current song playing, without triggering a rerender. \
      * <Howl | null> is a TS definition, either holds a Howl or null object. \
@@ -102,6 +77,36 @@ export function BackgroundMusic() {
      */
     const currentSong = useRef<Howl | null>(null);
     const activeSong = useCurrentSong();
+
+    function playMusic(src: string): Howl {
+        const sound = new Howl({ src: [src], loop: true, volume: 0 });
+        sound.play();
+        sound.fade(0, TARGET_VOLUME, INITIAL_FADE_DURATION);
+        return sound;
+    }
+
+    /**
+     * Smoothly crossfades between the currently playing song and a new song.
+     * 
+     * It creates a new Howl instance and waits for it to actually begin playing
+     * before starting the fade animations. This prevents awkward gaps of silence
+     * if the new track takes a moment to buffer or load. Once the transition is
+     * complete, the old song is stopped and unloaded from memory.
+     * 
+     * @param {Howl} oldSong - The current Howl audio object to fade out.
+     * @param {string} newSongSrc - The URL string of the new audio track to fade in.
+     */
+    function transitionSong(oldSong: Howl, newSongSrc: string) {
+        const newSong = new Howl({ src: [newSongSrc], loop: true, volume: 0 });
+
+        newSong.once('play', () => {
+            fadeOutAndStop(oldSong, FADE_DURATION);
+            newSong.fade(0, TARGET_VOLUME, FADE_DURATION);
+        });
+
+        newSong.play();
+        currentSong.current = newSong;
+    }
 
     /**
      * Cleanup effect to stop and unload the current song when the component
@@ -146,36 +151,6 @@ export function BackgroundMusic() {
             currentSong.current = playMusic(nextSongSrc);
         }
     }, [activeSong]);
-
-    function playMusic(src: string): Howl {
-        const sound = new Howl({ src: [src], loop: true, volume: 0 });
-        sound.play();
-        sound.fade(0, TARGET_VOLUME, INITIAL_FADE_DURATION);
-        return sound;
-    }
-
-    /**
-     * Smoothly crossfades between the currently playing song and a new song.
-     * 
-     * It creates a new Howl instance and waits for it to actually begin playing
-     * before starting the fade animations. This prevents awkward gaps of silence
-     * if the new track takes a moment to buffer or load. Once the transition is
-     * complete, the old song is stopped and unloaded from memory.
-     * 
-     * @param {Howl} oldSong - The current Howl audio object to fade out.
-     * @param {string} newSongSrc - The URL string of the new audio track to fade in.
-     */
-    function transitionSong(oldSong: Howl, newSongSrc: string) {
-        const newSong = new Howl({ src: [newSongSrc], loop: true, volume: 0 });
-
-        newSong.once('play', () => {
-            fadeOutAndStop(oldSong, FADE_DURATION);
-            newSong.fade(0, TARGET_VOLUME, FADE_DURATION);
-        });
-
-        newSong.play();
-        currentSong.current = newSong;
-    }
 
     return null; // A background component doesn't need to render any UI
 }
