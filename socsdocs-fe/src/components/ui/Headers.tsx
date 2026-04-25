@@ -35,7 +35,7 @@ export function Header({
         >
             <Text 
               intensity={currentIntensity}
-              className='{headerWeights[currentIntensity]}'
+              className={headerWeights[currentIntensity]}
             >
               {text}
             </Text>
