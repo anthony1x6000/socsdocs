@@ -35,10 +35,26 @@ export const textColors: Record<number, string> = {
 
 export const fontWeights: Record<number, string> = {
   1: "font-normal",
-  2: "font-medium",
-  3: "font-medium",
-  4: "font-semibold",
-  5: "font-bold",
+  2: "font-normal",
+  3: "font-normal",
+  4: "font-normal",
+  5: "font-normal",
+};
+
+export const headerWeights: Record<number, string> = {
+  1: "font-semibold",
+  2: "font-semibold",
+  3: "font-semibold",
+  4: "font-bold",
+  5: "font-black",
+};
+
+export const titleWeights: Record<number, string> = {
+  1: "font-bold",
+  2: "font-bold",
+  3: "font-bold",
+  4: "font-bold",
+  5: "font-black",
 };
 
 export const elementAnimations: Record<number, any> = {
@@ -64,4 +80,3 @@ export const accentColors: Record<number, string> = {
   4: LEVEL_4_COLORS.accent,
   5: LEVEL_5_COLORS.accent,
 };
-
