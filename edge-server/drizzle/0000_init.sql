@@ -8,18 +8,24 @@ CREATE TABLE `account` (
 	`idToken` text,
 	`expiresAt` integer,
 	`password` text,
+	`createdAt` integer NOT NULL,
+	`updatedAt` integer NOT NULL,
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`expiresAt` integer NOT NULL,
+	`token` text NOT NULL,
 	`ipAddress` text,
 	`userAgent` text,
 	`userId` text NOT NULL,
+	`createdAt` integer NOT NULL,
+	`updatedAt` integer NOT NULL,
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `session_token_unique` ON `session` (`token`);--> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -35,5 +41,7 @@ CREATE TABLE `verification` (
 	`id` text PRIMARY KEY NOT NULL,
 	`identifier` text NOT NULL,
 	`value` text NOT NULL,
-	`expiresAt` integer NOT NULL
+	`expiresAt` integer NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer
 );
