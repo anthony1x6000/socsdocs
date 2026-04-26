@@ -14,12 +14,12 @@ interface CardProps {
  * Animated Card component wrapped in ElementMoveable.
  * Used for containers like login forms.
  */
-export const Card: React.FC<CardProps> = ({ 
+export const Card = ({ 
   children, 
   className, 
   intensity = 1, 
   intensityOnHover 
-}) => {
+}: CardProps) => {
   const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
 
   return (

@@ -10,7 +10,7 @@ interface ErrorMessageProps {
 /**
  * Animated error message component.
  */
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({ children, className }) => {
+export const ErrorMessage = ({ children, className }: ErrorMessageProps) => {
   if (!children) return null;
   
   return (

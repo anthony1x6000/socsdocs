@@ -11,12 +11,12 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 /**
  * Animated Input component wrapped in ElementMoveable.
  */
-export const Input: React.FC<InputProps> = ({ 
+export const Input = ({ 
   className, 
   intensity = 1, 
   intensityOnHover,
   ...props 
-}) => {
+}: InputProps) => {
   const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
 
   return (

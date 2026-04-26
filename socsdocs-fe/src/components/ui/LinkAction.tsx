@@ -15,14 +15,14 @@ interface LinkActionProps {
 /**
  * A link or button that looks like a link, wrapped in Text (which has TextMoveable).
  */
-export const LinkAction: React.FC<LinkActionProps> = ({
+export const LinkAction = ({
   children,
   to,
   onClick,
   className,
   intensity = 1,
   intensityOnHover = 1.5,
-}) => {
+}: LinkActionProps) => {
   const content = (
     <Text 
       intensity={intensity} 
