@@ -73,11 +73,6 @@ app.use('*', async (c, next) => {
   await next();
 })
 
-/**
- * Health check endpoint
- */
-app.get('/api/auth/ok', (c) => c.text('ok'))
-
 app.on(['POST', 'GET'], '/api/auth/**', (c) => {
   const auth = c.get('auth');
   /**
