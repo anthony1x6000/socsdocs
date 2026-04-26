@@ -15,7 +15,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
     }
 
     // Generate the base high-contrast white lines
-    float intensity = 0.1 / abs(sin(iTime - uv.y - uv.x));
+    float intensity = 0.6 / abs(sin(iTime - uv.y - uv.x));
 
     // 3. Create a mask that is solid white on the left edge and fades to black on the right
     float horizontalFade = pow(1.0 - st.x, 3.0);
