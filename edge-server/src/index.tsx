@@ -6,7 +6,7 @@ import { drizzle } from 'drizzle-orm/d1'
 import * as schema from './db/schema'
 
 type Bindings = {
-  DB: D1Database
+  socs_db: D1Database
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
   FRONTEND_URL: string
@@ -36,7 +36,11 @@ app.use('/api/auth/*', cors({
  * @see Valentino, S. (2024). Better Auth + Cloudflare Workers: The integration guide nobody wrote. Medium. https://medium.com/@senioro.valentino/better-auth-cloudflare-workers-the-integration-guide-nobody-wrote-8480331d805f 
  */
 app.use('*', async (c, next) => {
-  const db = drizzle(c.env.DB, { schema });
+  if (!c.env.BETTER_AUTH_SECRET) {
+    console.error("Missing BETTER_AUTH_SECRET");
+  }
+  
+  const db = drizzle(c.env.socs_db, { schema });
   
   const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -57,9 +61,9 @@ app.use('*', async (c, next) => {
       joins: true 
     },
     emailAndPassword: { enabled: true },
-    secret: c.env.BETTER_AUTH_SECRET,
+    secret: c.env.BETTER_AUTH_SECRET, 
     baseURL: c.env.BETTER_AUTH_URL,
-    trustedOrigins: [c.env.FRONTEND_URL],
+    trustedOrigins: [c.env.FRONTEND_URL].filter(Boolean) as string[],
     advanced: {
       useSecureCookies: c.env.NODE_ENV === "production"
     }
@@ -68,6 +72,11 @@ app.use('*', async (c, next) => {
   c.set('auth', auth as ReturnType<typeof betterAuth>);
   await next();
 })
+
+/**
+ * Health check endpoint
+ */
+app.get('/api/auth/ok', (c) => c.text('ok'))
 
 app.on(['POST', 'GET'], '/api/auth/**', (c) => {
   const auth = c.get('auth');
