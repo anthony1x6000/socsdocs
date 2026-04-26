@@ -23,15 +23,13 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
  * CORS must be registered before the auth handler to handle preflight OPTIONS requests.
  * @see Hono. (2025). Better Auth on Cloudflare. Hono. https://hono.dev/examples/better-auth-on-cloudflare
  */
-app.use('/api/auth/*', async (c, next) => {
-  const corsMiddleware = cors({
-    origin: c.env.FRONTEND_URL,
-    allowHeaders: ['Content-Type', 'Authorization'],
-    allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
-    credentials: true,
-  });
-  return corsMiddleware(c, next);
-});
+// Pass a function to `origin` to dynamically read from c.env safely
+app.use('/api/auth/*', cors({
+  origin: (origin, c) => c.env.FRONTEND_URL,
+  allowHeaders: ['Content-Type', 'Authorization'],
+  allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
+  credentials: true,
+}))
 
 /**
  * Per-request initialization avoids SQLite WAL locks in local development.
@@ -44,7 +42,6 @@ app.use('*', async (c, next) => {
     database: drizzleAdapter(db, {
       provider: "sqlite",
       schema: {
-       ...schema,
         // Explicitly mapping schema helps Drizzle resolve relations for joins
         user: schema.user,
         session: schema.session,
