@@ -11,3 +11,4 @@ if [ -f "$MIGRATION_FILE" ]; then
 else
   echo "Error: No migration file found in ./drizzle/"
 fi
+echo "Run with npx wrangler dev" 
