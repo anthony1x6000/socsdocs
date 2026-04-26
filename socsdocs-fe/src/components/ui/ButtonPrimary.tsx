@@ -10,10 +10,12 @@ import { useDopamineIntensity } from "../../store/useDopamineIntensity";
  */
 interface ButtonProps {
     text: string;
-    onClick: () => void; 
+    onClick?: () => void; 
     className?: string;
     intensity?: number;
     intensityOnHover?: number;
+    type?: "button" | "submit" | "reset";
+    disabled?: boolean;
 }
 
 /**
@@ -25,7 +27,9 @@ export function Button({
   onClick, 
   className,
   intensity = 1,
-  intensityOnHover
+  intensityOnHover,
+  type = "button",
+  disabled = false
 }: ButtonProps) {
     const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
     const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
@@ -34,11 +38,18 @@ export function Button({
         <ElementMoveable
             intensity={currentIntensity}
             type="button"
-            className={twMerge(BASE_BUTTON_STYLE, primaryColors[level], className)}
+            className={twMerge(
+              BASE_BUTTON_STYLE, 
+              primaryColors[level], 
+              disabled && "opacity-50 cursor-not-allowed",
+              className
+            )}
         >
             <button 
+                type={type}
                 onClick={onClick}
-                className="w-full h-full"
+                disabled={disabled}
+                className="w-full h-full cursor-inherit"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
