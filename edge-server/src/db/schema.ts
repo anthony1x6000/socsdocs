@@ -60,6 +60,8 @@ export const session = sqliteTable("session", {
      * server-side session invalidation (Better Auth Contributors, 2024).
      */
     expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull(),
+    /** Unique session token utilized for authentication. */
+    token: text("token").notNull().unique(),
     /** 
      * The IP address associated with the login, useful for security 
      * auditing and geo-fencing (Better Auth Contributors, 2024).
@@ -72,7 +74,11 @@ export const session = sqliteTable("session", {
      * by the application logic to ensure data consistency in D1 
      * (Cloudflare, 2025a).
      */
-    userId: text("userId").notNull().references(() => user.id)
+    userId: text("userId").notNull().references(() => user.id),
+    /** The timestamp of session creation. */
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+    /** The timestamp of the last session update. */
+    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull()
 });
 
 /**
@@ -107,7 +113,11 @@ export const account = sqliteTable("account", {
      * Encrypted password hash. This is only populated for 
      * email/password credentials (OWASP, 2023).
      */
-    password: text("password")
+    password: text("password"),
+    /** The timestamp of account linkage creation. */
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+    /** The timestamp of the last account linkage update. */
+    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull()
 });
 
 /**
@@ -131,5 +141,9 @@ export const verification = sqliteTable("verification", {
      * Expiration window. Verification codes are typically valid for 
      * 5-15 minutes (Better Auth Contributors, 2024).
      */
-    expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull()
+    expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull(),
+    /** The timestamp of the verification request creation. */
+    createdAt: integer("createdAt", { mode: "timestamp" }),
+    /** The timestamp of the last verification request update. */
+    updatedAt: integer("updatedAt", { mode: "timestamp" })
 });
