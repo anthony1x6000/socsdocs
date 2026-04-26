@@ -1,9 +1,7 @@
 packages:
   - 'edge-server'
   - 'socsdocs-fe'
-
-pnpm:
-  neverBuiltDependencies:
-    - esbuild
-    - sharp
-    - workerd
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
