@@ -17,7 +17,7 @@ interface MoveableProps {
 /**
  * Wrapper for text elements that applies float, jitter, and shake based on intensity.
  */
-export const TextMoveable: React.FC<MoveableProps> = ({ children, intensity, className }) => {
+export const TextMoveable = ({ children, intensity, className }: MoveableProps) => {
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
   
   const motionProps = useResetMotion("text", intensity, textAnimations[level]);
@@ -39,9 +39,9 @@ interface ElementMoveableProps extends MoveableProps {
 /**
  * Wrapper for block-level elements that applies skew and bounce based on intensity.
  */
-export const ElementMoveable: React.FC<ElementMoveableProps> = ({ 
+export const ElementMoveable = ({ 
   children, intensity, className, type 
-}) => {
+}: ElementMoveableProps) => {
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
 
   const baseAnim = elementAnimations[level];
