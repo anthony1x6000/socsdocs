@@ -9,6 +9,7 @@ type Bindings = {
   DB: D1Database
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
+  FRONTEND_URL: string
   NODE_ENV?: string 
 }
 
@@ -22,12 +23,15 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
  * CORS must be registered before the auth handler to handle preflight OPTIONS requests.
  * @see Hono. (2025). Better Auth on Cloudflare. Hono. https://hono.dev/examples/better-auth-on-cloudflare
  */
-app.use('/api/auth/*', cors({
-  origin: 'http://localhost:5173',
-  allowHeaders: ['Content-Type', 'Authorization'],
-  allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
-  credentials: true,
-}))
+app.use('/api/auth/*', async (c, next) => {
+  const corsMiddleware = cors({
+    origin: c.env.FRONTEND_URL,
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
+    credentials: true,
+  });
+  return corsMiddleware(c, next);
+});
 
 /**
  * Per-request initialization avoids SQLite WAL locks in local development.
@@ -58,7 +62,7 @@ app.use('*', async (c, next) => {
     emailAndPassword: { enabled: true },
     secret: c.env.BETTER_AUTH_SECRET,
     baseURL: c.env.BETTER_AUTH_URL,
-    trustedOrigins: ["http://localhost:5173"],
+    trustedOrigins: [c.env.FRONTEND_URL],
     advanced: {
       useSecureCookies: c.env.NODE_ENV === "production"
     }
