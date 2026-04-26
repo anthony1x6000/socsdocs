@@ -9,11 +9,13 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
+    "better-auth": "^1.6.9",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.15"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.2.3",
+    "@cloudflare/workers-types": "^4.20260426.1",
     "drizzle-kit": "^0.31.10",
     "vite": "^6.3.5",
     "vite-ssr-components": "^0.5.2",
