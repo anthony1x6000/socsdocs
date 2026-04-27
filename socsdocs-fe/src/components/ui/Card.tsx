@@ -28,7 +28,7 @@ export const Card = ({
   return (
     <div
       className={twMerge(
-        "bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 p-6",
+        "bg-white/1 p-10",
         className
       )}
     >
