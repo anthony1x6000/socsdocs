@@ -39,9 +39,9 @@ interface MoveableProps {
   colorDict?: Record<number, string>;
   /** Optional dictionary for font weights/styles mapped to levels 1-5. */
   weightDict?: Record<number, string>;
-  /** Base dopamine intensity multiplier. */
+  /** Base dopamine intensity offset. */
   intensityMod?: number;
-  /** Intensity multiplier on hover. */
+  /** Intensity offset on hover. */
   intensityModHover?: number;
   /** Children to wrap. */
   children: React.ReactNode;
@@ -56,7 +56,7 @@ interface MoveableProps {
  * <Moveable 
  *   as="span" 
  *   animationMap={textAnimationMap} 
- *   intensityMod={1.5}
+ *   intensityMod={1}
  * >
  *   <Text>Dopamine Text</Text>
  * </Moveable>
@@ -66,7 +66,7 @@ export const Moveable = ({
   animationMap = elementAnimationMap,
   colorDict,
   weightDict,
-  intensityMod = 1,
+  intensityMod = 0,
   intensityModHover,
   children,
   className,

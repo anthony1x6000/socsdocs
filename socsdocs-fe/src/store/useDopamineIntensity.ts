@@ -5,12 +5,12 @@ import { getDopamineConfig } from '../assets/config';
 /**
  * Hook to manage dopamine intensity for a component.
  * 
- * Both intensityMod and intensityModHover act as multipliers for the global dopamine level.
+ * Both intensityMod and intensityModHover act as additive offsets for the global dopamine level.
  * 
- * @param {number} [intensityMod=1] - Multiplier for the global level.
- * @param {number} [intensityModHover] - Multiplier for the global level when hovered.
+ * @param {number} [intensityMod=0] - Offset for the global level.
+ * @param {number} [intensityModHover] - Offset for the global level when hovered.
  */
-export function useDopamineIntensity(intensityMod: number = 1, intensityModHover?: number) {
+export function useDopamineIntensity(intensityMod: number = 0, intensityModHover?: number) {
   const globalLevel = useDopamineStore((state) => state.level);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -18,7 +18,7 @@ export function useDopamineIntensity(intensityMod: number = 1, intensityModHover
     ? intensityModHover 
     : intensityMod;
 
-  const currentIntensity = globalLevel * activeMod;
+  const currentIntensity = globalLevel + activeMod;
   const config = getDopamineConfig(currentIntensity);
 
   return {

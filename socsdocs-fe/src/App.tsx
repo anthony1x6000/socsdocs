@@ -22,25 +22,25 @@ function HomePage() {
         animationMap={textAnimationMap} 
         colorDict={textColors} 
         weightDict={titleWeights}
-        intensityMod={1}
-        intensityModHover={1}
+        intensityMod={0}
+        intensityModHover={0}
         className='mt-[3em]'
       >
         <PageTitle />
       </Moveable>
 
       <FlexBox className='gap-[2em]'>
-        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={1} intensityModHover={1}>
+        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={0}>
           <Subtitle text="COME HERE TO STUDY" />
         </Moveable>
         
         <Link to="/login" style={{ textDecoration: 'none' }}>
-          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={1} intensityModHover={0.5}>
+          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={-1}>
             <Subtitle text="LOGIN" />
           </Moveable>
         </Link>
 
-        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={1} intensityModHover={0.5}>
+        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={-1}>
           <Subtitle text="SIGN UP" />
         </Moveable>
       </FlexBox>
