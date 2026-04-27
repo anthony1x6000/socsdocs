@@ -19,25 +19,23 @@ function HomePage() {
         animationMap={textAnimationMap} 
         colorDict={textColors} 
         weightDict={titleWeights}
-        intensityMod={0}
-        intensityModHover={0}
         className='mt-[3em]'
       >
         <Typography variant="title">SOCSDOCS</Typography>
       </Moveable>
 
       <div className='flex gap-[2em]'>
-        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={0}>
+        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
           <Typography variant="subtitle">COME HERE TO STUDY</Typography>
         </Moveable>
         
         <Link to="/login" style={{ textDecoration: 'none' }}>
-          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={-1}>
+          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
             <Typography variant="subtitle">LOGIN</Typography>
           </Moveable>
         </Link>
       </div>
-      <div className="w-full h-[2px] bg-white block" />
+      <div className="w-full h-2px bg-white block" />
     </>
   );
 }
