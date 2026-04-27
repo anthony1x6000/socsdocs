@@ -16,13 +16,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: <div className="w-64 h-32 flex items-center justify-center">Card Content</div>,
-    intensity: 1,
   },
 };
 
-export const HighIntensity: Story = {
+export const CustomStyle: Story = {
   args: {
-    children: <div className="w-64 h-32 flex items-center justify-center">Crazy Card</div>,
-    intensity: 5,
+    children: <div className="w-64 h-32 flex items-center justify-center">Styled Card</div>,
+    className: 'bg-blue-500/20 border-blue-500/50',
   },
 };

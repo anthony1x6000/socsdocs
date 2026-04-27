@@ -1,19 +1,129 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn, signUp } from '../lib/auth-client';
-import { PageTitle } from '../components/ui/Title';
-import Subtitle from '../components/ui/Subtitle';
-import { HeroBackground } from '../components/ui/HeroBackground';
+import Typography from '../components/ui/Typography';
 import Input from '../components/ui/Input';
-import { Button } from '../components/ui/ButtonPrimary';
+import { Button } from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import LinkAction from '../components/ui/LinkAction';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import { Moveable } from '../components/ui/Moveables';
+import { 
+  textAnimationMap, 
+  elementAnimationMap, 
+  textColors, 
+  titleWeights,
+  headerWeights
+} from '../assets/config';
+
+function AuthTitle({ isSignUp }: { isSignUp: boolean }) {
+  return (
+    <Moveable 
+      as="span" 
+      animationMap={textAnimationMap} 
+      colorDict={textColors} 
+      weightDict={headerWeights}
+    >
+      <Typography variant="subtitle">{isSignUp ? 'Create Account' : 'Sign In'}</Typography>
+    </Moveable>
+  );
+}
+
+interface AuthFormProps {
+  isSignUp: boolean;
+  name: string;
+  setName: (val: string) => void;
+  email: string;
+  setEmail: (val: string) => void;
+  password: string;
+  setPassword: (val: string) => void;
+  isSubmitting: boolean;
+  handleSubmit: (e: React.FormEvent) => void;
+}
+
+function AuthForm({
+  isSignUp,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  isSubmitting,
+  handleSubmit
+}: AuthFormProps) {
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full mt-4">
+      {isSignUp && (
+        <Moveable as="div" animationMap={elementAnimationMap}>
+          <Input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </Moveable>
+      )}
+      <Moveable as="div" animationMap={elementAnimationMap}>
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </Moveable>
+      <Moveable as="div" animationMap={elementAnimationMap}>
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </Moveable>
+      <Moveable as="div" animationMap={elementAnimationMap} className="mt-2 flex w-full justify-center">
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="w-1/2"
+        >
+          {isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
+        </Button>
+      </Moveable>
+    </form>
+  );
+}
+
+interface AuthFooterProps {
+  isSignUp: boolean;
+  setIsSignUp: (val: boolean) => void;
+}
+
+function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
+  return (
+    <div className="mt-4 flex flex-col items-center gap-2">
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
+        <Button 
+          variant="link"
+          onClick={() => setIsSignUp(!isSignUp)}
+          className="text-blue-400 hover:text-blue-300 text-sm"
+        >
+          {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign up'}
+        </Button>
+      </Moveable>
+
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
+        <Button variant="link" to="/" className="text-gray-300 hover:text-white text-sm">
+          Go Back
+        </Button>
+      </Moveable>
+    </div>
+  );
+}
 
 /**
  * LoginPage Component manages the user's interaction with the authentication system.
- * It utilizes programmatic navigation to transition users to protected routes upon success.
- * @returns {JSX.Element} The rendered authentication form.
  */
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -24,11 +134,6 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /**
-   * Handles the submission of the authentication form.
-   * Leverages the Better Auth client to perform asynchronous requests.
-   * @param {React.FormEvent} e - The submission event.
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -42,14 +147,14 @@ export default function LoginPage() {
           name,
         });
         if (signUpError) throw new Error(signUpError.message);
-        navigate('/dashboard'); 
+        navigate('/'); 
       } else {
         const { error: signInError } = await signIn.email({
           email,
           password,
         });
         if (signInError) throw new Error(signInError.message);
-        navigate('/dashboard'); 
+        navigate('/'); 
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -64,59 +169,37 @@ export default function LoginPage() {
 
   return (
     <>
-      <HeroBackground />
-      <PageTitle className="mt-[3em]" />
+      <Moveable 
+        as="div" 
+        animationMap={textAnimationMap} 
+        colorDict={textColors} 
+        weightDict={titleWeights}
+        className="mt-[3em]"
+      >
+        <Typography variant="title">SOCSDOCS</Typography>
+      </Moveable>
       
-      <Card className="mt-[2em] flex-col items-center gap-[1em] w-full max-w-md mx-auto">
-        <Subtitle text={isSignUp ? 'Create Account' : 'Sign In'} />
-        
-        <ErrorMessage>{error}</ErrorMessage>
+      <div className="mt-[2em] w-full max-w-md mx-auto">
+        <Card className="flex flex-col items-center gap-[1em] w-full">
+          <AuthTitle isSignUp={isSignUp} />
+          
+          <ErrorMessage>{error}</ErrorMessage>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full mt-4">
-          {isSignUp && (
-            <Input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          )}
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+          <AuthForm 
+            isSignUp={isSignUp}
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            isSubmitting={isSubmitting}
+            handleSubmit={handleSubmit}
           />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button 
-            type="submit" 
-            disabled={isSubmitting}
-            text={isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
-            className="mt-2"
-          />
-        </form>
 
-        <div className="mt-4 flex flex-col items-center gap-2">
-          <LinkAction 
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-blue-400 hover:text-blue-300 text-sm"
-          >
-            {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign up'}
-          </LinkAction>
-
-          <LinkAction to="/" className="text-gray-300 hover:text-white text-sm">
-            Go Back
-          </LinkAction>
-        </div>
-      </Card>
+          <AuthFooter isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
+        </Card>
+      </div>
     </>
   );
 }

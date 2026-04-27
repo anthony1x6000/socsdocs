@@ -78,6 +78,10 @@ export function BackgroundMusic() {
     const currentSong = useRef<Howl | null>(null);
     const { currentSong: activeSong, setCurrentSong } = useSong();
 
+    if (import.meta.env.VITE_DISABLE_MUSIC === 'true') {
+        return null;
+    }
+
     function playMusic(src: string): Howl {
         const sound = new Howl({ src: [src], loop: true, volume: 0 });
         sound.play();

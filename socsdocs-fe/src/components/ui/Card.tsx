@@ -1,43 +1,41 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
-import { ElementMoveable } from './Moveables';
-import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 
+/**
+ * Props for the Card component.
+ */
 interface CardProps {
+  /** The content to be rendered inside the card. */
   children: React.ReactNode;
+  /** Additional CSS classes. */
   className?: string;
-  intensity?: number;
-  intensityOnHover?: number;
 }
 
 /**
- * Animated Card component wrapped in ElementMoveable.
- * Used for containers like login forms.
+ * A container card component with a glassmorphism effect (blur and semi-transparent background).
+ * Designed to hold UI elements in a consistent, elevated container.
+ * 
+ * @example
+ * <Card className="p-4">
+ *   <Typography variant="header">Card Title</Typography>
+ *   <Typography variant="text">Card content goes here.</Typography>
+ * </Card>
  */
-export const Card: React.FC<CardProps> = ({ 
+export const Card = ({ 
   children, 
   className, 
-  intensity = 1, 
-  intensityOnHover 
-}) => {
-  const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-
+}: CardProps) => {
   return (
-    <ElementMoveable
-      intensity={currentIntensity}
+    <div
       className={twMerge(
-        "bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 p-6",
+        "bg-white/1 p-10",
         className
       )}
     >
-      <div 
-        onMouseEnter={handleMouseEnter} 
-        onMouseLeave={handleMouseLeave}
-        className="w-full h-full"
-      >
+      <div className="w-full h-full">
         {children}
       </div>
-    </ElementMoveable>
+    </div>
   );
 };
 

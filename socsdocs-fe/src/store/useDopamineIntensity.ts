@@ -1,39 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import type { RefObject } from 'react';
 import useDopamineStore from './useDopamineStore';
-import { getDopamineConfig } from '../assets/dopamineStyles';
+import { getDopamineConfig } from '../assets/config';
 
 /**
  * Hook to manage dopamine intensity for a component.
  * 
- * It uses the global dopamine level from the store and applies an optional intensity multiplier.
- * If intensityOnHover is provided, it acts as an absolute override when the component is hovered.
+ * Both intensityMod and intensityModHover act as additive offsets for the global dopamine level.
  * 
- * @param {number} [intensity=1] - Multiplier for the global dopamine level.
- * @param {number} [intensityOnHover] - Absolute override for the dopamine level (1-5) when hovered.
- * @returns {Object} An object containing the current intensity, derived config, and event handlers.
- * 
- * @example
- * // If global level is 3, current intensity becomes 6
- * const { config } = useDopamineIntensity(2); 
+ * @param {number} [intensityMod=0] - Offset for the global level.
+ * @param {number} [intensityModHover] - Offset for the global level when hovered.
+ * @param {RefObject<HTMLElement | null>} [ref] - Optional ref to the element for hover polling.
  */
-export function useDopamineIntensity(intensity: number = 1, intensityOnHover?: number) {
+export function useDopamineIntensity(
+  intensityMod: number = 0, 
+  intensityModHover?: number,
+  ref?: RefObject<HTMLElement | null>
+) {
   const globalLevel = useDopamineStore((state) => state.level);
   const [isHovered, setIsHovered] = useState(false);
 
-  // intensityOnHover is an absolute override (1-5)
-  // intensity is a multiplier (e.g., globalLevel 5 * intensity 2 = 10)
-  const currentIntensity = isHovered && intensityOnHover !== undefined 
-    ? intensityOnHover 
-    : globalLevel * intensity;
+  // Polling fallback: Sometimes MouseLeave events are missed when moving quickly between elements.
+  // We poll while isHovered is true to ensure it resets if the mouse is no longer over the element.
+  useEffect(() => {
+    if (!isHovered || !ref?.current) return;
 
+    const interval = setInterval(() => {
+      if (ref.current && !ref.current.matches(':hover')) {
+        setIsHovered(false);
+      }
+    }, 100); // 100ms poll is frequent enough for UX but light on CPU
+
+    return () => clearInterval(interval);
+  }, [isHovered, ref]);
+
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+
+  const activeMod = (isHovered && intensityModHover !== undefined) 
+    ? intensityModHover 
+    : intensityMod;
+
+  const currentIntensity = globalLevel + activeMod;
   const config = getDopamineConfig(currentIntensity);
 
   return {
     intensity: currentIntensity,
     config,
     isHovered,
-    handleMouseEnter: () => setIsHovered(true),
-    handleMouseLeave: () => setIsHovered(false),
+    handleMouseEnter,
+    handleMouseLeave,
   };
 }
 

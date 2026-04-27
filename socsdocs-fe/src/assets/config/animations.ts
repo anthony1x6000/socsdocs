@@ -1,98 +1,105 @@
 import type { MotionProps } from "framer-motion";
 
 /**
- * Creates a jitter animation with configurable intensity and duration.
- * @param intensity - Pixel offset for jittering.
- * @param duration - Cycle duration in seconds.
+ * Creates a jitter animation configuration for framer-motion.
+ * This effect uses micro offsets and extreme speed to simulate a vibrating or shaking (jitter) effect.
+ *
+ * @param intensity - The maximum pixel offset for the jitter in both x and y directions. Defaults to 1.
+ * @param duration - The duration of one complete jitter cycle in seconds. Defaults to 0.2.
+ * @returns The framer-motion properties to apply the jitter animation.
+ *
+ * @example
+ * const intenseJitter = createJitter(2, 0.05);
+ * // Usage: <motion.div {...intenseJitter}>Jittering Element</motion.div>
  */
 export const createJitter = (intensity: number = 1, duration: number = 0.2): MotionProps => ({
   animate: { 
-    x: [-intensity, intensity, 0], 
-    y: [-intensity, intensity, 0] 
+    x: [0, `${intensity * 0.05}vw`, `${-intensity * 0.05}vw`, 0], 
+    y: [0, `${-intensity * 0.05}vw`, `${intensity * 0.05}vw`, 0] 
   },
-  transition: { repeat: Infinity, duration, ease: "linear" },
+  transition: { 
+    repeat: Infinity, 
+    duration, 
+    ease: "linear",
+    times: [0, 0.25, 0.75, 1] 
+  },
 });
 
 /**
- * Creates a shake animation (more chaotic jitter) with configurable intensity.
- * @param intensity - Maximum pixel offset.
- * @param duration - Cycle duration in seconds.
+ * Creates a sway animation.
  */
-export const createShake = (intensity: number = 4, duration: number = 0.05): MotionProps => ({
+export const createSway = (intensity: number = 4, duration: number = 0.05): MotionProps => ({
   animate: { 
-    x: [-intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity, 0], 
-    y: [-intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity, 0] 
+    x: [0, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, `${-intensity * 0.15}vw`, `${intensity * 0.15}vw`, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, 0], 
+    y: [0, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, `${-intensity * 0.15}vw`, `${intensity * 0.15}vw`, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, 0] 
   },
   transition: { repeat: Infinity, duration, ease: "linear" },
 });
 
 /**
- * Creates a bounce animation with configurable height.
- * @param height - Maximum pixel height of the bounce.
- * @param duration - Cycle duration in seconds.
+ * Creates a bounce animation.
  */
 export const createBounce = (height: number = 2, duration: number = 2): MotionProps => ({
-  animate: { y: [0, -height, 0] },
+  animate: { y: [0, `${-height * 0.5}vh`, 0] },
   transition: { repeat: Infinity, duration },
 });
 
 /**
- * Creates a skew animation with configurable intensity and duration.
- * @param intensity - Base multiplier for skew and translation.
- * @param duration - Cycle duration in seconds.
+ * Creates a skew animation.
  */
 export const createSkew = (intensity: number = 3, duration: number = 0.1): MotionProps => ({
   animate: { 
     y: [0, -(intensity * 2), 0], 
-    skewX: [-intensity, intensity, 0], 
-    skewY: [-(intensity / 3), intensity / 3, 0] 
+    skewX: [0, -intensity, 0, intensity, 0], 
+    skewY: [0, -(intensity / 3), 0, intensity / 3, 0] 
   },
   transition: { repeat: Infinity, duration },
 });
 
-// --- GLOBAL ANIMATIONS ---
+// --- CONSTANTS ---
 export const ANIM_NONE: MotionProps = {};
 
-export const ANIM_FLOAT: MotionProps = {
-  animate: { y: [-2, 2, -2] },
-  transition: { repeat: Infinity, duration: 1.5, ease: "easeInOut" },
+// Micro offsets (0.2 - 1px), extreme speed
+export const ANIM_JITTER_1 = ANIM_NONE;
+export const ANIM_JITTER_2 = createJitter(0.3, 0.2);
+export const ANIM_JITTER_3 = createJitter(0.8, 0.1);
+export const ANIM_JITTER_4 = createJitter(1, 0.03);
+export const ANIM_JITTER_5 = createJitter(1.5, 0.08); 
+
+export const ANIM_SWAY_1 = ANIM_NONE;
+export const ANIM_SWAY_2 = ANIM_NONE; // createSway(0.3, 0.2);
+export const ANIM_SWAY_3 = ANIM_NONE; // createSway(0.6, 0.15);
+export const ANIM_SWAY_4 = ANIM_NONE; // createSway(1, 0.1); 
+export const ANIM_SWAY_5 = ANIM_NONE; // createSway(4, 0.02); 
+
+export const ANIM_SKEW_1 = ANIM_NONE;
+export const ANIM_SKEW_2 = ANIM_NONE; // createSkew(0.5, 0.4);
+export const ANIM_SKEW_3 = ANIM_NONE; // createSkew(1, 0.3);
+export const ANIM_SKEW_4 = ANIM_NONE; // createSkew(1.5, 0.2);
+export const ANIM_SKEW_5 = ANIM_NONE; // createSkew(3, 0.05);
+
+export const ANIM_BOUNCE_1 = ANIM_NONE;
+export const ANIM_BOUNCE_2 = ANIM_NONE;
+export const ANIM_BOUNCE_3 = ANIM_NONE;
+export const ANIM_BOUNCE_4 = ANIM_NONE;
+export const ANIM_BOUNCE_5 = ANIM_NONE;
+
+// --- MAPS ---
+
+export const elementAnimationMap: Record<number, MotionProps[]> = {
+  1: [ANIM_NONE],
+  2: [ANIM_JITTER_2],
+  3: [ANIM_JITTER_3],
+  4: [ANIM_JITTER_4],
+  5: [ANIM_JITTER_5],
 };
 
-export const ANIM_PULSE: MotionProps = {
-  animate: { opacity: [0.8, 1, 0.8] },
-  transition: { repeat: Infinity, duration: 2 },
-};
-
-export const ANIM_SCALE_PULSE: MotionProps = {
-  animate: { scale: [1, 1.02, 1] },
-  transition: { repeat: Infinity, duration: 3 },
-};
-
-export const ANIM_JITTER_MILD = createJitter(1, 0.2);
-export const ANIM_JITTER_INTENSE = createJitter(2, 0.1);
-
-export const ANIM_SHAKE = createShake(4, 0.05);
-
-export const ANIM_SHAKE_1 = ANIM_NONE;
-export const ANIM_SHAKE_2 = createJitter(0.5, 0.2);
-export const ANIM_SHAKE_3 = createJitter(1, 0.15);
-export const ANIM_SHAKE_4 = createShake(2, 0.1);
-export const ANIM_SHAKE_5 = createShake(4, 0.05);
-
-export const ANIM_BOUNCE_MILD = createBounce(2, 2);
-export const ANIM_BOUNCE_INTENSE = createBounce(4, 2);
-
-export const ANIM_SKEW_1 = createSkew(0.5, 0.5);
-export const ANIM_SKEW_2 = createSkew(1, 0.4);
-export const ANIM_SKEW_3 = createSkew(1.5, 0.3);
-export const ANIM_SKEW_4 = createSkew(2, 0.2);
-export const ANIM_SKEW_5 = createSkew(3, 0.1);
-
-export const ANIM_SKEW = ANIM_SKEW_5; // Alias for backward compatibility
-
-export const ANIM_BG_SHIFT: MotionProps = {
-  animate: { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] },
-  transition: { repeat: Infinity, duration: 5 }
+export const textAnimationMap: Record<number, MotionProps[]> = {
+  1: [ANIM_NONE],
+  2: [ANIM_JITTER_2],
+  3: [ANIM_JITTER_3],
+  4: [ANIM_JITTER_4],
+  5: [ANIM_JITTER_5],
 };
 
 export const RESET_TRANSFORM = {
@@ -104,5 +111,3 @@ export const RESET_TRANSFORM = {
   skewY: 0,
   opacity: 1
 };
-
-export const hoverScale = (scale: number) => ({ whileHover: { scale }, whileTap: { scale: 1 - (scale - 1) } });
