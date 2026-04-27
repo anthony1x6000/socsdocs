@@ -5,7 +5,10 @@ import { useResetMotion } from '../../utils/useResetMotion';
 
 /**
  * Animated background component that integrates a Shadertoy fragment shader with dopamine-driven Framer Motion animations.
- * Responds to the current dopamine intensity for motion effects.
+ * Responds to the current dopamine intensity for motion effects and visual styles.
+ * 
+ * Uses a persistent container for the shader to prevent iTime resets when dopamine levels change,
+ * while still applying synchronized motion animations.
  * 
  * @example
  * // Typically used as a fixed background in the main App layout
@@ -16,17 +19,34 @@ import { useResetMotion } from '../../utils/useResetMotion';
  */
 export function HeroBackground() {
   const { intensity, config } = useDopamineIntensity();
-  const { backgroundAnimation } = config;
+  const { backgroundAnimation, background } = config;
+  const { fragmentShader, overlayUrl, mixBlendMode } = background;
 
-  const bgMotionProps = useResetMotion("bg", intensity, backgroundAnimation);
+  // We use useResetMotion to get the animation values, but we intentionally 
+  // separate the key to prevent the container from remounting. 
+  // Remounting would cause the Shadertoy component to reset its internal time (iTime).
+  const { key: _unusedKey, ...motionProps } = useResetMotion("bg", intensity, backgroundAnimation);
 
   return (
     <motion.div 
-      className='hero-background'
-      {...bgMotionProps}
+      className='hero-background absolute inset-0 overflow-hidden'
+      {...motionProps}
+      // Stable key ensures the component (and its shader child) is preserved across intensity changes.
+      // This prevents the "snap back" effect on the shader's position/time.
+      key="persistent-hero-bg"
     >
-      <Shadertoy fragmentShader="back.glsl" style={{ width: '100%', height: '100%' }} />
-      <div className="absolute inset-0 w-full h-full mix-blend-color-burn pointer-events-none" style={{ backgroundImage: "url('/overlay.png')" }} />
+      <Shadertoy 
+        fragmentShader={fragmentShader} 
+        style={{ width: '100%', height: '100%' }} 
+      />
+      
+      <div 
+        className="absolute inset-0 w-full h-full pointer-events-none" 
+        style={{ 
+          backgroundImage: `url('${overlayUrl}')`,
+          mixBlendMode: mixBlendMode
+        }} 
+      />
     </motion.div>
   );
 }
