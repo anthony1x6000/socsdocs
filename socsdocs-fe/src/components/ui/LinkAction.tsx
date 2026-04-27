@@ -1,36 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
-import { Text } from './Text';
 
 interface LinkActionProps {
   children: React.ReactNode;
   to?: string;
   onClick?: () => void;
   className?: string;
-  intensity?: number;
-  intensityOnHover?: number;
 }
 
 /**
- * A link or button that looks like a link, wrapped in Text (which has TextMoveable).
+ * A link or button that looks like a link. Stateless and without animations.
+ * Responsibility for movement is delegated to Moveable wrapper in parent.
  */
 export const LinkAction = ({
   children,
   to,
   onClick,
   className,
-  intensity = 1,
-  intensityOnHover = 1.5,
 }: LinkActionProps) => {
   const content = (
-    <Text 
-      intensity={intensity} 
-      intensityOnHover={intensityOnHover}
-      className={twMerge("cursor-pointer hover:underline", className)}
-    >
+    <span className={twMerge("cursor-pointer hover:underline", className)}>
       {children}
-    </Text>
+    </span>
   );
 
   if (to) {

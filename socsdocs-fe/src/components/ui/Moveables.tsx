@@ -1,59 +1,106 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, type MotionProps } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
-import type { DopamineLevel } from '../../assets/config/types';
 import { useResetMotion } from '../../utils/useResetMotion';
-import { 
-  textAnimations, 
-  elementAnimations
-} from '../../assets/config';
+import { useDopamineIntensity } from '../../store/useDopamineIntensity';
+import { elementAnimationMap } from '../../assets/config/animations';
+
+/**
+ * Deep merges multiple Framer Motion configuration objects.
+ * Combines 'animate' and 'transition' properties.
+ */
+const mergeAnimations = (animations: MotionProps[]): MotionProps => {
+  return animations.reduce((acc, curr) => {
+    const animate = {
+      ...(acc.animate as object || {}),
+      ...(curr.animate as object || {}),
+    };
+    
+    const transition = {
+      ...(acc.transition as object || {}),
+      ...(curr.transition as object || {}),
+    };
+
+    return {
+      ...acc,
+      ...curr,
+      animate,
+      transition,
+    };
+  }, {} as MotionProps);
+};
 
 interface MoveableProps {
+  /** The HTML element to render as. Defaults to 'div'. */
+  as?: 'div' | 'span';
+  /** Mapping of dopamine levels to animation arrays. Defaults to elementAnimationMap. */
+  animationMap?: Record<number, MotionProps[]>;
+  /** Optional dictionary for colors mapped to levels 1-5. */
+  colorDict?: Record<number, string>;
+  /** Optional dictionary for font weights/styles mapped to levels 1-5. */
+  weightDict?: Record<number, string>;
+  /** Base dopamine intensity multiplier. */
+  intensityMod?: number;
+  /** Intensity multiplier on hover. */
+  intensityModHover?: number;
+  /** Children to wrap. */
   children: React.ReactNode;
-  intensity: number;
+  /** Additional class names. */
   className?: string;
 }
 
 /**
- * Wrapper for text elements that applies float, jitter, and shake based on intensity.
+ * Universal wrapper that applies dopamine-driven animations and styles.
+ * 
+ * @example
+ * <Moveable 
+ *   as="span" 
+ *   animationMap={textAnimationMap} 
+ *   intensityMod={1.5}
+ * >
+ *   <Text>Dopamine Text</Text>
+ * </Moveable>
  */
-export const TextMoveable = ({ children, intensity, className }: MoveableProps) => {
-  const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
+export const Moveable = ({
+  as = 'div',
+  animationMap = elementAnimationMap,
+  colorDict,
+  weightDict,
+  intensityMod = 1,
+  intensityModHover,
+  children,
+  className,
+}: MoveableProps) => {
+  const { 
+    intensity: currentIntensity, 
+    handleMouseEnter, 
+    handleMouseLeave 
+  } = useDopamineIntensity(intensityMod, intensityModHover);
+
+  const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
   
-  const motionProps = useResetMotion("text", intensity, textAnimations[level]);
+  const animations = animationMap[level] || [{}];
+  const mergedAnimation = mergeAnimations(animations);
+  
+  const motionProps = useResetMotion("element", currentIntensity, mergedAnimation);
+
+  const MotionComponent = as === 'span' ? motion.span : motion.div;
 
   return (
-    <motion.span 
-      className={twMerge("inline-block", className)} 
+    <MotionComponent
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={twMerge(
+        as === 'span' && "inline-block",
+        colorDict?.[level],
+        weightDict?.[level],
+        className
+      )}
       {...motionProps}
     >
       {children}
-    </motion.span>
+    </MotionComponent>
   );
 };
 
-interface ElementMoveableProps extends MoveableProps {
-  type?: 'button' | 'slider' | 'settingsBar';
-}
-
-/**
- * Wrapper for block-level elements that applies skew and bounce based on intensity.
- */
-export const ElementMoveable = ({ 
-  children, intensity, className, type 
-}: ElementMoveableProps) => {
-  const level = Math.min(Math.max(Math.floor(intensity), 1), 5) as DopamineLevel;
-
-  const baseAnim = elementAnimations[level];
-
-  const motionProps = useResetMotion(type || "element", intensity, baseAnim);
-
-  return (
-    <motion.div 
-      className={className} 
-      {...motionProps}
-    >
-      {children}
-    </motion.div>
-  );
-};
+export default Moveable;

@@ -25,7 +25,6 @@ export const AsButton: Story = {
   args: {
     children: 'Click Me (Button)',
     onClick: () => alert('Clicked!'),
-    intensity: 1,
   },
 };
 
@@ -33,6 +32,5 @@ export const AsLink: Story = {
   args: {
     children: 'Go to Home (Link)',
     to: '/',
-    intensity: 1,
   },
 };

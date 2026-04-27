@@ -1,28 +1,13 @@
-import type { MotionProps } from "framer-motion";
-import type { DopamineLevel } from "./types";
-import { 
-  ANIM_SHAKE_1, ANIM_SHAKE_2, ANIM_SHAKE_3, ANIM_SHAKE_4, ANIM_SHAKE_5,
-  ANIM_NONE, ANIM_FLOAT, ANIM_JITTER_MILD, ANIM_JITTER_INTENSE, ANIM_SHAKE,
-  ANIM_BOUNCE_MILD, ANIM_BOUNCE_INTENSE, ANIM_SKEW_1
-} from "./animations";
 import { 
   LEVEL_1_COLORS, LEVEL_2_COLORS, LEVEL_3_COLORS, LEVEL_4_COLORS, LEVEL_5_COLORS 
 } from "./colors";
 
-export const backgroundAnimations: Record<DopamineLevel, MotionProps> = {
-  1: ANIM_SHAKE_1,
-  2: ANIM_SHAKE_2,
-  3: ANIM_SHAKE_3,
-  4: ANIM_SHAKE_4,
-  5: ANIM_SHAKE_5,
-};
-
-export const textAnimations: Record<number, any> = {
-  1: ANIM_NONE,
-  2: ANIM_FLOAT,
-  3: ANIM_JITTER_MILD,
-  4: ANIM_JITTER_INTENSE,
-  5: ANIM_SHAKE,
+export const backgroundAnimations: Record<number, any> = {
+  1: {},
+  2: { animate: { x: [0, -1, 1, 0] }, transition: { repeat: Infinity, duration: 0.2 } },
+  3: { animate: { x: [0, -2, 2, 0] }, transition: { repeat: Infinity, duration: 0.15 } },
+  4: { animate: { x: [0, -3, 3, 0] }, transition: { repeat: Infinity, duration: 0.1 } },
+  5: { animate: { x: [0, -5, 5, 0] }, transition: { repeat: Infinity, duration: 0.05 } },
 };
 
 export const textColors: Record<number, string> = {
@@ -55,14 +40,6 @@ export const titleWeights: Record<number, string> = {
   3: "font-bold",
   4: "font-bold",
   5: "font-black",
-};
-
-export const elementAnimations: Record<number, any> = {
-  1: ANIM_NONE,
-  2: ANIM_NONE,
-  3: ANIM_BOUNCE_MILD,
-  4: ANIM_BOUNCE_INTENSE,
-  5: ANIM_SKEW_1,
 };
 
 export const primaryColors: Record<number, string> = {

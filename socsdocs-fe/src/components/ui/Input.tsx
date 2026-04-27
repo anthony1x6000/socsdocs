@@ -1,39 +1,26 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
-import { ElementMoveable } from './Moveables';
-import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  intensity?: number;
-  intensityOnHover?: number;
+  className?: string;
 }
 
 /**
- * Animated Input component wrapped in ElementMoveable.
+ * Standard Input component. Stateless and without animations.
+ * Responsibility for movement is delegated to Moveable wrapper in parent.
  */
 export const Input = ({ 
   className, 
-  intensity = 1, 
-  intensityOnHover,
   ...props 
 }: InputProps) => {
-  const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-
   return (
-    <ElementMoveable
-      intensity={currentIntensity}
-      className={twMerge("w-full", className)}
-    >
-      <input
-        {...props}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={twMerge(
-          "w-full p-3 rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/90 backdrop-blur-sm transition-all",
-          className
-        )}
-      />
-    </ElementMoveable>
+    <input
+      {...props}
+      className={twMerge(
+        "w-full p-3 rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/90 backdrop-blur-sm transition-all",
+        className
+      )}
+    />
   );
 };
 
