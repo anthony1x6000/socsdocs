@@ -39,10 +39,6 @@ function HomePage() {
             <Subtitle text="LOGIN" />
           </Moveable>
         </Link>
-
-        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={-1}>
-          <Subtitle text="SIGN UP" />
-        </Moveable>
       </FlexBox>
       <HorizontalLine />
     </>
