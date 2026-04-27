@@ -61,10 +61,10 @@ export const ANIM_NONE: MotionProps = {};
 
 // Micro offsets (0.2 - 1px), extreme speed
 export const ANIM_JITTER_1 = ANIM_NONE;
-export const ANIM_JITTER_2 = createJitter(0.8, 0.08);
-export const ANIM_JITTER_3 = createJitter(0.2, 0.1);
-export const ANIM_JITTER_4 = createJitter(2, 0.03);
-export const ANIM_JITTER_5 = createJitter(1.5, 0.1); 
+export const ANIM_JITTER_2 = createJitter(0.3, 0.2);
+export const ANIM_JITTER_3 = createJitter(0.8, 0.1);
+export const ANIM_JITTER_4 = createJitter(1, 0.03);
+export const ANIM_JITTER_5 = createJitter(1.5, 0.08); 
 
 export const ANIM_SWAY_1 = ANIM_NONE;
 export const ANIM_SWAY_2 = ANIM_NONE; // createSway(0.3, 0.2);
@@ -88,17 +88,17 @@ export const ANIM_BOUNCE_5 = ANIM_NONE;
 
 export const elementAnimationMap: Record<number, MotionProps[]> = {
   1: [ANIM_NONE],
-  2: [ANIM_JITTER_1, ANIM_SWAY_2],
-  3: [ANIM_JITTER_2, ANIM_SWAY_3, ANIM_SKEW_2],
-  4: [ANIM_JITTER_3, ANIM_SWAY_4, ANIM_SKEW_4, ANIM_BOUNCE_2],
-  5: [ANIM_JITTER_5, ANIM_SWAY_5, ANIM_SKEW_5, ANIM_BOUNCE_5],
+  2: [ANIM_JITTER_2],
+  3: [ANIM_JITTER_3],
+  4: [ANIM_JITTER_4],
+  5: [ANIM_JITTER_5],
 };
 
 export const textAnimationMap: Record<number, MotionProps[]> = {
   1: [ANIM_NONE],
-  2: [ANIM_JITTER_1],
-  3: [ANIM_JITTER_3, ANIM_SWAY_2],
-  4: [ANIM_JITTER_3, ANIM_SWAY_4, ANIM_SKEW_2],
+  2: [ANIM_JITTER_2],
+  3: [ANIM_JITTER_3],
+  4: [ANIM_JITTER_4],
   5: [ANIM_JITTER_5],
 };
 

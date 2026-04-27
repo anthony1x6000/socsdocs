@@ -182,11 +182,7 @@ export default function LoginPage() {
         <Typography variant="title">SOCSDOCS</Typography>
       </Moveable>
       
-      <Moveable 
-        as="div" 
-        animationMap={elementAnimationMap}
-        className="mt-[2em] w-full max-w-md mx-auto"
-      >
+      <div className="mt-[2em] w-full max-w-md mx-auto">
         <Card className="flex flex-col items-center gap-[1em] w-full">
           <AuthTitle isSignUp={isSignUp} />
           
@@ -206,7 +202,7 @@ export default function LoginPage() {
 
           <AuthFooter isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
         </Card>
-      </Moveable>
+      </div>
     </>
   );
 }

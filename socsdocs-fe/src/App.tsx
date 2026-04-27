@@ -67,9 +67,9 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
       </Routes>
 
-      <Moveable className="fixed bottom-0 left-0 right-0">
+      <div className="fixed bottom-0 left-0 right-0">
         <SettingsBar />
-      </Moveable>
+      </div>
     </div>
   )
 }
