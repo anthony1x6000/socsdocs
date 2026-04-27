@@ -18,12 +18,16 @@ const slideFinish = new Howl({
  * Props for the Slider component.
  */
 interface SliderProps {
+    /** Additional CSS classes for the slider input. */
     className?: string;
 }
 
 /**
- * Interactive slider. Stateless regarding animations.
- * Responsibility for movement is delegated to Moveable wrapper in parent.
+ * An interactive range slider that controls the global dopamine level (1-5).
+ * Features audio feedback on level changes (bong sounds).
+ * 
+ * @example
+ * <Slider className="w-full" />
  */
 export function Slider({ 
   className,

@@ -5,16 +5,42 @@ import { BASE_BUTTON_STYLE } from '../../assets/config/baseStyles';
 
 type ButtonVariant = 'primary' | 'link';
 
+/**
+ * Props for the Button component.
+ */
 interface ButtonProps {
+  /** The visual style of the button. */
   variant?: ButtonVariant;
+  /** The content to be rendered inside the button. */
   children: React.ReactNode;
+  /** Optional URL for navigation. If provided, the button renders as a Link. */
   to?: string;
+  /** Optional click handler. */
   onClick?: () => void;
+  /** Additional CSS classes. */
   className?: string;
+  /** The HTML button type. */
   type?: 'button' | 'submit' | 'reset';
+  /** Whether the button is disabled. */
   disabled?: boolean;
 }
 
+/**
+ * A versatile button component that supports primary actions and link-style buttons.
+ * It automatically handles routing via 'react-router-dom' if the 'to' prop is provided.
+ * 
+ * @example
+ * // Primary Button
+ * <Button onClick={() => console.log('clicked')}>Click Me</Button>
+ * 
+ * @example
+ * // Link Button
+ * <Button variant="link" to="/login">Login</Button>
+ * 
+ * @example
+ * // Disabled State
+ * <Button disabled>Unavailable</Button>
+ */
 export const Button = ({
   variant = 'primary',
   children,

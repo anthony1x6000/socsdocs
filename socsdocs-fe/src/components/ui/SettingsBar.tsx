@@ -6,8 +6,14 @@ import { useSong } from "../../utils/useSong";
 import useDopamineStore from "../../store/useDopamineStore";
 
 /**
- * Bottom settings bar. Stateless regarding animations.
- * Responsibility for movement is delegated to Moveable wrapper in parent.
+ * A floating bar positioned at the bottom of the viewport that displays global application settings.
+ * Includes a slider to control dopamine levels and readouts for the current vibrancy level and active song.
+ * 
+ * @example
+ * // Usually wrapped in a Moveable for jitter effects
+ * <Moveable className="fixed bottom-0 left-0 right-0">
+ *   <SettingsBar />
+ * </Moveable>
  */
 export function SettingsBar() {
     const globalLevel = useDopamineStore((state) => state.level);

@@ -1,13 +1,24 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
+/**
+ * Props for the Input component.
+ */
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** Additional CSS classes for the input element. */
   className?: string;
 }
 
 /**
- * Standard Input component. Stateless and without animations.
- * Responsibility for movement is delegated to Moveable wrapper in parent.
+ * A standard text input component with a glassmorphic style and focused state highlights.
+ * Accepts all standard HTML input attributes.
+ * 
+ * @example
+ * <Input 
+ *   type="email" 
+ *   placeholder="Enter your email" 
+ *   onChange={(e) => console.log(e.target.value)} 
+ * />
  */
 export const Input = ({ 
   className, 

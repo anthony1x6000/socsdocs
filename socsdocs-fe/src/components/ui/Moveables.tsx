@@ -30,35 +30,57 @@ const mergeAnimations = (animations: MotionProps[]): MotionProps => {
   }, {} as MotionProps);
 };
 
+/**
+ * Props for the Moveable component.
+ */
 interface MoveableProps {
-  /** The HTML element to render as. Defaults to 'div'. */
+  /** The HTML element to render the container as. Defaults to 'div'. */
   as?: 'div' | 'span';
-  /** Mapping of dopamine levels to animation arrays. Defaults to elementAnimationMap. */
+  /** 
+   * A map of dopamine levels to animation configurations. 
+   * Each level can trigger multiple animations. Defaults to global elementAnimationMap.
+   */
   animationMap?: Record<number, MotionProps[]>;
-  /** Optional dictionary for colors mapped to levels 1-5. */
+  /** 
+   * Dictionary mapping levels 1-5 to CSS color classes. 
+   * Colors transition as dopamine intensity shifts.
+   */
   colorDict?: Record<number, string>;
-  /** Optional dictionary for font weights/styles mapped to levels 1-5. */
+  /** 
+   * Dictionary mapping levels 1-5 to font weight/style classes.
+   */
   weightDict?: Record<number, string>;
-  /** Base dopamine intensity offset. */
+  /** 
+   * Base dopamine intensity offset for this specific element. 
+   * Higher values increase jitter/motion.
+   */
   intensityMod?: number;
-  /** Intensity offset on hover. */
+  /** 
+   * Additional intensity offset applied only when the element is hovered.
+   * Useful for interactive feedback. Defaults to 0.
+   */
   intensityModHover?: number;
-  /** Children to wrap. */
+  /** The elements to be wrapped and animated. */
   children: React.ReactNode;
-  /** Additional class names. */
+  /** Additional CSS classes for the motion container. */
   className?: string;
 }
 
 /**
- * Universal wrapper that applies dopamine-driven animations and styles.
+ * Universal wrapper that applies dopamine-driven Framer Motion animations and dynamic styles.
+ * It tracks dopamine intensity (global + local modifiers) to determine animation speed,
+ * color, and font weight.
  * 
  * @example
- * <Moveable 
- *   as="span" 
- *   animationMap={textAnimationMap} 
- *   intensityMod={1}
- * >
- *   <Text>Dopamine Text</Text>
+ * // Basic Jittering Text
+ * <Moveable as="span" intensityMod={1}>
+ *   <Typography>Jittery Title</Typography>
+ * </Moveable>
+ * 
+ * @example
+ * // Interactive Component with Hover Feedback
+ * <Moveable intensityModHover={2} className="card-wrapper">
+ *   <Card>Hover me for more intensity!</Card>
  * </Moveable>
  */
 export const Moveable = ({
@@ -67,7 +89,7 @@ export const Moveable = ({
   colorDict,
   weightDict,
   intensityMod = 0,
-  intensityModHover,
+  intensityModHover = 0,
   children,
   className,
 }: MoveableProps) => {

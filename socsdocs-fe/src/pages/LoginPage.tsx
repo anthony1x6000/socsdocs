@@ -24,7 +24,6 @@ function AuthTitle({ isSignUp }: { isSignUp: boolean }) {
       animationMap={textAnimationMap} 
       colorDict={textColors} 
       weightDict={headerWeights}
-      intensityMod={2}
     >
       <Typography variant="subtitle">{isSignUp ? 'Create Account' : 'Sign In'}</Typography>
     </Moveable>
@@ -57,7 +56,7 @@ function AuthForm({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full mt-4">
       {isSignUp && (
-        <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
+        <Moveable as="div" animationMap={elementAnimationMap}>
           <Input
             type="text"
             placeholder="Name"
@@ -67,7 +66,7 @@ function AuthForm({
           />
         </Moveable>
       )}
-      <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
+      <Moveable as="div" animationMap={elementAnimationMap}>
         <Input
           type="email"
           placeholder="Email"
@@ -76,7 +75,7 @@ function AuthForm({
           required
         />
       </Moveable>
-      <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
+      <Moveable as="div" animationMap={elementAnimationMap}>
         <Input
           type="password"
           placeholder="Password"
@@ -85,7 +84,7 @@ function AuthForm({
           required
         />
       </Moveable>
-      <Moveable as="div" animationMap={elementAnimationMap} colorDict={primaryColors} intensityModHover={2}>
+      <Moveable as="div" animationMap={elementAnimationMap} colorDict={primaryColors}>
         <Button 
           type="submit" 
           disabled={isSubmitting}
@@ -106,7 +105,7 @@ interface AuthFooterProps {
 function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
   return (
     <div className="mt-4 flex flex-col items-center gap-2">
-      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
         <Button 
           variant="link"
           onClick={() => setIsSignUp(!isSignUp)}
@@ -116,7 +115,7 @@ function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
         </Button>
       </Moveable>
 
-      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
         <Button variant="link" to="/" className="text-gray-300 hover:text-white text-sm">
           Go Back
         </Button>
@@ -178,8 +177,6 @@ export default function LoginPage() {
         animationMap={textAnimationMap} 
         colorDict={textColors} 
         weightDict={titleWeights}
-        intensityMod={2}
-        intensityModHover={3}
         className="mt-[3em]"
       >
         <Typography variant="title">SOCSDOCS</Typography>

@@ -4,10 +4,17 @@ import { BASE_TITLE_STYLE, BASE_HEADER_STYLE } from '../../assets/config/baseSty
 
 type TypographyVariant = 'title' | 'header' | 'subtitle' | 'text';
 
+/**
+ * Props for the Typography component.
+ */
 interface TypographyProps {
+  /** The semantic and visual variant of the text. */
   variant?: TypographyVariant;
+  /** The text or elements to be rendered. */
   children: React.ReactNode;
+  /** Additional CSS classes. */
   className?: string;
+  /** The HTML element to render as. Defaults based on the variant (e.g., 'h1' for title). */
   as?: React.ElementType;
 }
 
@@ -25,6 +32,22 @@ const defaultElement: Record<TypographyVariant, React.ElementType> = {
   text: 'span',
 };
 
+/**
+ * A consolidated component for all text styles in the application.
+ * Supports titles, headers, subtitles, and standard inline text.
+ * 
+ * @example
+ * // Main Page Title
+ * <Typography variant="title">SOCSDOCS</Typography>
+ * 
+ * @example
+ * // Secondary Header
+ * <Typography variant="header">Settings</Typography>
+ * 
+ * @example
+ * // Custom Element
+ * <Typography variant="text" as="p">This is a paragraph.</Typography>
+ */
 export const Typography = ({
   variant = 'text',
   children,

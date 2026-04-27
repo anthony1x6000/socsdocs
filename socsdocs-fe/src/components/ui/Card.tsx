@@ -1,14 +1,25 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
+/**
+ * Props for the Card component.
+ */
 interface CardProps {
+  /** The content to be rendered inside the card. */
   children: React.ReactNode;
+  /** Additional CSS classes. */
   className?: string;
 }
 
 /**
- * A container card component. Stateless and without animations.
- * Responsibility for movement is delegated to Moveable wrapper in parent.
+ * A container card component with a glassmorphism effect (blur and semi-transparent background).
+ * Designed to hold UI elements in a consistent, elevated container.
+ * 
+ * @example
+ * <Card className="p-4">
+ *   <Typography variant="header">Card Title</Typography>
+ *   <Typography variant="text">Card content goes here.</Typography>
+ * </Card>
  */
 export const Card = ({ 
   children, 
