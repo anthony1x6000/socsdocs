@@ -9,6 +9,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.1",
     "better-auth": "^1.6.9",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.15"
