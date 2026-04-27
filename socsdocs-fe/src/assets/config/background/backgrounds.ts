@@ -27,7 +27,7 @@ export const backgroundConfigs: Record<number, BackgroundConfig> = {
   },
   5: {
     fragmentShader: "back.glsl",
-    overlayUrl: "https://unsplash.com/photos/YFb2dmUQ0Qo/download?force=true&w=1920",
+    overlayUrl: "",
     mixBlendMode: "difference",
   },
 };
