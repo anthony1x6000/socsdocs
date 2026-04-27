@@ -182,3 +182,35 @@ export const verification = sqliteTable("verification", {
     /** The timestamp of the last verification request update. */
     updatedAt: integer("updatedAt", { mode: "timestamp" })
 });
+
+/**
+ * Drizzle Relations Configuration
+ * 
+ * These definitions establish 'soft relations' at the application level. 
+ * According to Drizzle ORM documentation (Drizzle ORM, 2024), these 
+ * relations allow the Query Builder to generate a single SQL statement using 
+ * lateral joins or subqueries, which is the mechanism behind the 2x to 3x 
+ * performance gains observed in Better Auth v1.4.0+. Without these 
+ * definitions, the ORM would fall back to sequential fetches, negating the 
+ * benefits of the 'experimental.joins' flag.
+ * 
+ * @see {@link https://orm.drizzle.team/docs/rqb-v2}
+ */
+export const userRelations = relations(user, ({ many }) => ({
+	sessions: many(session),
+	accounts: many(account),
+}));
+
+export const sessionRelations = relations(session, ({ one }) => ({
+	user: one(user, {
+		fields: [session.userId],
+		references: [user.id],
+	}),
+}));
+
+export const accountRelations = relations(account, ({ one }) => ({
+	user: one(user, {
+		fields: [account.userId],
+		references: [user.id],
+	}),
+}));
