@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn, signUp } from '../lib/auth-client';
 import Typography from '../components/ui/Typography';
-import { HeroBackground } from '../components/ui/HeroBackground';
 import Input from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -170,7 +169,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <HeroBackground />
       <Moveable 
         as="div" 
         animationMap={textAnimationMap} 
