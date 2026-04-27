@@ -65,7 +65,15 @@ app.use('*', async (c, next) => {
     baseURL: c.env.BETTER_AUTH_URL,
     trustedOrigins: [c.env.FRONTEND_URL].filter(Boolean) as string[],
     advanced: {
-      useSecureCookies: c.env.NODE_ENV === "production"
+      useSecureCookies: c.env.NODE_ENV === "production",
+      /**
+       * Configures client IP detection for rate limiting and security auditing.
+       * 'CF-Connecting-IP' is used in production (Cloudflare), while 'x-forwarded-for'
+       * provides compatibility for local development environments.
+       */
+      ipAddress: {
+        ipAddressHeaders: ["CF-Connecting-IP", "x-forwarded-for"],
+      },
     }
   });
 
