@@ -1,7 +1,7 @@
 import Slider from "./DopamineSlider";
 import { twMerge } from "tailwind-merge";
 import { BASE_SETTINGS_BAR_STYLE } from "../../assets/config/baseStyles";
-import { Text } from "./Text";
+import { Typography } from "./Typography";
 import { useSong } from "../../utils/useSong";
 import useDopamineStore from "../../store/useDopamineStore";
 
@@ -21,8 +21,8 @@ export function SettingsBar() {
             )}
         >
             <Slider className="w-[10em]" />
-            <Text>Vibrancy Level: {globalLevel}</Text>
-            <Text>Song: {currentSong || "None"}</Text>
+            <Typography variant="text">Vibrancy Level: {globalLevel}</Typography>
+            <Typography variant="text">Song: {currentSong || "None"}</Typography>
         </div>
     )
 }
