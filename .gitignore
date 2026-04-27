@@ -1,1 +1,3 @@
 node_modules/
+/rhel-server/images
+rhel-server/.env
