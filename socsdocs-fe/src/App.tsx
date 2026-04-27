@@ -10,8 +10,11 @@ import { HeroBackground } from './components/ui/HeroBackground';
 import LoginPage from './pages/LoginPage';
 import { Moveable } from './components/ui/Moveables';
 import { textAnimationMap, textColors, titleWeights } from './assets/config';
+import { useSession } from './lib/auth-client';
 
 function HomePage() {
+  const { data: session } = useSession();
+
   return (
     <>
       <Moveable 
@@ -34,6 +37,14 @@ function HomePage() {
             <Typography variant="subtitle">LOGIN</Typography>
           </Moveable>
         </Link>
+
+        {session?.user && (
+          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
+            <Typography variant="subtitle">
+              {session.user.name} (ID: {session.user.id})
+            </Typography>
+          </Moveable>
+        )}
       </div>
       <div className="w-full h-2px bg-white block" />
     </>

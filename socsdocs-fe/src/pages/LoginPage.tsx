@@ -149,14 +149,14 @@ export default function LoginPage() {
           name,
         });
         if (signUpError) throw new Error(signUpError.message);
-        navigate('/dashboard'); 
+        navigate('/'); 
       } else {
         const { error: signInError } = await signIn.email({
           email,
           password,
         });
         if (signInError) throw new Error(signInError.message);
-        navigate('/dashboard'); 
+        navigate('/'); 
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
