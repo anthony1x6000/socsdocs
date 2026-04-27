@@ -14,15 +14,13 @@ import type { MotionProps } from "framer-motion";
  */
 export const createJitter = (intensity: number = 1, duration: number = 0.2): MotionProps => ({
   animate: { 
-    x: [0, intensity, -intensity, 0], 
-    y: [0, -intensity, intensity, 0] 
+    x: [0, `${intensity * 0.05}vw`, `${-intensity * 0.05}vw`, 0], 
+    y: [0, `${-intensity * 0.05}vw`, `${intensity * 0.05}vw`, 0] 
   },
   transition: { 
     repeat: Infinity, 
     duration, 
     ease: "linear",
-    // Matches the timing to the distance traveled
-    // 0%, 25%, 75%, 100%
     times: [0, 0.25, 0.75, 1] 
   },
 });
@@ -32,8 +30,8 @@ export const createJitter = (intensity: number = 1, duration: number = 0.2): Mot
  */
 export const createSway = (intensity: number = 4, duration: number = 0.05): MotionProps => ({
   animate: { 
-    x: [0, -intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity, 0], 
-    y: [0, -intensity, intensity, -(intensity * 1.5), (intensity * 1.5), -intensity, intensity, 0] 
+    x: [0, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, `${-intensity * 0.15}vw`, `${intensity * 0.15}vw`, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, 0], 
+    y: [0, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, `${-intensity * 0.15}vw`, `${intensity * 0.15}vw`, `${-intensity * 0.1}vw`, `${intensity * 0.1}vw`, 0] 
   },
   transition: { repeat: Infinity, duration, ease: "linear" },
 });
@@ -42,7 +40,7 @@ export const createSway = (intensity: number = 4, duration: number = 0.05): Moti
  * Creates a bounce animation.
  */
 export const createBounce = (height: number = 2, duration: number = 2): MotionProps => ({
-  animate: { y: [0, -height, 0] },
+  animate: { y: [0, `${-height * 0.5}vh`, 0] },
   transition: { repeat: Infinity, duration },
 });
 
