@@ -19,6 +19,112 @@ import {
   headerWeights
 } from '../assets/config';
 
+function AuthTitle({ isSignUp }: { isSignUp: boolean }) {
+  return (
+    <Moveable 
+      as="span" 
+      animationMap={textAnimationMap} 
+      colorDict={textColors} 
+      weightDict={headerWeights}
+      intensityMod={2}
+    >
+      <Subtitle text={isSignUp ? 'Create Account' : 'Sign In'} />
+    </Moveable>
+  );
+}
+
+interface AuthFormProps {
+  isSignUp: boolean;
+  name: string;
+  setName: (val: string) => void;
+  email: string;
+  setEmail: (val: string) => void;
+  password: string;
+  setPassword: (val: string) => void;
+  isSubmitting: boolean;
+  handleSubmit: (e: React.FormEvent) => void;
+}
+
+function AuthForm({
+  isSignUp,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  isSubmitting,
+  handleSubmit
+}: AuthFormProps) {
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full mt-4">
+      {isSignUp && (
+        <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
+          <Input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </Moveable>
+      )}
+      <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </Moveable>
+      <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </Moveable>
+      <Moveable as="div" animationMap={elementAnimationMap} colorDict={primaryColors} intensityModHover={2}>
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          text={isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
+          className="mt-2"
+        />
+      </Moveable>
+    </form>
+  );
+}
+
+interface AuthFooterProps {
+  isSignUp: boolean;
+  setIsSignUp: (val: boolean) => void;
+}
+
+function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
+  return (
+    <div className="mt-4 flex flex-col items-center gap-2">
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
+        <LinkAction 
+          onClick={() => setIsSignUp(!isSignUp)}
+          className="text-blue-400 hover:text-blue-300 text-sm"
+        >
+          {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign up'}
+        </LinkAction>
+      </Moveable>
+
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
+        <LinkAction to="/" className="text-gray-300 hover:text-white text-sm">
+          Go Back
+        </LinkAction>
+      </Moveable>
+    </div>
+  );
+}
+
 /**
  * LoginPage Component manages the user's interaction with the authentication system.
  */
@@ -85,74 +191,23 @@ export default function LoginPage() {
         className="mt-[2em] w-full max-w-md mx-auto"
       >
         <Card className="flex-col items-center gap-[1em] w-full">
-          <Moveable 
-            as="span" 
-            animationMap={textAnimationMap} 
-            colorDict={textColors} 
-            weightDict={headerWeights}
-            intensityMod={2}
-          >
-            <Subtitle text={isSignUp ? 'Create Account' : 'Sign In'} />
-          </Moveable>
+          <AuthTitle isSignUp={isSignUp} />
           
           <ErrorMessage>{error}</ErrorMessage>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full mt-4">
-            {isSignUp && (
-              <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </Moveable>
-            )}
-            <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Moveable>
-            <Moveable as="div" animationMap={elementAnimationMap} intensityModHover={2}>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Moveable>
-            <Moveable as="div" animationMap={elementAnimationMap} colorDict={primaryColors} intensityModHover={2}>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                text={isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
-                className="mt-2"
-              />
-            </Moveable>
-          </form>
+          <AuthForm 
+            isSignUp={isSignUp}
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            isSubmitting={isSubmitting}
+            handleSubmit={handleSubmit}
+          />
 
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
-              <LinkAction 
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-blue-400 hover:text-blue-300 text-sm"
-              >
-                {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign up'}
-              </LinkAction>
-            </Moveable>
-
-            <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
-              <LinkAction to="/" className="text-gray-300 hover:text-white text-sm">
-                Go Back
-              </LinkAction>
-            </Moveable>
-          </div>
+          <AuthFooter isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
         </Card>
       </Moveable>
     </>
