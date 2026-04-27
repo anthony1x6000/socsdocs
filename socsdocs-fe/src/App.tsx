@@ -11,17 +11,38 @@ import HorizontalLine from './components/ui/HorizontalLine';
 import { useDopamineIntensity } from './store/useDopamineIntensity';
 import { HeroBackground } from './components/ui/HeroBackground';
 import LoginPage from './pages/LoginPage';
+import { Moveable } from './components/ui/Moveables';
+import { textAnimationMap, textColors, titleWeights } from './assets/config';
 
 function HomePage() {
   return (
     <>
-      <PageTitle className='mt-[3em]'/>
+      <Moveable 
+        as="div" 
+        animationMap={textAnimationMap} 
+        colorDict={textColors} 
+        weightDict={titleWeights}
+        intensityMod={1}
+        intensityModHover={1}
+        className='mt-[3em]'
+      >
+        <PageTitle />
+      </Moveable>
+
       <FlexBox className='gap-[2em]'>
-        <Subtitle text="COME HERE TO STUDY" />
+        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={1} intensityModHover={1}>
+          <Subtitle text="COME HERE TO STUDY" />
+        </Moveable>
+        
         <Link to="/login" style={{ textDecoration: 'none' }}>
-          <Subtitle text="LOGIN" />
+          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={1} intensityModHover={0.5}>
+            <Subtitle text="LOGIN" />
+          </Moveable>
         </Link>
-        <Subtitle text="SIGN UP" />
+
+        <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={1} intensityModHover={0.5}>
+          <Subtitle text="SIGN UP" />
+        </Moveable>
       </FlexBox>
       <HorizontalLine />
     </>
@@ -44,7 +65,9 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
       </Routes>
 
-      <SettingsBar />
+      <Moveable className="fixed bottom-0 left-0 right-0">
+        <SettingsBar />
+      </Moveable>
     </div>
   )
 }

@@ -1,43 +1,30 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
-import { ElementMoveable } from './Moveables';
-import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 
 interface CardProps {
   children: React.ReactNode;
   className?: string;
-  intensity?: number;
-  intensityOnHover?: number;
 }
 
 /**
- * Animated Card component wrapped in ElementMoveable.
- * Used for containers like login forms.
+ * A container card component. Stateless and without animations.
+ * Responsibility for movement is delegated to Moveable wrapper in parent.
  */
 export const Card = ({ 
   children, 
   className, 
-  intensity = 1, 
-  intensityOnHover 
 }: CardProps) => {
-  const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-
   return (
-    <ElementMoveable
-      intensity={currentIntensity}
+    <div
       className={twMerge(
         "bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 p-6",
         className
       )}
     >
-      <div 
-        onMouseEnter={handleMouseEnter} 
-        onMouseLeave={handleMouseLeave}
-        className="w-full h-full"
-      >
+      <div className="w-full h-full">
         {children}
       </div>
-    </ElementMoveable>
+    </div>
   );
 };
 

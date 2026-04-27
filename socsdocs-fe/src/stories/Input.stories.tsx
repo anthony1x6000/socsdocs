@@ -16,21 +16,19 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     placeholder: 'Enter text...',
-    intensity: 1,
   },
 };
 
-export const HighIntensity: Story = {
+export const Password: Story = {
   args: {
-    placeholder: 'High intensity!',
-    intensity: 5,
+    type: 'password',
+    placeholder: 'Password...',
   },
 };
 
-export const HoverEffect: Story = {
+export const Disabled: Story = {
   args: {
-    placeholder: 'Hover me!',
-    intensity: 1,
-    intensityOnHover: 4,
+    placeholder: 'Disabled input',
+    disabled: true,
   },
 };
