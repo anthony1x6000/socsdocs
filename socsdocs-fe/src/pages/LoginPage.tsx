@@ -12,7 +12,6 @@ import {
   textAnimationMap, 
   elementAnimationMap, 
   textColors, 
-  primaryColors,
   titleWeights,
   headerWeights
 } from '../assets/config';
@@ -84,11 +83,11 @@ function AuthForm({
           required
         />
       </Moveable>
-      <Moveable as="div" animationMap={elementAnimationMap} colorDict={primaryColors}>
+      <Moveable as="div" animationMap={elementAnimationMap} className="mt-2 flex w-full justify-center">
         <Button 
           type="submit" 
           disabled={isSubmitting}
-          className="mt-2"
+          className="w-1/2"
         >
           {isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
         </Button>
