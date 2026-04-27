@@ -66,7 +66,7 @@ export const ANIM_JITTER_1 = ANIM_NONE;
 export const ANIM_JITTER_2 = createJitter(0.8, 0.08);
 export const ANIM_JITTER_3 = createJitter(0.2, 0.1);
 export const ANIM_JITTER_4 = createJitter(2, 0.03);
-export const ANIM_JITTER_5 = createJitter(3, 0.01); 
+export const ANIM_JITTER_5 = createJitter(1.5, 0.1); 
 
 export const ANIM_SWAY_1 = ANIM_NONE;
 export const ANIM_SWAY_2 = createSway(0.3, 0.2);

@@ -1,13 +1,10 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
-import {PageTitle} from './components/ui/Title';
+import Typography from './components/ui/Typography';
 
 import './App.css';
 import {SettingsBar} from './components/ui/SettingsBar';
-import Subtitle from './components/ui/Subtitle';
-import FlexBox from './components/ui/FlexBox';
-import HorizontalLine from './components/ui/HorizontalLine';
 import { useDopamineIntensity } from './store/useDopamineIntensity';
 import { HeroBackground } from './components/ui/HeroBackground';
 import LoginPage from './pages/LoginPage';
@@ -26,21 +23,21 @@ function HomePage() {
         intensityModHover={0}
         className='mt-[3em]'
       >
-        <PageTitle />
+        <Typography variant="title">SOCSDOCS</Typography>
       </Moveable>
 
-      <FlexBox className='gap-[2em]'>
+      <div className='flex gap-[2em]'>
         <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={0}>
-          <Subtitle text="COME HERE TO STUDY" />
+          <Typography variant="subtitle">COME HERE TO STUDY</Typography>
         </Moveable>
         
         <Link to="/login" style={{ textDecoration: 'none' }}>
           <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityMod={0} intensityModHover={-1}>
-            <Subtitle text="LOGIN" />
+            <Typography variant="subtitle">LOGIN</Typography>
           </Moveable>
         </Link>
-      </FlexBox>
-      <HorizontalLine />
+      </div>
+      <div className="w-full h-[2px] bg-white block" />
     </>
   );
 }

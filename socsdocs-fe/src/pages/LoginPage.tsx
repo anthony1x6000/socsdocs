@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn, signUp } from '../lib/auth-client';
-import { PageTitle } from '../components/ui/Title';
-import Subtitle from '../components/ui/Subtitle';
+import Typography from '../components/ui/Typography';
 import { HeroBackground } from '../components/ui/HeroBackground';
 import Input from '../components/ui/Input';
-import { Button } from '../components/ui/ButtonPrimary';
+import { Button } from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import LinkAction from '../components/ui/LinkAction';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import { Moveable } from '../components/ui/Moveables';
 import { 
@@ -28,7 +26,7 @@ function AuthTitle({ isSignUp }: { isSignUp: boolean }) {
       weightDict={headerWeights}
       intensityMod={2}
     >
-      <Subtitle text={isSignUp ? 'Create Account' : 'Sign In'} />
+      <Typography variant="subtitle">{isSignUp ? 'Create Account' : 'Sign In'}</Typography>
     </Moveable>
   );
 }
@@ -91,9 +89,10 @@ function AuthForm({
         <Button 
           type="submit" 
           disabled={isSubmitting}
-          text={isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
           className="mt-2"
-        />
+        >
+          {isSubmitting ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Login')}
+        </Button>
       </Moveable>
     </form>
   );
@@ -108,18 +107,19 @@ function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
   return (
     <div className="mt-4 flex flex-col items-center gap-2">
       <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
-        <LinkAction 
+        <Button 
+          variant="link"
           onClick={() => setIsSignUp(!isSignUp)}
           className="text-blue-400 hover:text-blue-300 text-sm"
         >
           {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign up'}
-        </LinkAction>
+        </Button>
       </Moveable>
 
       <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={2}>
-        <LinkAction to="/" className="text-gray-300 hover:text-white text-sm">
+        <Button variant="link" to="/" className="text-gray-300 hover:text-white text-sm">
           Go Back
-        </LinkAction>
+        </Button>
       </Moveable>
     </div>
   );
@@ -182,7 +182,7 @@ export default function LoginPage() {
         intensityModHover={3}
         className="mt-[3em]"
       >
-        <PageTitle />
+        <Typography variant="title">SOCSDOCS</Typography>
       </Moveable>
       
       <Moveable 
@@ -190,7 +190,7 @@ export default function LoginPage() {
         animationMap={elementAnimationMap}
         className="mt-[2em] w-full max-w-md mx-auto"
       >
-        <Card className="flex-col items-center gap-[1em] w-full">
+        <Card className="flex flex-col items-center gap-[1em] w-full">
           <AuthTitle isSignUp={isSignUp} />
           
           <ErrorMessage>{error}</ErrorMessage>
