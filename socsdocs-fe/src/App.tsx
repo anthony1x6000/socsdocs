@@ -33,7 +33,7 @@ function HomePage() {
         </Moveable>
         
         <Link to="/login" style={{ textDecoration: 'none' }}>
-          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
+          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
             <Typography variant="subtitle">LOGIN</Typography>
           </Moveable>
         </Link>
