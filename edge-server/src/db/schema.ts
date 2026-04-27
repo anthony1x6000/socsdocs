@@ -46,17 +46,6 @@ export const user = sqliteTable("user", {
 });
 
 /**
- * userRelations defines the one-to-many relationships for the user table.
- * These are required by Better Auth's `experimental.joins` feature to perform
- * efficient SQL joins instead of multiple database queries.
- * @see Better Auth Contributors. (2024). Drizzle adapter. Better Auth. https://better-auth.com/docs/adapters/drizzle
- */
-export const userRelations = relations(user, ({ many }) => ({
-    sessions: many(session),
-    accounts: many(account),
-}));
-
-/**
  * The session table manages stateful user interactions in a stateless environment.
  * In Cloudflare Workers, session persistence relies on the database rather than 
  * in-memory stores due to the ephemeral nature of isolates (Cloudflare, 2025b).
@@ -92,18 +81,6 @@ export const session = sqliteTable("session", {
     /** The timestamp of the last session update. */
     updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull()
 });
-
-/**
- * sessionRelations defines the many-to-one relationship back to the user table.
- * This enables the session validator to retrieve user data in a single JOIN query
- * when `experimental.joins` is enabled in Better Auth.
- */
-export const sessionRelations = relations(session, ({ one }) => ({
-    user: one(user, {
-        fields: [session.userId],
-        references: [user.id],
-    }),
-}));
 
 /**
  * The account table facilitates OAuth 2.0 and OpenID Connect provider linking.
@@ -143,17 +120,6 @@ export const account = sqliteTable("account", {
     /** The timestamp of the last account linkage update. */
     updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull()
 });
-
-/**
- * accountRelations defines the many-to-one relationship from the account table
- * back to the user table for OAuth and credential-based account mapping.
- */
-export const accountRelations = relations(account, ({ one }) => ({
-    user: one(user, {
-        fields: [account.userId],
-        references: [user.id],
-    }),
-}));
 
 /**
  * The verification table handles short-lived codes for security-critical 
