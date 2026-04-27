@@ -93,11 +93,12 @@ export const Moveable = ({
   children,
   className,
 }: MoveableProps) => {
+  const ref = React.useRef<HTMLElement>(null);
   const { 
     intensity: currentIntensity, 
     handleMouseEnter, 
     handleMouseLeave 
-  } = useDopamineIntensity(intensityMod, intensityModHover);
+  } = useDopamineIntensity(intensityMod, intensityModHover, ref);
 
   const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
   
@@ -110,6 +111,7 @@ export const Moveable = ({
 
   return (
     <MotionComponent
+      ref={ref as any}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={twMerge(
