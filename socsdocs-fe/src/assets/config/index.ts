@@ -1,6 +1,7 @@
 import type { DopamineLevel, DopamineConfig } from "./types";
 import { songs } from "./songs";
 import { backgroundAnimations } from "./componentStyles";
+import { backgroundConfigs } from "./background/backgrounds";
 
 export * from "./types";
 export * from "./colors";
@@ -15,5 +16,6 @@ export const getDopamineConfig = (level: number): DopamineConfig => {
     songs: songs[specifiedLevel],
     backgroundAnimation: backgroundAnimations[specifiedLevel],
     isInverted: specifiedLevel >= 5,
+    background: backgroundConfigs[specifiedLevel],
   };
 };

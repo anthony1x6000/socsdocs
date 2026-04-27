@@ -1,45 +1,34 @@
 import Slider from "./DopamineSlider";
 import { twMerge } from "tailwind-merge";
 import { BASE_SETTINGS_BAR_STYLE } from "../../assets/config/baseStyles";
-import { primaryColors } from "../../assets/config";
-import { Text } from "./Text";
-import { ElementMoveable } from "./Moveables";
+import { Typography } from "./Typography";
 import { useSong } from "../../utils/useSong";
 import useDopamineStore from "../../store/useDopamineStore";
-import { useDopamineIntensity } from "../../store/useDopamineIntensity";
 
 /**
- * Props for the SettingsBar component.
+ * A floating bar positioned at the bottom of the viewport that displays global application settings.
+ * Includes a slider to control dopamine levels and readouts for the current vibrancy level and active song.
+ * 
+ * @example
+ * // Usually wrapped in a Moveable for jitter effects
+ * <Moveable className="fixed bottom-0 left-0 right-0">
+ *   <SettingsBar />
+ * </Moveable>
  */
-interface SettingsBarProps {
-  intensity?: number;
-  intensityOnHover?: number;
-}
-
-/**
- * Bottom settings bar wrapped in ElementMoveable.
- */
-export function SettingsBar({ intensity = 1, intensityOnHover }: SettingsBarProps) {
+export function SettingsBar() {
     const globalLevel = useDopamineStore((state) => state.level);
-    const { intensity: currentIntensity, handleMouseEnter, handleMouseLeave } = useDopamineIntensity(intensity, intensityOnHover);
-    const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
     const { currentSong } = useSong();
 
     return (
-        <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <ElementMoveable 
-                intensity={currentIntensity}
-                type="settingsBar"
-                className={twMerge(
-                    BASE_SETTINGS_BAR_STYLE,
-                    primaryColors[level],
-                    "flex items-center px-4 gap-[4em] h-[4em]"
-                )}
-            >
-                <Slider className="w-[10em]" />
-                <Text intensity={currentIntensity}>Vibrancy Level: {globalLevel}</Text>
-                <Text intensity={currentIntensity}>Song: {currentSong || "None"}</Text>
-            </ElementMoveable>
+        <div 
+            className={twMerge(
+                BASE_SETTINGS_BAR_STYLE,
+                "flex items-center px-4 gap-[4em] h-[4em]"
+            )}
+        >
+            <Slider className="w-[10em]" />
+            <Typography variant="text">Vibrancy Level: {globalLevel}</Typography>
+            <Typography variant="text">Song: {currentSong || "None"}</Typography>
         </div>
     )
 }

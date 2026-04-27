@@ -4,11 +4,17 @@
 	"compatibility_date": "2025-08-03",
 	"compatibility_flags": ["nodejs_compat"],
 	"main": "./src/index.tsx",
+	"vars": {
+		"BETTER_AUTH_URL": "http://localhost:8787",
+		"FRONTEND_URL": "http://localhost:3000",
+		"NODE_ENV": "development"
+	},
 	"d1_databases": [
 		{
 			"binding": "socs_db",
 			"database_name": "socs-db",
-			"database_id": "fc064cb5-8d30-4672-8f1a-ff99af87227c"
+			"database_id": "fc064cb5-8d30-4672-8f1a-ff99af87227c",
+			"migrations_dir": "drizzle"
 		}
 	]
 }
