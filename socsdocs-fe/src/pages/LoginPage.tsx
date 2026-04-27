@@ -105,7 +105,7 @@ interface AuthFooterProps {
 function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
   return (
     <div className="mt-4 flex flex-col items-center gap-2">
-      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
         <Button 
           variant="link"
           onClick={() => setIsSignUp(!isSignUp)}
@@ -115,7 +115,7 @@ function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
         </Button>
       </Moveable>
 
-      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
+      <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
         <Button variant="link" to="/" className="text-gray-300 hover:text-white text-sm">
           Go Back
         </Button>
