@@ -52,7 +52,7 @@ interface MoveableProps {
   weightDict?: Record<number, string>;
   /** 
    * Base dopamine intensity offset for this specific element. 
-   * Higher values increase jitter/motion.
+   * Higher values increase jitter/motion. Level \pm Modifier = Effective.
    */
   intensityMod?: number;
   /** 
@@ -67,7 +67,7 @@ interface MoveableProps {
 }
 
 /**
- * Universal wrapper that applies dopamine-driven Framer Motion animations and dynamic styles.
+ * Universal wrapper that applies Framer Motion animations and dynamic styles.
  * It tracks dopamine intensity (global + local modifiers) to determine animation speed,
  * color, and font weight.
  * 
