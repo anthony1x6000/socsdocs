@@ -69,22 +69,22 @@ export const ANIM_JITTER_4 = createJitter(2, 0.03);
 export const ANIM_JITTER_5 = createJitter(1.5, 0.1); 
 
 export const ANIM_SWAY_1 = ANIM_NONE;
-export const ANIM_SWAY_2 = createSway(0.3, 0.2);
-export const ANIM_SWAY_3 = createSway(0.6, 0.15);
-export const ANIM_SWAY_4 = createSway(1, 0.1); 
-export const ANIM_SWAY_5 = createSway(4, 0.02); // AGGRESSIVE TIGHT SWAY
+export const ANIM_SWAY_2 = ANIM_NONE; // createSway(0.3, 0.2);
+export const ANIM_SWAY_3 = ANIM_NONE; // createSway(0.6, 0.15);
+export const ANIM_SWAY_4 = ANIM_NONE; // createSway(1, 0.1); 
+export const ANIM_SWAY_5 = ANIM_NONE; // createSway(4, 0.02); 
 
 export const ANIM_SKEW_1 = ANIM_NONE;
-export const ANIM_SKEW_2 = createSkew(0.5, 0.4);
-export const ANIM_SKEW_3 = createSkew(1, 0.3);
-export const ANIM_SKEW_4 = createSkew(1.5, 0.2);
-export const ANIM_SKEW_5 = createSkew(3, 0.05);
+export const ANIM_SKEW_2 = ANIM_NONE; // createSkew(0.5, 0.4);
+export const ANIM_SKEW_3 = ANIM_NONE; // createSkew(1, 0.3);
+export const ANIM_SKEW_4 = ANIM_NONE; // createSkew(1.5, 0.2);
+export const ANIM_SKEW_5 = ANIM_NONE; // createSkew(3, 0.05);
 
 export const ANIM_BOUNCE_1 = ANIM_NONE;
-export const ANIM_BOUNCE_2 = createBounce(2, 2);
-export const ANIM_BOUNCE_3 = createBounce(3, 1.5);
-export const ANIM_BOUNCE_4 = createBounce(4, 1);
-export const ANIM_BOUNCE_5 = createBounce(6, 0.3);
+export const ANIM_BOUNCE_2 = ANIM_NONE;
+export const ANIM_BOUNCE_3 = ANIM_NONE;
+export const ANIM_BOUNCE_4 = ANIM_NONE;
+export const ANIM_BOUNCE_5 = ANIM_NONE;
 
 // --- MAPS ---
 
