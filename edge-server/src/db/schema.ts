@@ -22,7 +22,7 @@ export const user = sqliteTable("user", {
      * The user's display name. Stored as text to accommodate various 
      * character sets and lengths (Drizzle Team, 2024). 
      */
-    name: text("name").notNull(),
+    name: text("name").notNull().unique(),
     /** 
      * The user's email address. The unique constraint is enforced at the 
      * database level to prevent duplicate account creation (Drizzle Team, 2024).
@@ -160,12 +160,29 @@ export const chatMessages = sqliteTable("chat_messages", {
     date: integer("date", { mode: "timestamp" }).notNull()
 });  
 
+/**
+ * Defines the relational mapping for the `chatMessages` table.
+ * This allows Drizzle ORM to resolve joined queries automatically,
+ * such as fetching a message along with its sender's user profile.
+ * 
+ * @example
+ * // Fetch chat messages with their associated sender:
+ * const messages = await db.query.chatMessages.findMany({
+ *   with: {
+ *     sender: true
+ *   }
+ * });
+ */
 export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+    /** Defines a one-to-one relationship linking a chat message to the user who sent it. */
     sender: one(user, {
+        /** The foreign key in the `chatMessages` table that holds the user's ID. */ 
         fields: [chatMessages.senderId],
+        /** The primary key in the `user` table that the foreign key points to. */
         references: [user.id],
     }),
 }));
+
 /**
  * Drizzle Relations Configuration
  * 
