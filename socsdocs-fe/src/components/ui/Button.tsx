@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@tanstack/react-router';
+import { Link, type LinkProps } from '@tanstack/react-router';
 import { twMerge } from 'tailwind-merge';
 import { BASE_BUTTON_STYLE } from '../../assets/config/baseStyles';
 
@@ -14,7 +14,7 @@ interface ButtonProps {
   /** The content to be rendered inside the button. */
   children: React.ReactNode;
   /** Optional URL for navigation. If provided, the button renders as a Link. */
-  to?: string;
+  to?: LinkProps['to'];
   /** Optional click handler. */
   onClick?: () => void;
   /** Additional CSS classes. */
@@ -59,7 +59,7 @@ export const Button = ({
 
     if (to) {
       return (
-        <Link to={to as any} className="no-underline">
+        <Link to={to} className="no-underline">
           {content}
         </Link>
       );

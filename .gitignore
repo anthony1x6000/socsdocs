@@ -4,3 +4,4 @@ rhel-server/.env
 
 lovely-docs/
 .gemini
+.lovely-docs.yaml
