@@ -1,5 +1,6 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
+import { oneTap } from "better-auth/plugins";
 
 /**
  * The user table serves as the primary entity for identity management.
@@ -149,6 +150,22 @@ export const verification = sqliteTable("verification", {
     updatedAt: integer("updatedAt", { mode: "timestamp" })
 });
 
+// CHAT MESSAGES
+
+export const chatMessages = sqliteTable("chat_messages", {
+    id: text("id").primaryKey(),
+    content: text("content").notNull(),
+    /* .reference( () => user.id ) ensures that whatever value is saved in senderId MUST exist in the id column of user table */
+    senderId: text("senderId").notNull().references( () => user.id),
+    date: integer("date", { mode: "timestamp" }).notNull()
+});  
+
+export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+    sender: one(user, {
+        fields: [chatMessages.senderId],
+        references: [user.id],
+    }),
+}));
 /**
  * Drizzle Relations Configuration
  * 
