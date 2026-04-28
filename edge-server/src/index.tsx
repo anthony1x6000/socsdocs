@@ -126,6 +126,7 @@ app.post('/api/upload-image', async (c) => {
 
 /**
  * Endpoint to serve images from R2.
+ * Extracts the object key from the path and streams the content from R2.
  */
 app.get('/api/images/*', async (c) => {
   const key = c.req.path.replace('/api/images/', '');
