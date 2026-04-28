@@ -81,7 +81,10 @@ app.use('*', async (c, next) => {
   await next();
 })
 
+app.get('/test', (c) => c.text('ok'))
+
 app.on(['POST', 'GET'], '/api/auth/**', (c) => {
+  console.log('Auth handler reached:', c.req.url);
   const auth = c.get('auth');
   /**
    * Cloudflare D1 does not support traditional transactions; Better Auth
