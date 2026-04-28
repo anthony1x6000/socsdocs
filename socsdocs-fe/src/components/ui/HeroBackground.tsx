@@ -2,6 +2,7 @@ import { Shadertoy } from 'react-shadertoy';
 import { motion } from 'framer-motion';
 import { useDopamineIntensity } from '../../store/useDopamineIntensity';
 import { useResetMotion } from '../../utils/useResetMotion';
+import { twMerge } from 'tailwind-merge';
 
 /**
  * Animated background component that integrates a Shadertoy fragment shader with dopamine-driven Framer Motion animations.
@@ -20,7 +21,7 @@ import { useResetMotion } from '../../utils/useResetMotion';
 export function HeroBackground() {
   const { intensity, config } = useDopamineIntensity();
   const { backgroundAnimation, background } = config;
-  const { fragmentShader, overlayUrl, mixBlendMode } = background;
+  const { fragmentShader, overlayUrl, mixBlendMode, extraStyle } = background;
 
   // We use useResetMotion to get the animation values, but we intentionally 
   // separate the key to prevent the container from remounting. 
@@ -41,7 +42,11 @@ export function HeroBackground() {
       />
       
       <div 
-        className="absolute inset-0 w-full h-full pointer-events-none" 
+        className={
+          twMerge(
+            "absolute inset-0 w-full h-full pointer-events-none transition-all duration-100",
+            extraStyle,
+          )}
         style={{ 
           backgroundImage: `url('${overlayUrl}')`,
           mixBlendMode: mixBlendMode

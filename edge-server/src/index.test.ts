@@ -8,8 +8,7 @@ vi.mock('better-auth', async (importOriginal) => {
     betterAuth: (options: any) => {
       const auth = actual.betterAuth(options);
       // Spy on getSession to return a mocked session for our test token
-      const originalGetSession = auth.api.getSession;
-      auth.api.getSession = async (req: any) => {
+      (auth.api as any).getSession = async (req: any) => {
         const authHeader = req?.headers?.get('authorization') || req?.headers?.get('Authorization');
         if (authHeader === 'Bearer test-token') {
           return {
@@ -17,7 +16,7 @@ vi.mock('better-auth', async (importOriginal) => {
             user: { id: 'user_1', name: 'Test User', email: 'test@example.com', emailVerified: true, createdAt: new Date(), updatedAt: new Date(), image: null }
           };
         }
-        return originalGetSession(req);
+        return (actual as any).betterAuth(options).api.getSession(req);
       };
       return auth;
     }

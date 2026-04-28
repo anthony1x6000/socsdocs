@@ -1,11 +1,10 @@
-import { createStore } from 'zustand';
+import { createStore, type StoreApi } from 'zustand';
 
 /**
  * Represents the state of the dopamine store.
  */
 export interface DopamineState {
     level: number; // current 1..5 level
-    setLevel: (userInput: number) => void; // update level based on userin
 }
 
 /**
@@ -15,19 +14,26 @@ export interface DopamineState {
  * @returns A Zustand store instance configured with DopamineState.
  */
 export const createDopamineStore = (initialLevel: number = 1) => {
-    return createStore<DopamineState>((set) => ({
+    return createStore<DopamineState>(() => ({
         level: initialLevel,
-        setLevel: (userInput: number) => {
-            const parsedLevel = userInput;
-            if (isNaN(parsedLevel)) {
-                console.warn(`Invalid level provided: "${userInput}" is not a valid number. Setting to default level 1.`);
-                set({ level: 1 });
-                return;
-            }
-            const clampedLevel = Math.max(1, Math.min(5, parsedLevel));
-            set({ level: clampedLevel });
-        },
     }));
+};
+
+/**
+ * External store action to set the dopamine level.
+ * 
+ * @param store - The store instance to update.
+ * @param userInput - The new dopamine level.
+ */
+export const setDopamineLevel = (store: StoreApi<DopamineState>, userInput: number) => {
+    const parsedLevel = userInput;
+    if (isNaN(parsedLevel)) {
+        console.warn(`Invalid level provided: "${userInput}" is not a valid number. Setting to default level 1.`);
+        store.setState({ level: 1 });
+        return;
+    }
+    const clampedLevel = Math.max(1, Math.min(5, parsedLevel));
+    store.setState({ level: clampedLevel });
 };
 
 /**

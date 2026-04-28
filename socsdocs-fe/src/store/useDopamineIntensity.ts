@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { RefObject } from 'react';
 import useDopamineStore from './useDopamineStore';
 import { getDopamineConfig } from '../assets/config';
@@ -42,15 +42,16 @@ export function useDopamineIntensity(
     : intensityMod;
 
   const currentIntensity = globalLevel + activeMod;
-  const config = getDopamineConfig(currentIntensity);
+  
+  const config = useMemo(() => getDopamineConfig(currentIntensity), [currentIntensity]);
 
-  return {
+  return useMemo(() => ({
     intensity: currentIntensity,
     config,
     isHovered,
     handleMouseEnter,
     handleMouseLeave,
-  };
+  }), [currentIntensity, config, isHovered, handleMouseEnter, handleMouseLeave]);
 }
 
 export default useDopamineIntensity;

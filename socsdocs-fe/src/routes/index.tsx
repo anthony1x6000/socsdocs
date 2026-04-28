@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import Typography from '../components/ui/Typography';
 import { Moveable } from '../components/ui/Moveables';
-import { textAnimationMap, textColors, titleWeights } from '../assets/config';
+import { textAnimationMap } from '../assets/config/animations';
+import { textColors, titleWeights } from '../assets/config/componentStyles';
 import { useSession } from '../lib/auth-client';
 
 export const Route = createFileRoute('/')({

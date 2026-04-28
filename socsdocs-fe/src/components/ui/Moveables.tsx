@@ -83,7 +83,7 @@ interface MoveableProps {
  *   <Card>Hover me for more intensity!</Card>
  * </Moveable>
  */
-export const Moveable = ({
+export const Moveable = React.memo(({
   as = 'div',
   animationMap = elementAnimationMap,
   colorDict,
@@ -102,8 +102,10 @@ export const Moveable = ({
 
   const level = Math.min(Math.max(Math.floor(currentIntensity), 1), 5);
   
-  const animations = animationMap[level] || [{}];
-  const mergedAnimation = mergeAnimations(animations);
+  const mergedAnimation = React.useMemo(() => {
+    const animations = animationMap[level] || [{}];
+    return mergeAnimations(animations);
+  }, [animationMap, level]);
   
   const motionProps = useResetMotion("element", currentIntensity, mergedAnimation);
 
@@ -125,6 +127,6 @@ export const Moveable = ({
       {children}
     </MotionComponent>
   );
-};
+});
 
 export default Moveable;

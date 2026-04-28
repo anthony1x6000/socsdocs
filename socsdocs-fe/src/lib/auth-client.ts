@@ -1,17 +1,11 @@
-/**
- * @file socsdocs-fe/src/lib/auth-client.ts
- * @description Authentication client instance for managing edge server communication.
- * * @see Better Auth. (n.d.). Client instance. Better Auth Documentation. 
- * https://better-auth.com/docs/concepts/client
- * @see Better Auth. (n.d.). React integration. Better Auth Documentation. 
- * https://better-auth.com/docs/integrations/react
- */
 import { createAuthClient } from "better-auth/react";
+import { createAuthQueryClient } from "better-auth-react-query";
+import { useQuery } from "@tanstack/react-query";
 
 /**
  * Initializes the Better Auth client for the React environment.
  * The baseURL must point to the endpoint where the Better Auth handler is mounted.
- * * @type {import("better-auth/react").AuthClient}
+ * @type {import("better-auth/react").AuthClient}
  */
 export const authClient = createAuthClient({
     /**
@@ -24,9 +18,12 @@ export const authClient = createAuthClient({
     ]
 });
 
+export const auth = createAuthQueryClient(authClient);
+
 /**
- * Destructured hooks and methods for programmatic authentication.
- * useSession provides reactive access to the current user state.
- * @see https://better-auth.com/docs/basic-usage#use-session
+ * A TanStack Query-based hook for accessing the current session.
  */
-export const { signIn, signUp, useSession, changeEmail, changePassword, updateUser } = authClient;
+export const useSession = () => useQuery(auth.getSession.queryOptions({}));
+
+// Re-export other methods
+export const { signIn, signUp, changeEmail, changePassword, updateUser } = authClient;
