@@ -2,6 +2,9 @@ import React from 'react';
 import { Link, type LinkProps } from '@tanstack/react-router';
 import { twMerge } from 'tailwind-merge';
 import { BASE_BUTTON_STYLE } from '../../assets/config/baseStyles';
+import { primaryColors } from '../../assets/config/componentStyles';
+
+import useDopamineIntensity from '../../store/useDopamineIntensity';
 
 type ButtonVariant = 'primary' | 'link';
 
@@ -28,18 +31,6 @@ interface ButtonProps {
 /**
  * A versatile button component that supports primary actions and link-style buttons.
  * It automatically handles routing via '@tanstack/react-router' if the 'to' prop is provided.
- * 
- * @example
- * // Primary Button
- * <Button onClick={() => console.log('clicked')}>Click Me</Button>
- * 
- * @example
- * // Link Button
- * <Button variant="link" to="/login">Login</Button>
- * 
- * @example
- * // Disabled State
- * <Button disabled>Unavailable</Button>
  */
 export const Button = ({
   variant = 'primary',
@@ -50,9 +41,14 @@ export const Button = ({
   type = 'button',
   disabled = false,
 }: ButtonProps) => {
+  const { intensity } = useDopamineIntensity();
+  const bgColor = primaryColors[intensity as keyof typeof primaryColors] || primaryColors[1];
+
   if (variant === 'link') {
     const content = (
-      <span className={twMerge("cursor-pointer hover:underline", className)}>
+      <span className={twMerge(
+        "cursor-pointer hover:underline",
+        className)}>
         {children}
       </span>
     );
@@ -87,6 +83,7 @@ export const Button = ({
       disabled={disabled}
       className={twMerge(
         BASE_BUTTON_STYLE,
+        bgColor,
         disabled && "opacity-50 cursor-not-allowed",
         className
       )}

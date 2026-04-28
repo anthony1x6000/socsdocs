@@ -18,6 +18,8 @@ export interface BackgroundConfig {
   overlayUrl: string;
   /** CSS mix-blend-mode for the overlay */
   mixBlendMode: React.CSSProperties['mixBlendMode'];
+
+  extraStyle?: string;
 }
 
 export interface DopamineConfig {

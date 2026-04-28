@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { signIn, signUp } from '../lib/auth-client';
+import { auth } from '../lib/auth-client';
 import Typography from '../components/ui/Typography';
 import Input from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import { Moveable } from '../components/ui/Moveables';
+import { useMutation } from '@tanstack/react-query';
 import { 
   textAnimationMap, 
-  elementAnimationMap, 
+  elementAnimationMap,
+} from '../assets/config/animations';
+import {
   textColors, 
   titleWeights,
   headerWeights
-} from '../assets/config';
+} from '../assets/config/componentStyles';
 
 function AuthTitle({ isSignUp }: { isSignUp: boolean }) {
   return (
@@ -97,7 +100,7 @@ function AuthForm({
 
 interface AuthFooterProps {
   isSignUp: boolean;
-  setIsSignUp: (val: boolean) => void;
+  setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
@@ -106,7 +109,7 @@ function AuthFooter({ isSignUp, setIsSignUp }: AuthFooterProps) {
       <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
         <Button 
           variant="link"
-          onClick={() => setIsSignUp(!isSignUp)}
+          onClick={() => setIsSignUp(prev => !prev)}
           className="text-blue-400 hover:text-blue-300 text-sm"
         >
           {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign up'}
@@ -132,40 +135,44 @@ export default function LoginPage() {
   const [name, setName] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const signUpMutation = useMutation(auth.signUp.email.mutationOptions({
+    onSuccess: () => {
+        navigate({ to: '/' });
+    },
+    onError: (err: any) => {
+        setError(err.message || 'Registration failed');
+    }
+  }));
+
+  const signInMutation = useMutation(auth.signIn.email.mutationOptions({
+    onSuccess: () => {
+        navigate({ to: '/' });
+    },
+    onError: (err: any) => {
+        setError(err.message || 'Login failed');
+    }
+  }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsSubmitting(true);
 
-    try {
-      if (isSignUp) {
-        const { error: signUpError } = await signUp.email({
-          email,
-          password,
-          name,
-        });
-        if (signUpError) throw new Error(signUpError.message);
-        navigate('/'); 
-      } else {
-        const { error: signInError } = await signIn.email({
-          email,
-          password,
-        });
-        if (signInError) throw new Error(signInError.message);
-        navigate('/'); 
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Authentication failed');
-      }
-    } finally {
-      setIsSubmitting(false);
+    if (isSignUp) {
+      signUpMutation.mutate({
+        email,
+        password,
+        name,
+      });
+    } else {
+      signInMutation.mutate({
+        email,
+        password,
+      });
     }
   };
+
+  const isSubmitting = signUpMutation.isPending || signInMutation.isPending;
 
   return (
     <>

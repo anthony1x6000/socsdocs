@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import useDopamineStore from "../../store/useDopamineStore";
+import useDopamineStore, { useDopamineStoreInstance } from "../../store/useDopamineStore";
+import { setDopamineLevel } from "../../store/dopamineStore";
 import { twMerge } from "tailwind-merge";
 import { Howl } from 'howler';
 import { bongSound, bongFinish } from "../Sfx";
@@ -32,7 +33,7 @@ interface SliderProps {
 export function Slider({ 
   className,
 }: SliderProps) {
-    const setLevel = useDopamineStore((state) => state.setLevel);
+    const store = useDopamineStoreInstance();
     const globalValue = useDopamineStore((state) => state.level);
     const lastPlayTime = useRef(0);
 
@@ -46,6 +47,8 @@ export function Slider({
             className={twMerge(BASE_SLIDER_STYLE, "bg-transparent appearance-none cursor-pointer", className)}
             onChange={(e) => {
                 const newValue = Number(e.target.value);
+                setDopamineLevel(store, newValue);
+                
                 const now = Date.now();
                 if (now - lastPlayTime.current >= 500) {
                     lastPlayTime.current = now;
@@ -54,7 +57,6 @@ export function Slider({
                     } else {
                         slideFinish.play();
                     }
-                    setLevel(newValue);
                 }
             }}
         />

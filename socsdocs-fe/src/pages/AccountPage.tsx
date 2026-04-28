@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useSession, changeEmail, changePassword, updateUser } from '../lib/auth-client';
+import { useState, useRef } from 'react';
+import { useSession, auth } from '../lib/auth-client';
 import Typography from '../components/ui/Typography';
 import Input from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
@@ -8,10 +8,12 @@ import ErrorMessage from '../components/ui/ErrorMessage';
 import { Moveable } from '../components/ui/Moveables';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
-  textAnimationMap, 
+  textAnimationMap 
+} from '../assets/config/animations';
+import {
   textColors, 
   titleWeights
-} from '../assets/config';
+} from '../assets/config/componentStyles';
 
 /**
  * AccountPage Component
@@ -29,33 +31,20 @@ export default function AccountPage() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const emailMutation = useMutation({
-    mutationFn: async (newEmail: string) => {
-      const { error: changeError } = await changeEmail({ newEmail });
-      if (changeError) throw new Error(changeError.message);
-      return 'Email update initiated. Please check your inbox.';
-    },
-    onSuccess: (msg) => {
-      setSuccessMsg(msg);
+  const emailMutation = useMutation(auth.changeEmail.mutationOptions({
+    onSuccess: () => {
+      setSuccessMsg('Email update initiated. Please check your inbox.');
       setError(null);
     },
     onError: (err: any) => {
       setError(err.message);
       setSuccessMsg(null);
     }
-  });
+  }));
 
-  const passwordMutation = useMutation({
-    mutationFn: async () => {
-      const { error: changeError } = await changePassword({
-        currentPassword,
-        newPassword,
-      });
-      if (changeError) throw new Error(changeError.message);
-      return 'Password updated successfully.';
-    },
-    onSuccess: (msg) => {
-      setSuccessMsg(msg);
+  const passwordMutation = useMutation(auth.changePassword.mutationOptions({
+    onSuccess: () => {
+      setSuccessMsg('Password updated successfully.');
       setError(null);
       setCurrentPassword('');
       setNewPassword('');
@@ -64,7 +53,20 @@ export default function AccountPage() {
       setError(err.message);
       setSuccessMsg(null);
     }
-  });
+  }));
+
+  const updateUserMutation = useMutation(auth.updateUser.mutationOptions({
+    onSuccess: () => {
+      setSuccessMsg('Profile picture updated.');
+      setError(null);
+      setImageFile(null);
+      queryClient.invalidateQueries({ queryKey: auth.getSession.queryKey({}) });
+    },
+    onError: (err: any) => {
+      setError(err.message);
+      setSuccessMsg(null);
+    }
+  }));
 
   const profilePicMutation = useMutation({
     mutationFn: async (file: File) => {
@@ -88,24 +90,10 @@ export default function AccountPage() {
 
       const { url } = await response.json();
       
-      const { error: updateError } = await updateUser({
+      return updateUserMutation.mutateAsync({
         image: url,
       });
-
-      if (updateError) throw new Error(updateError.message);
-      return 'Profile picture updated.';
     },
-    onSuccess: (msg) => {
-      setSuccessMsg(msg);
-      setError(null);
-      setImageFile(null);
-      // Invalidate session query if possible, but useSession might not be using TanStack Query internally yet
-      // If better-auth useSession uses TanStack Query, we could invalidate here.
-    },
-    onError: (err: any) => {
-      setError(err.message);
-      setSuccessMsg(null);
-    }
   });
 
   if (isPending) return <Typography variant="text">Loading...</Typography>;
@@ -160,7 +148,7 @@ export default function AccountPage() {
         <Card className="flex flex-col gap-4">
           <Typography variant="subtitle">Update Email</Typography>
           <Typography variant="text">Current: {session.user.email}</Typography>
-          <form onSubmit={(e) => { e.preventDefault(); emailMutation.mutate(email); }} className="flex flex-col gap-4">
+          <form onSubmit={(e) => { e.preventDefault(); emailMutation.mutate({ newEmail: email }); }} className="flex flex-col gap-4">
             <Input 
               type="email" 
               placeholder="New Email" 
@@ -174,7 +162,7 @@ export default function AccountPage() {
 
         <Card className="flex flex-col gap-4">
           <Typography variant="subtitle">Update Password</Typography>
-          <form onSubmit={(e) => { e.preventDefault(); passwordMutation.mutate(); }} className="flex flex-col gap-4">
+          <form onSubmit={(e) => { e.preventDefault(); passwordMutation.mutate({ currentPassword, newPassword }); }} className="flex flex-col gap-4">
             <Input 
               type="password" 
               placeholder="Current Password" 

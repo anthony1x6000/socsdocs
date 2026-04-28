@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import useDopamineStore from '../store/useDopamineStore';
 import { Howl } from 'howler';
 import { getMusicUrl } from '../utils/media';
@@ -82,12 +82,12 @@ export function BackgroundMusic() {
         return null;
     }
 
-    function playMusic(src: string): Howl {
+    const playMusic = useCallback((src: string): Howl => {
         const sound = new Howl({ src: [src], loop: true, volume: 0 });
         sound.play();
         sound.fade(0, TARGET_VOLUME, INITIAL_FADE_DURATION);
         return sound;
-    }
+    }, []);
 
     /**
      * Smoothly crossfades between the currently playing song and a new song.
@@ -100,7 +100,7 @@ export function BackgroundMusic() {
      * @param {Howl} oldSong - The current Howl audio object to fade out.
      * @param {string} newSongSrc - The URL string of the new audio track to fade in.
      */
-    function transitionSong(oldSong: Howl, newSongSrc: string) {
+    const transitionSong = useCallback((oldSong: Howl, newSongSrc: string) => {
         const newSong = new Howl({ src: [newSongSrc], loop: true, volume: 0 });
 
         newSong.once('play', () => {
@@ -110,7 +110,7 @@ export function BackgroundMusic() {
 
         newSong.play();
         currentSong.current = newSong;
-    }
+    }, []);
 
     /**
      * Cleanup effect to stop and unload the current song when the component

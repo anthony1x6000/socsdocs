@@ -7,27 +7,30 @@ import type { BackgroundConfig } from "../types";
 export const backgroundConfigs: Record<number, BackgroundConfig> = {
   1: {
     fragmentShader: "back.glsl",
-    overlayUrl: "https://unsplash.com/photos/YFb2dmUQ0Qo/download?force=true&w=1920",
+    overlayUrl: "https://unsplash.com/photos/ClWvcrkBhMY/download?force=true&w=1920",
     mixBlendMode: "color-burn",
+    extraStyle: "bg-cover",
   },
   2: {
     fragmentShader: "back.glsl",
-    overlayUrl: "https://unsplash.com/photos/YFb2dmUQ0Qo/download?force=true&w=1920",
+    overlayUrl: "https://unsplash.com/photos/ClWvcrkBhMY/download?force=true&w=1920",
     mixBlendMode: "color-burn",
   },
   3: {
     fragmentShader: "back.glsl",
-    overlayUrl: "https://unsplash.com/photos/YFb2dmUQ0Qo/download?force=true&w=1920",
-    mixBlendMode: "color-dodge",
+    overlayUrl: "https://unsplash.com/photos/ClWvcrkBhMY/download?force=true&w=1920",
+    mixBlendMode: "color-burn",
   },
   4: {
     fragmentShader: "back.glsl",
-    overlayUrl: "https://unsplash.com/photos/YFb2dmUQ0Qo/download?force=true&w=1920",
-    mixBlendMode: "overlay",
+    overlayUrl: "https://unsplash.com/photos/ClWvcrkBhMY/download?force=true&w=1920",
+    mixBlendMode: "color-burn",
+    extraStyle: "opacity-100",
   },
   5: {
     fragmentShader: "back.glsl",
-    overlayUrl: "",
-    mixBlendMode: "difference",
+    overlayUrl: "https://unsplash.com/photos/ClWvcrkBhMY/download?force=true&w=1920",
+    mixBlendMode: "color-burn",
+    extraStyle: "opacity-0",
   },
 };

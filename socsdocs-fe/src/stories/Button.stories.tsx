@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../components/ui/Button';
-import { BrowserRouter } from 'react-router-dom';
 
 const meta: Meta<typeof Button> = {
   title: 'UI/Button',
@@ -9,13 +8,6 @@ const meta: Meta<typeof Button> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
 };
 
 export default meta;
@@ -32,14 +24,6 @@ export const Link: Story = {
   args: {
     variant: 'link',
     children: 'Link Button',
-  },
-};
-
-export const RouterLink: Story = {
-  args: {
-    variant: 'link',
-    to: '/',
-    children: 'Router Link',
   },
 };
 
