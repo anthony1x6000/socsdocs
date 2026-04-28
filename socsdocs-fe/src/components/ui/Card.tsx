@@ -1,6 +1,8 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { BASE_CARD_STYLE } from '../../assets/config/baseStyles';
+
 /**
  * Props for the Card component.
  */
@@ -28,7 +30,7 @@ export const Card = ({
   return (
     <div
       className={twMerge(
-        "bg-white/1 p-10",
+        BASE_CARD_STYLE,
         className
       )}
     >
