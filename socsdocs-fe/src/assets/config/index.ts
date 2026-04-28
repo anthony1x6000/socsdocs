@@ -3,6 +3,7 @@ import { songs } from "./songs";
 import { backgroundAnimations } from "./componentStyles";
 import { backgroundConfigs } from "./background/backgrounds";
 
+export * from "./interface";
 export * from "./types";
 export * from "./colors";
 export * from "./animations";
