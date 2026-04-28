@@ -1,23 +1,18 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import { twMerge } from 'tailwind-merge';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import Typography from '../components/ui/Typography';
+import { Moveable } from '../components/ui/Moveables';
+import { textAnimationMap, textColors, titleWeights } from '../assets/config';
+import { useSession } from '../lib/auth-client';
 
-import Typography from './components/ui/Typography';
-
-import './App.css';
-import {SettingsBar} from './components/ui/SettingsBar';
-import { useDopamineIntensity } from './store/useDopamineIntensity';
-import { HeroBackground } from './components/ui/HeroBackground';
-import LoginPage from './pages/LoginPage';
-import AccountPage from './pages/AccountPage';
-import { Moveable } from './components/ui/Moveables';
-import { textAnimationMap, textColors, titleWeights } from './assets/config';
-import { useSession } from './lib/auth-client';
+export const Route = createFileRoute('/')({
+  component: HomePage,
+});
 
 function HomePage() {
   const { data: session } = useSession();
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center h-full">
       <Moveable 
         as="div" 
         animationMap={textAnimationMap} 
@@ -25,7 +20,7 @@ function HomePage() {
         weightDict={titleWeights}
         className='mt-[3em]'
       >
-        <Typography variant="title">SOCSDOCS</Typography>
+        <Typography variant="title">socsdocs</Typography>
       </Moveable>
 
       <div className='flex gap-[2em]'>
@@ -55,33 +50,7 @@ function HomePage() {
           </Moveable>
         )}
       </div>
-      <div className="w-full h-2px bg-white block" />
-    </>
+      <Moveable as="div" className="w-full h-[2px] bg-white block" />
+    </div>
   );
 }
-
-function App() {
-  const { config } = useDopamineIntensity();
-  const { isInverted } = config;
-
-  return (
-    <div className={twMerge(
-      "relative h-screen w-screen overflow-hidden transition-[filter] duration-700",
-      isInverted && "invert"
-    )}>
-      <HeroBackground />
-      
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/account" element={<AccountPage />} />
-      </Routes>
-
-      <div className="fixed bottom-0 left-0 right-0">
-        <SettingsBar />
-      </div>
-    </div>
-  )
-}
-
-export default App

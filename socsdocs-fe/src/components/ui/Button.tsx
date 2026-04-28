@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { twMerge } from 'tailwind-merge';
 import { BASE_BUTTON_STYLE } from '../../assets/config/baseStyles';
 
@@ -27,7 +27,7 @@ interface ButtonProps {
 
 /**
  * A versatile button component that supports primary actions and link-style buttons.
- * It automatically handles routing via 'react-router-dom' if the 'to' prop is provided.
+ * It automatically handles routing via '@tanstack/react-router' if the 'to' prop is provided.
  * 
  * @example
  * // Primary Button
@@ -59,7 +59,7 @@ export const Button = ({
 
     if (to) {
       return (
-        <Link to={to} className="no-underline">
+        <Link to={to as any} className="no-underline">
           {content}
         </Link>
       );

@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import { Moveable } from '../components/ui/Moveables';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   textAnimationMap, 
   textColors, 
@@ -16,8 +17,9 @@ import {
  * AccountPage Component
  *
  * Provides a centralized interface for users to manage their identity and security settings.
- * The page is structured as a vertical list of functional modules.
- */export default function AccountPage() {
+ */
+export default function AccountPage() {
+  const queryClient = useQueryClient();
   const { data: session, isPending } = useSession();
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -25,71 +27,49 @@ import {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (isPending) return <Typography variant="text">Loading...</Typography>;
-  if (!session) return <Typography variant="text">Please login to view this page.</Typography>;
-
-  /**
-   * Initiates the email change process.
-   * Better Auth handles verification logic via the configured plugin.
-   */
-  const handleUpdateEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMsg(null);
-    setIsSubmitting(true);
-    try {
-      const { error: changeError } = await changeEmail({
-        newEmail: email,
-      });
+  const emailMutation = useMutation({
+    mutationFn: async (newEmail: string) => {
+      const { error: changeError } = await changeEmail({ newEmail });
       if (changeError) throw new Error(changeError.message);
-      setSuccessMsg('Email update initiated. Please check your inbox.');
-    } catch (err: any) {
+      return 'Email update initiated. Please check your inbox.';
+    },
+    onSuccess: (msg) => {
+      setSuccessMsg(msg);
+      setError(null);
+    },
+    onError: (err: any) => {
       setError(err.message);
-    } finally {
-      setIsSubmitting(false);
+      setSuccessMsg(null);
     }
-  };
+  });
 
-  /**
-   * Updates the user password.
-   * Requires the current password to verify authority.
-   */
-  const handleUpdatePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMsg(null);
-    setIsSubmitting(true);
-    try {
+  const passwordMutation = useMutation({
+    mutationFn: async () => {
       const { error: changeError } = await changePassword({
         currentPassword,
         newPassword,
       });
       if (changeError) throw new Error(changeError.message);
-      setSuccessMsg('Password updated successfully.');
+      return 'Password updated successfully.';
+    },
+    onSuccess: (msg) => {
+      setSuccessMsg(msg);
+      setError(null);
       setCurrentPassword('');
       setNewPassword('');
-    } catch (err: any) {
+    },
+    onError: (err: any) => {
       setError(err.message);
-    } finally {
-      setIsSubmitting(false);
+      setSuccessMsg(null);
     }
-  };
+  });
 
-  /**
-   * Uploads a new profile picture to the edge server (R2 storage)
-   * and updates the user record with the resulting URL.
-   */
-  const handleUpdateProfilePic = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!imageFile) return;
-    setError(null);
-    setSuccessMsg(null);
-    setIsSubmitting(true);
-    try {
+  const profilePicMutation = useMutation({
+    mutationFn: async (file: File) => {
+      if (!session) throw new Error('No session');
       const formData = new FormData();
-      formData.append('file', imageFile);
+      formData.append('file', file);
 
       const response = await fetch(`${import.meta.env.VITE_PUBLIC_API_URL || "http://localhost:8787"}/api/upload-image`, {
         method: 'POST',
@@ -112,14 +92,25 @@ import {
       });
 
       if (updateError) throw new Error(updateError.message);
-      setSuccessMsg('Profile picture updated.');
+      return 'Profile picture updated.';
+    },
+    onSuccess: (msg) => {
+      setSuccessMsg(msg);
+      setError(null);
       setImageFile(null);
-    } catch (err: any) {
+      // Invalidate session query if possible, but useSession might not be using TanStack Query internally yet
+      // If better-auth useSession uses TanStack Query, we could invalidate here.
+    },
+    onError: (err: any) => {
       setError(err.message);
-    } finally {
-      setIsSubmitting(false);
+      setSuccessMsg(null);
     }
-  };
+  });
+
+  if (isPending) return <Typography variant="text">Loading...</Typography>;
+  if (!session) return <Typography variant="text">Please login to view this page.</Typography>;
+
+  const isSubmitting = emailMutation.isPending || passwordMutation.isPending || profilePicMutation.isPending;
 
   return (
     <Moveable className="w-full overflow-y-auto h-[calc(100vh-4em)] scrollbar-thin p-8">
@@ -131,7 +122,6 @@ import {
         </Moveable>
 
         <div className="flex flex-col gap-8 w-full">
-        {/* 1. Account Info */}
         <Card className="flex flex-col gap-4">
             <Typography variant="subtitle">Account Info</Typography>
             <div className="flex flex-col gap-1">
@@ -142,7 +132,6 @@ import {
             <Button variant="link" to="/" className="text-gray-400 self-start">Back to Dashboard</Button>
         </Card>
 
-        {/* 2. Profile Picture Update */}
         <Card className="flex flex-col gap-4">
           <Typography variant="subtitle">Profile Picture</Typography>
           {session.user.image && (
@@ -152,7 +141,7 @@ import {
               className="w-32 h-32 object-cover border-none"
             />
           )}
-          <form onSubmit={handleUpdateProfilePic} className="flex flex-col gap-4">
+          <form onSubmit={(e) => { e.preventDefault(); if (imageFile) profilePicMutation.mutate(imageFile); }} className="flex flex-col gap-4">
             <input 
               type="file" 
               accept="image/*" 
@@ -163,11 +152,10 @@ import {
           </form>
         </Card>
 
-        {/* 3. Email Update */}
         <Card className="flex flex-col gap-4">
           <Typography variant="subtitle">Update Email</Typography>
           <Typography variant="text">Current: {session.user.email}</Typography>
-          <form onSubmit={handleUpdateEmail} className="flex flex-col gap-4">
+          <form onSubmit={(e) => { e.preventDefault(); emailMutation.mutate(email); }} className="flex flex-col gap-4">
             <Input 
               type="email" 
               placeholder="New Email" 
@@ -179,10 +167,9 @@ import {
           </form>
         </Card>
 
-        {/* 4. Password Update */}
         <Card className="flex flex-col gap-4">
           <Typography variant="subtitle">Update Password</Typography>
-          <form onSubmit={handleUpdatePassword} className="flex flex-col gap-4">
+          <form onSubmit={(e) => { e.preventDefault(); passwordMutation.mutate(); }} className="flex flex-col gap-4">
             <Input 
               type="password" 
               placeholder="Current Password" 
