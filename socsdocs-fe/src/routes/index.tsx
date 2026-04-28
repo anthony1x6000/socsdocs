@@ -51,7 +51,16 @@ function HomePage() {
           </Moveable>
         )}
       </div>
-      <Moveable as="div" className="w-full h-[2px] bg-white block" />
+      <Moveable as="div" className="w-full h-0.5 bg-white block" />
+      <div className="grid text-center">
+        <Link to="/chat" style={{ textDecoration: 'none' }}>
+          <Moveable className="col-start-1 row-start-1"> 
+            <Typography variant="text">
+              Chat
+            </Typography>
+          </Moveable>
+        </Link>
+      </div>
     </div>
   );
 }
