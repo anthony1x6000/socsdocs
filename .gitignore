@@ -5,3 +5,7 @@ rhel-server/.env
 lovely-docs/
 .gemini
 .lovely-docs.yaml
+
+.tar.xz
+.iso
+.tar
