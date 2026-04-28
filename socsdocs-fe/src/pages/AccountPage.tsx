@@ -122,14 +122,15 @@ import {
   };
 
   return (
-    <div className="flex flex-col items-center gap-[2em] p-8 max-w-2xl mx-auto overflow-y-auto h-[calc(100vh-10em)]">
-      <Moveable as="div" animationMap={textAnimationMap} colorDict={textColors} weightDict={titleWeights}>
-        <Typography variant="title">Account Settings</Typography>
-        <ErrorMessage>{error}</ErrorMessage>
-        {successMsg && <div className="text-green-400 text-sm mb-4">{successMsg}</div>}
-      </Moveable>
+    <Moveable className="w-full overflow-y-auto h-[calc(100vh-4em)] scrollbar-thin p-8">
+      <div className="flex flex-col items-center gap-[2em] max-w-4xl mx-auto">
+        <Moveable as="div" animationMap={textAnimationMap} colorDict={textColors} weightDict={titleWeights}>
+          <Typography variant="title">Account Settings</Typography>
+          <ErrorMessage>{error}</ErrorMessage>
+          {successMsg && <div className="text-green-400 text-sm mb-4">{successMsg}</div>}
+        </Moveable>
 
-      <div className="flex flex-col gap-8 w-full">
+        <div className="flex flex-col gap-8 w-full">
         {/* 1. Account Info */}
         <Card className="flex flex-col gap-4">
             <Typography variant="subtitle">Account Info</Typography>
@@ -201,5 +202,6 @@ import {
         </Card>
       </div>
     </div>
+  </Moveable>
   );
 }
