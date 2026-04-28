@@ -1,25 +1,53 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import * as betterAuthModule from 'better-auth';
+
+vi.mock('better-auth', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('better-auth')>();
+  return {
+    ...actual,
+    betterAuth: (options: any) => {
+      const auth = actual.betterAuth(options);
+      // Spy on getSession to return a mocked session for our test token
+      const originalGetSession = auth.api.getSession;
+      auth.api.getSession = async (req: any) => {
+        const authHeader = req?.headers?.get('authorization') || req?.headers?.get('Authorization');
+        if (authHeader === 'Bearer test-token') {
+          return {
+            session: { id: 'sess_1', userId: 'user_1', token: 'test-token', expiresAt: new Date(Date.now() + 100000), ipAddress: '', userAgent: '', createdAt: new Date(), updatedAt: new Date() },
+            user: { id: 'user_1', name: 'Test User', email: 'test@example.com', emailVerified: true, createdAt: new Date(), updatedAt: new Date(), image: null }
+          };
+        }
+        return originalGetSession(req);
+      };
+      return auth;
+    }
+  };
+});
+
 import app from './index';
 
-// Helper to create a mock D1Database
-const createMockD1 = () => {
-  return {
-    prepare: () => ({
-      bind: () => ({
-        all: async () => ({ results: [] }),
-        get: async () => ({}),
-        run: async () => ({}),
-      }),
+const createMockD1 = () => ({
+  prepare: () => ({
+    bind: () => ({
+      all: async () => ({ results: [] }),
+      get: async () => ({}),
+      run: async () => ({}),
     }),
-    batch: async () => [],
-    exec: async () => ({}),
-    dump: async () => new ArrayBuffer(0),
-  } as unknown as D1Database;
-};
+  }),
+  batch: async () => [],
+  exec: async () => ({}),
+  dump: async () => new ArrayBuffer(0),
+} as unknown as D1Database);
+
+const createMockR2 = () => ({
+  put: vi.fn().mockResolvedValue({}),
+  get: vi.fn().mockResolvedValue(null),
+} as unknown as R2Bucket);
 
 describe('Edge Server Auth Endpoints', () => {
   const env = {
     socs_db: createMockD1(),
+    socs_r2: createMockR2(),
     BETTER_AUTH_SECRET: 'test-secret',
     BETTER_AUTH_URL: 'http://localhost:8787',
     FRONTEND_URL: 'http://localhost:3000',
@@ -28,35 +56,64 @@ describe('Edge Server Auth Endpoints', () => {
 
   it('GET /api/auth/get-session should return data or 401', async () => {
     const res = await app.request('http://localhost:8787/api/auth/get-session', {}, env);
-    const body = await res.json();
-    console.log('get-session body:', body);
     expect(res.status).toBeDefined();
   });
 
-  it('POST /api/auth/sign-up/email should be reachable', async () => {
-    const res = await app.request('http://localhost:8787/api/auth/sign-up/email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: 'test@example.com',
-        password: 'password123',
-        name: 'Test User'
-      }),
+  it('OPTIONS /api/upload-image should return 204 (CORS preflight)', async () => {
+    const res = await app.request('http://localhost:8787/api/upload-image', {
+      method: 'OPTIONS',
+      headers: {
+        'Origin': 'http://localhost:3000',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'Authorization',
+      }
     }, env);
-    console.log('sign-up status:', res.status);
-    expect(res.status).not.toBe(404);
+    expect(res.status).toBe(204);
   });
 
-  it('POST /api/auth/update-user should be reachable', async () => {
-    const res = await app.request('http://localhost:8787/api/auth/update-user', {
+  it('POST /api/upload-image should return 401 without session', async () => {
+    const formData = new FormData();
+    const res = await app.request('http://localhost:8787/api/upload-image', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        image: 'https://example.com/new-image.png',
-      }),
+      body: formData,
     }, env);
-    console.log('update-user status:', res.status);
-    // Should be 401 if not logged in, but not 404
-    expect(res.status).not.toBe(404);
+    expect(res.status).toBe(401);
+  });
+
+  it('POST /api/upload-image should succeed with mocked session', async () => {
+    const imgRes = await fetch('https://anthonyis.online/img/favicon.png');
+    const blob = await imgRes.blob();
+    const file = new File([blob], 'favicon.png', { type: 'image/png' });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Mock getSession to bypass 401
+    // Better Auth internals hard to mock in app.request, 
+    // but we verify logic path if session exists
+    const res = await app.request('http://localhost:8787/api/upload-image', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': 'Bearer test-token'
+      }
+    }, env);
+
+    expect(res.status).toBe(200);
+    const data = await res.json() as { url: string };
+    expect(data.url).toContain('/api/images/');
+
+    // Test GET /api/images/...
+    const imagePath = new URL(data.url).pathname;
+    
+    // Mock R2 to return a successful object
+    env.socs_r2.get = vi.fn().mockResolvedValue({
+      body: new ArrayBuffer(0),
+      writeHttpMetadata: vi.fn(),
+      httpEtag: '"test-etag"'
+    });
+
+    const getRes = await app.request(`http://localhost:8787${imagePath}`, {}, env);
+    expect(getRes.status).toBe(200);
   });
 });

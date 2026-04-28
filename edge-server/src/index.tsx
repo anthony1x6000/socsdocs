@@ -25,7 +25,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
  * @see Hono. (2025). Better Auth on Cloudflare. Hono. https://hono.dev/examples/better-auth-on-cloudflare
  */
 // Pass a function to `origin` to dynamically read from c.env safely
-app.use('/api/auth/*', cors({
+app.use('/api/*', cors({
   origin: (origin, c) => c.env.FRONTEND_URL,
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
@@ -69,6 +69,7 @@ app.use('*', async (c, next) => {
     baseURL: c.env.BETTER_AUTH_URL,
     trustedOrigins: [c.env.FRONTEND_URL].filter(Boolean) as string[],
     advanced: {
+      defaultBearerToken: true,
       useSecureCookies: c.env.NODE_ENV === "production",
       /**
        * Configures client IP detection for rate limiting and security auditing.
@@ -118,7 +119,8 @@ app.post('/api/upload-image', async (c) => {
     httpMetadata: { contentType: file.type }
   });
 
-  const url = `${c.env.BETTER_AUTH_URL}/api/images/${key}`;
+  const origin = new URL(c.req.url).origin;
+  const url = `${origin}/api/images/${key}`;
   return c.json({ url });
 })
 

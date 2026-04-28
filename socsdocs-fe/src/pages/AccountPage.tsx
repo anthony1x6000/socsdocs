@@ -80,9 +80,9 @@ export default function AccountPage() {
         method: 'POST',
         body: formData,
         headers: {
-            // Fetch will set the correct boundary for multipart/form-data
             'Authorization': `Bearer ${session.session.token}` 
-        }
+        },
+        credentials: 'include'
       });
 
       if (!response.ok) {
