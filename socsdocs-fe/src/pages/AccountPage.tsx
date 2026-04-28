@@ -109,9 +109,10 @@ export default function AccountPage() {
     <div className="flex flex-col items-center gap-[2em] p-8 max-w-4xl mx-auto overflow-y-auto h-[calc(100vh-10em)]">
       <Moveable as="div" animationMap={textAnimationMap} colorDict={textColors} weightDict={titleWeights}>
         <Typography variant="title">Account Settings</Typography>
+        <ErrorMessage>{error}</ErrorMessage>
+        {message && <div className="text-green-400 text-sm mb-4">{message}</div>}
       </Moveable>
-      <ErrorMessage>{error}</ErrorMessage>
-      {message && <div className="text-green-400 text-sm mb-4">{message}</div>}
+      
 
       <Moveable as="div" animationMap={textAnimationMap} colorDict={textColors} weightDict={titleWeights}
       className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
