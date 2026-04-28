@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSession, changeEmail, changePassword, updateUser } from '../lib/auth-client';
 import Typography from '../components/ui/Typography';
 import Input from '../components/ui/Input';
@@ -27,6 +27,7 @@ export default function AccountPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const emailMutation = useMutation({
     mutationFn: async (newEmail: string) => {
@@ -145,9 +146,13 @@ export default function AccountPage() {
             <input 
               type="file" 
               accept="image/*" 
+              className="hidden"
+              ref={fileInputRef}
               onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-              className="text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
             />
+            <Button type="button" onClick={() => fileInputRef.current?.click()}>
+              {imageFile ? imageFile.name : 'Choose File'}
+            </Button>
             <Button type="submit" disabled={isSubmitting || !imageFile}>Upload New Picture</Button>
           </form>
         </Card>
