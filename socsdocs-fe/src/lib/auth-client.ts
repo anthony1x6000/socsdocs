@@ -19,7 +19,9 @@ export const authClient = createAuthClient({
      * In local development, this defaults to the Wrangler port (8787).
      * @see https://better-auth.com/docs/concepts/client#create-client-instance
      */
-    baseURL: import.meta.env.VITE_PUBLIC_API_URL || "http://localhost:8787"
+    baseURL: import.meta.env.VITE_PUBLIC_API_URL || "http://localhost:8787",
+    plugins: [
+    ]
 });
 
 /**
@@ -27,4 +29,4 @@ export const authClient = createAuthClient({
  * useSession provides reactive access to the current user state.
  * @see https://better-auth.com/docs/basic-usage#use-session
  */
-export const { signIn, signUp, useSession } = authClient;
+export const { signIn, signUp, useSession, changeEmail, changePassword, updateUser } = authClient;

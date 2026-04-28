@@ -7,6 +7,7 @@ import * as schema from './db/schema'
 
 type Bindings = {
   socs_db: D1Database
+  socs_r2: R2Bucket
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
   FRONTEND_URL: string
@@ -61,6 +62,9 @@ app.use('*', async (c, next) => {
       joins: true 
     },
     emailAndPassword: { enabled: true },
+    plugins: [
+      // Enables account management features like changing password/email
+    ],
     secret: c.env.BETTER_AUTH_SECRET, 
     baseURL: c.env.BETTER_AUTH_URL,
     trustedOrigins: [c.env.FRONTEND_URL].filter(Boolean) as string[],
@@ -89,6 +93,51 @@ app.on(['POST', 'GET'], '/api/auth/**', (c) => {
    * @see Cloudflare. (2025). Cloudflare D1. Cloudflare Developers. https://developers.cloudflare.com/d1/
    */
   return auth.handler(c.req.raw);
+})
+
+/**
+ * Endpoint for uploading profile pictures to R2.
+ */
+app.post('/api/upload-image', async (c) => {
+  const auth = c.get('auth');
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+  
+  if (!session) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  const formData = await c.req.formData();
+  const file = formData.get('file') as File;
+
+  if (!file) {
+    return c.json({ error: 'No file uploaded' }, 400);
+  }
+
+  const key = `profile-pics/${session.user.id}-${Date.now()}-${file.name}`;
+  await c.env.socs_r2.put(key, file.stream(), {
+    httpMetadata: { contentType: file.type }
+  });
+
+  const url = `${c.env.BETTER_AUTH_URL}/api/images/${key}`;
+  return c.json({ url });
+})
+
+/**
+ * Endpoint to serve images from R2.
+ */
+app.get('/api/images/*', async (c) => {
+  const key = c.req.path.replace('/api/images/', '');
+  const object = await c.env.socs_r2.get(key);
+
+  if (!object) {
+    return c.text('Not Found', 404);
+  }
+
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  headers.set('etag', object.httpEtag);
+
+  return new Response(object.body, { headers });
 })
 
 export default app;
