@@ -16,5 +16,11 @@
 			"database_id": "fc064cb5-8d30-4672-8f1a-ff99af87227c",
 			"migrations_dir": "drizzle"
 		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "socs_r2",
+			"bucket_name": "socs-assets"
+		}
 	]
 }

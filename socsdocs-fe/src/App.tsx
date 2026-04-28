@@ -8,6 +8,7 @@ import {SettingsBar} from './components/ui/SettingsBar';
 import { useDopamineIntensity } from './store/useDopamineIntensity';
 import { HeroBackground } from './components/ui/HeroBackground';
 import LoginPage from './pages/LoginPage';
+import AccountPage from './pages/AccountPage';
 import { Moveable } from './components/ui/Moveables';
 import { textAnimationMap, textColors, titleWeights } from './assets/config';
 import { useSession } from './lib/auth-client';
@@ -32,11 +33,19 @@ function HomePage() {
           <Typography variant="subtitle">COME HERE TO STUDY</Typography>
         </Moveable>
         
-        <Link to="/login" style={{ textDecoration: 'none' }}>
-          <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
-            <Typography variant="subtitle">LOGIN</Typography>
-          </Moveable>
-        </Link>
+        {!session?.user ? (
+          <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
+              <Typography variant="subtitle">LOGIN</Typography>
+            </Moveable>
+          </Link>
+        ) : (
+          <Link to="/account" style={{ textDecoration: 'none' }}>
+            <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors} intensityModHover={-5}>
+              <Typography variant="subtitle">ACCOUNT</Typography>
+            </Moveable>
+          </Link>
+        )}
 
         {session?.user && (
           <Moveable as="span" animationMap={textAnimationMap} colorDict={textColors}>
@@ -65,6 +74,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
 
       <div className="fixed bottom-0 left-0 right-0">
