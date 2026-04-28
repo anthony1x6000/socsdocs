@@ -141,4 +141,34 @@ app.get('/api/images/*', async (c) => {
   return new Response(object.body, { headers });
 })
 
+/**
+ * Post to Chat
+ */
+app.post('/api/chat', async (c) => {
+  const auth = c.get('auth');
+  const qc = c.get('queryClient');
+  const db = drizzle(c.env.socs_db, { schema });
+  
+  const session = await qc.fetchQuery({
+    queryKey: ['session', c.req.header('Authorization')],
+    queryFn: () => auth.api.getSession({ headers: c.req.raw.headers }),
+  });
+
+  if (!session) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  const { content } = await c.req.json();
+
+  const newMessage = await db.insert(schema.chatMessages).values({
+    id: crypto.randomUUID(),
+    content,
+    senderId: session.user.id,
+    date: new Date(),
+  }).returning().get();
+
+  return c.json(newMessage);
+});
+
+
 export default app;
