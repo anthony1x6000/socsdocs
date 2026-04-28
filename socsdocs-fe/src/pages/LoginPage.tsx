@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { signIn, signUp } from '../lib/auth-client';
 import Typography from '../components/ui/Typography';
 import Input from '../components/ui/Input';

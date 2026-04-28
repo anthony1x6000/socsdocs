@@ -61,7 +61,7 @@ interface MoveableProps {
    */
   intensityModHover?: number;
   /** The elements to be wrapped and animated. */
-  children: React.ReactNode;
+  children?: React.ReactNode;
   /** Additional CSS classes for the motion container. */
   className?: string;
 }
