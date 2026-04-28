@@ -23,7 +23,7 @@ export function SettingsBar() {
         <div 
             className={twMerge(
                 BASE_SETTINGS_BAR_STYLE,
-                "flex items-center px-4 gap-[4em] h-[4em]"
+                "flex items-center px-4 gap-[4em] h-[4em] justify-center"
             )}
         >
             <Slider className="w-[10em]" />
