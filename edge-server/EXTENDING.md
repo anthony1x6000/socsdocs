@@ -48,31 +48,22 @@ export const chatMessageRelations = relations(chatMessages, ({ one }) => ({
 Located in `edge-server/src/index.tsx`.
 
 ### Authenticated Routes
-Use `c.get('auth')` for Better Auth and the server-side `queryClient` for session caching.
+Use `authMiddleware` to protect routes. This middleware validates the session and attaches it to the Hono context, accessible via `c.get('session')`.
 
 ```ts
-app.post('/api/chat', async (c) => {
-  const auth = c.get('auth');
-  const qc = c.get('queryClient');
+app.post('/api/chat', authMiddleware, async (c) => {
+  const session = c.get('session');
   const db = drizzle(c.env.socs_db, { schema });
-
-  // High-perf session fetch
-  const session = await qc.fetchQuery({
-    queryKey: ['session', c.req.header('Authorization')],
-    queryFn: () => auth.api.getSession({ headers: c.req.raw.headers }),
-  });
-
-  if (!session) return c.json({ error: 'Unauthorized' }, 401);
 
   const { content } = await c.req.json();
   const newMessage = await db.insert(schema.chatMessages).values({
     id: crypto.randomUUID(),
     content,
     senderId: session.user.id,
-    createdAt: new Date(),
-  }).returning();
+    date: new Date(),
+  }).returning().get();
 
-  return c.json(newMessage[0]);
+  return c.json(newMessage);
 });
 ```
 

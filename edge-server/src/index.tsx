@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { logger } from 'hono/logger'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { drizzle } from 'drizzle-orm/d1'
@@ -18,9 +19,13 @@ type Bindings = {
 type Variables = {
   auth: ReturnType<typeof betterAuth>
   queryClient: QueryClient
+  session: any
 }
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
+
+// Enable Hono logger
+app.use('*', logger())
 
 // Global QueryClient instance for caching across requests within the same isolate
 const queryClient = new QueryClient({
@@ -35,17 +40,26 @@ const queryClient = new QueryClient({
  * CORS must be registered before the auth handler to handle preflight OPTIONS requests.
  */
 app.use('/api/*', cors({
-  origin: (origin, c) => c.env.FRONTEND_URL,
+  origin: (origin, c) => {
+    console.log(`[CORS] Request from origin: ${origin}, allowed: ${c.env.FRONTEND_URL}`);
+    return c.env.FRONTEND_URL;
+  },
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
   credentials: true,
 }))
 
 app.use('*', async (c, next) => {
+  console.log(`[Request] ${c.req.method} ${c.req.url}`);
+  
   if (!c.env.BETTER_AUTH_SECRET) {
-    console.error("Missing BETTER_AUTH_SECRET");
+    console.error("[Config] CRITICAL: Missing BETTER_AUTH_SECRET");
   }
   
+  console.log(`[Config] BETTER_AUTH_URL: ${c.env.BETTER_AUTH_URL}`);
+  console.log(`[Config] FRONTEND_URL: ${c.env.FRONTEND_URL}`);
+  console.log(`[Config] NODE_ENV: ${c.env.NODE_ENV}`);
+
   const db = drizzle(c.env.socs_db, { schema });
   
   const authInstance = betterAuth({
@@ -64,6 +78,9 @@ app.use('*', async (c, next) => {
     emailAndPassword: { enabled: true },
     plugins: [
     ],
+    onLog: (log) => {
+      console.log(`[Better-Auth] [${log.level}] ${log.message}`, log.data || "");
+    },
     secret: c.env.BETTER_AUTH_SECRET, 
     baseURL: c.env.BETTER_AUTH_URL,
     trustedOrigins: [c.env.FRONTEND_URL].filter(Boolean) as string[],
@@ -81,6 +98,48 @@ app.use('*', async (c, next) => {
   await next();
 })
 
+/**
+ * Middleware to ensure the user is authenticated.
+ * This middleware extracts the 'Authorization' header, validates the session 
+ * using Better Auth, and attaches the session object to the context.
+ * 
+ * @param {Context} c - The Hono context object.
+ * @param {Next} next - The next middleware function.
+ * @returns {Promise<Response | void>} Returns a 401 response if authentication fails.
+ * 
+ * @example
+ * app.get('/api/protected', authMiddleware, (c) => {
+ *   const session = c.get('session');
+ *   return c.json({ user: session.user });
+ * });
+ */
+const authMiddleware = async (c: any, next: any) => {
+  const auth = c.get('auth');
+  const authHeader = c.req.header('Authorization');
+
+  if (!authHeader) {
+    return c.json({ error: 'Unauthorized: Missing Authorization header' }, 401);
+  }
+
+  try {
+    // Better Auth handles Request objects or headers. 
+    // We pass the raw headers for validation.
+    const session = await auth.api.getSession({ 
+      headers: c.req.raw.headers 
+    });
+
+    if (!session) {
+      return c.json({ error: 'Unauthorized: Invalid session' }, 401);
+    }
+
+    c.set('session', session);
+    await next();
+  } catch (err) {
+    console.error("[Auth] Internal error during session check:", err);
+    return c.json({ error: 'Unauthorized: Auth check failed' }, 401);
+  }
+};
+
 app.on(['POST', 'GET'], '/api/auth/**', (c) => {
   const auth = c.get('auth');
   return auth.handler(c.req.raw);
@@ -88,21 +147,11 @@ app.on(['POST', 'GET'], '/api/auth/**', (c) => {
 
 /**
  * Endpoint for uploading profile pictures to R2.
+ * Requires authentication via authMiddleware.
  */
-app.post('/api/upload-image', async (c) => {
-  const auth = c.get('auth');
-  const qc = c.get('queryClient');
+app.post('/api/upload-image', authMiddleware, async (c) => {
+  const session = c.get('session');
   
-  // Use TanStack Query to fetch/cache the session on the server
-  const session = await qc.fetchQuery({
-    queryKey: ['session', c.req.header('Authorization')],
-    queryFn: () => auth.api.getSession({ headers: c.req.raw.headers }),
-  });
-  
-  if (!session) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
-
   const formData = await c.req.formData();
   const file = formData.get('file');
 
@@ -142,22 +191,16 @@ app.get('/api/images/*', async (c) => {
 })
 
 /**
- * Post to Chat
+ * Post to Chat.
+ * Saves a new message to the database and links it to the authenticated user.
+ * 
+ * @param {string} content - The message content sent in the request body.
+ * @returns {Promise<Message>} The newly created message object.
  */
-app.post('/api/chat', async (c) => {
-  const auth = c.get('auth');
-  const qc = c.get('queryClient');
+app.post('/api/chat', authMiddleware, async (c) => {
+  const session = c.get('session');
   const db = drizzle(c.env.socs_db, { schema });
   
-  const session = await qc.fetchQuery({
-    queryKey: ['session', c.req.header('Authorization')],
-    queryFn: () => auth.api.getSession({ headers: c.req.raw.headers }),
-  });
-
-  if (!session) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
-
   const { content } = await c.req.json();
 
   const newMessage = await db.insert(schema.chatMessages).values({
@@ -168,6 +211,26 @@ app.post('/api/chat', async (c) => {
   }).returning().get();
 
   return c.json(newMessage);
+});
+
+/**
+ * Get Chat Messages.
+ * Retrieves the last 100 messages along with sender profile information.
+ * 
+ * @returns {Promise<Array<Message & { sender: User }>>} A list of messages with sender details.
+ */
+app.get('/api/chat', authMiddleware, async (c) => {
+  const db = drizzle(c.env.socs_db, { schema });
+
+  const messages = await db.query.chatMessages.findMany({
+    with: {
+      sender: true
+    },
+    orderBy: (chatMessages, { asc }) => [asc(chatMessages.date)],
+    limit: 100,
+  });
+
+  return c.json(messages);
 });
 
 

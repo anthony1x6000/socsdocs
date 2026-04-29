@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 /**
@@ -20,19 +20,22 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  *   onChange={(e) => console.log(e.target.value)} 
  * />
  */
-export const Input = ({ 
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ 
   className, 
   ...props 
-}: InputProps) => {
+}, ref) => {
   return (
     <input
       {...props}
+      ref={ref}
       className={twMerge(
-        "w-full p-3 rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/90 backdrop-blur-sm transition-all",
+        "w-full p-3 border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/50 backdrop-blur-sm transition-all",
         className
       )}
     />
   );
-};
+});
+
+Input.displayName = 'Input';
 
 export default Input;

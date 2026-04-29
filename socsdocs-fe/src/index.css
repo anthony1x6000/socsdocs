@@ -64,4 +64,22 @@ body.sb-show-main:after {
     .scrollbar-thin::-webkit-scrollbar-thumb:hover {
         background-color: rgba(255, 255, 255, 0.4);
     }
+
+    .chat-font {
+        font-family: "Roboto Flex", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+        font-variation-settings:
+            "slnt" 0,
+            "wdth" 100,
+            "GRAD" 0,
+            "XOPQ" 96,
+            "XTRA" 468,
+            "YOPQ" 79,
+            "YTAS" 750,
+            "YTDE" -203,
+            "YTFI" 738,
+            "YTLC" 514,
+            "YTUC" 712;
+    }
 }
