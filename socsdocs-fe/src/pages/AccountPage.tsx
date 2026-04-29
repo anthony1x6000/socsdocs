@@ -7,6 +7,7 @@ import Card from '../components/ui/Card';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import { Moveable } from '../components/ui/Moveables';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { API_URL } from '../config/protectedExports';
 import { 
   textAnimationMap 
 } from '../assets/config/animations';
@@ -74,7 +75,7 @@ export default function AccountPage() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`${import.meta.env.VITE_PUBLIC_API_URL || "http://localhost:8787"}/api/upload-image`, {
+      const response = await fetch(`${API_URL}/api/upload-image`, {
         method: 'POST',
         body: formData,
         headers: {

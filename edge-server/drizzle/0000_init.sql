@@ -13,6 +13,14 @@ CREATE TABLE `account` (
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `chat_messages` (
+	`id` text PRIMARY KEY NOT NULL,
+	`content` text NOT NULL,
+	`senderId` text NOT NULL,
+	`date` integer NOT NULL,
+	FOREIGN KEY (`senderId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`expiresAt` integer NOT NULL,
@@ -36,6 +44,7 @@ CREATE TABLE `user` (
 	`updatedAt` integer NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `user_name_unique` ON `user` (`name`);--> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint
 CREATE TABLE `verification` (
 	`id` text PRIMARY KEY NOT NULL,

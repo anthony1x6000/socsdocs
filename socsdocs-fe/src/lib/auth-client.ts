@@ -1,6 +1,7 @@
 import { createAuthClient } from "better-auth/react";
 import { createAuthQueryClient } from "better-auth-react-query";
 import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "../config/protectedExports";
 
 /**
  * Initializes the Better Auth client for the React environment.
@@ -13,7 +14,7 @@ export const authClient = createAuthClient({
      * In local development, this defaults to the Wrangler port (8787).
      * @see https://better-auth.com/docs/concepts/client#create-client-instance
      */
-    baseURL: import.meta.env.VITE_PUBLIC_API_URL || "http://localhost:8787",
+    baseURL: API_URL,
     plugins: [
     ]
 });
