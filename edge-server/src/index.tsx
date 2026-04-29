@@ -78,7 +78,7 @@ app.use('*', async (c, next) => {
     emailAndPassword: { enabled: true },
     plugins: [
     ],
-    onLog: (log) => {
+    onLog: (log: { level: 'debug' | 'info' | 'warn' | 'error'; message: string; data?: any }) => {
       console.log(`[Better-Auth] [${log.level}] ${log.message}`, log.data || "");
     },
     secret: c.env.BETTER_AUTH_SECRET, 

@@ -22,7 +22,7 @@ body {
 
 body:after {
     content: "";
-    @apply absolute left-0 top-0 w-full h-full pointer-events-none z-[1000];
+    @apply absolute left-0 top-0 w-full h-full pointer-events-none z-1000;
     background-image: url('scan.png');
     background-repeat: repeat;
     background-position: 0px 0px;

@@ -26,7 +26,7 @@ export function HeroBackground() {
   // We use useResetMotion to get the animation values, but we intentionally 
   // separate the key to prevent the container from remounting. 
   // Remounting would cause the Shadertoy component to reset its internal time (iTime).
-  const { key: _unusedKey, ...motionProps } = useResetMotion("bg", intensity, backgroundAnimation);
+  const motionProps = useResetMotion("bg", intensity, backgroundAnimation);
 
   return (
     <motion.div 

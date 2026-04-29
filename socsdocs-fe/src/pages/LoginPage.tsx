@@ -140,7 +140,7 @@ export default function LoginPage() {
     onSuccess: () => {
         navigate({ to: '/' });
     },
-    onError: (err: any) => {
+    onError: (err: { message?: string }) => {
         setError(err.message || 'Registration failed');
     }
   }));
@@ -149,7 +149,7 @@ export default function LoginPage() {
     onSuccess: () => {
         navigate({ to: '/' });
     },
-    onError: (err: any) => {
+    onError: (err: { message?: string }) => {
         setError(err.message || 'Login failed');
     }
   }));
