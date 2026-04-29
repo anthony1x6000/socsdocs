@@ -37,8 +37,8 @@ export default function AccountPage() {
       setSuccessMsg('Email update initiated. Please check your inbox.');
       setError(null);
     },
-    onError: (err: any) => {
-      setError(err.message);
+    onError: (err: { message?: string }) => {
+      setError(err.message || 'Email update failed');
       setSuccessMsg(null);
     }
   }));
@@ -50,8 +50,8 @@ export default function AccountPage() {
       setCurrentPassword('');
       setNewPassword('');
     },
-    onError: (err: any) => {
-      setError(err.message);
+    onError: (err: { message?: string }) => {
+      setError(err.message || 'Password update failed');
       setSuccessMsg(null);
     }
   }));
@@ -63,8 +63,8 @@ export default function AccountPage() {
       setImageFile(null);
       queryClient.invalidateQueries({ queryKey: auth.getSession.queryKey({}) });
     },
-    onError: (err: any) => {
-      setError(err.message);
+    onError: (err: { message?: string }) => {
+      setError(err.message || 'Profile update failed');
       setSuccessMsg(null);
     }
   }));

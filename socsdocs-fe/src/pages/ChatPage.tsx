@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { twMerge } from 'tailwind-merge';
 import { useSession } from '../lib/auth-client';
 import Typography from '../components/ui/Typography';
@@ -10,66 +9,7 @@ import ErrorMessage from '../components/ui/ErrorMessage';
 import { Moveable } from '../components/ui/Moveables';
 import { textAnimationMap } from '../assets/config/animations';
 import { textColors, titleWeights } from '../assets/config/componentStyles';
-import { API_URL } from '../config/protectedExports';
-
-// --- Types ---
-
-interface Message {
-    id: string;
-    content: string;
-    senderId: string;
-    date: string | Date;
-    sender?: {
-        name: string;
-    };
-}
-
-// --- Hooks ---
-
-/**
- * Hook to fetch chat messages from the server.
- */
-export const useChatMessages = (token?: string) => {
-    return useQuery<Message[]>({
-        queryKey: ['chatMessages'],
-        queryFn: async () => {
-            const res = await fetch(`${API_URL}/api/chat`, {
-                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
-                credentials: 'include'
-            });
-            if (!res.ok) throw new Error('Failed to fetch messages');
-            return res.json();
-        },
-        enabled: !!token,
-        refetchInterval: 3000, // Poll every 3 seconds for real-time updates
-    });
-};
-
-/**
- * Hook to send a chat message to the server.
- */
-export const useSendMessage = (token?: string) => {
-    const qc = useQueryClient();
-    return useMutation({
-        mutationFn: async (content: string) => {
-            const res = await fetch(`${API_URL}/api/chat`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                },
-                body: JSON.stringify({ content }),
-                credentials: 'include'
-            });
-            if (!res.ok) throw new Error('Failed to send message');
-            return res.json();
-        },
-        onSuccess: () => {
-            // Immediate refetch on success for the sender
-            qc.invalidateQueries({ queryKey: ['chatMessages'] });
-        },
-    });
-};
+import { useChatMessages, useSendMessage, type Message } from '../utils/useChat';
 
 // --- Sub-components ---
 

@@ -78,10 +78,6 @@ export function BackgroundMusic() {
     const currentSong = useRef<Howl | null>(null);
     const { currentSong: activeSong, setCurrentSong } = useSong();
 
-    if (import.meta.env.VITE_DISABLE_MUSIC === 'true') {
-        return null;
-    }
-
     const playMusic = useCallback((src: string): Howl => {
         const sound = new Howl({ src: [src], loop: true, volume: 0 });
         sound.play();
@@ -125,12 +121,11 @@ export function BackgroundMusic() {
         };
     }, []);
 
-    /**
-     * Effect hook that triggers whenever the dopamine level changes.
-     * It selects a new random song based on the level and initiates
-     * a transition from the current track to the new one.
-     */
     useEffect(() => {
+        if (import.meta.env.VITE_DISABLE_MUSIC === 'true') {
+            return;
+        }
+
         const songName = getRandomSong(level);
         setCurrentSong(songName);
     }, [level, setCurrentSong]);
@@ -139,6 +134,10 @@ export function BackgroundMusic() {
      * Effect hook that handles playing or transitioning to the active song.
      */
     useEffect(() => {
+        if (import.meta.env.VITE_DISABLE_MUSIC === 'true') {
+            return;
+        }
+
         if (!activeSong) {
             if (currentSong.current) {
                 fadeOutAndStop(currentSong.current);
@@ -154,7 +153,11 @@ export function BackgroundMusic() {
         } else {
             currentSong.current = playMusic(nextSongSrc);
         }
-    }, [activeSong]);
+    }, [activeSong, playMusic, transitionSong]);
+
+    if (import.meta.env.VITE_DISABLE_MUSIC === 'true') {
+        return null;
+    }
 
     return null; // A background component doesn't need to render any UI
 }

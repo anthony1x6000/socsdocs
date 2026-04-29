@@ -113,7 +113,7 @@ export const Moveable = React.memo(({
 
   return (
     <MotionComponent
-      ref={ref as any}
+      ref={ref as React.RefObject<HTMLDivElement> & React.RefObject<HTMLSpanElement>}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={twMerge(

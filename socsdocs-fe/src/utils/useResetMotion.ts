@@ -19,7 +19,7 @@ export function useResetMotion(
   const level = Math.min(Math.max(Math.floor(intensity), 1), 5);
 
   return useMemo(() => {
-    const animObj = (animation.animate as any) || {};
+    const animObj = (animation.animate as object) || {};
     
     return {
       key: `${keyPrefix}-${level}`,

@@ -13,22 +13,22 @@ type LitterboxTime = '1h' | '12h' | '24h' | '72h';
 /**
  * Interface for file upload providers to ensure the component is extendable.
  */
-interface FileUploadProvider {
+interface FileUploadProvider<T = unknown> {
   id: string;
   name: string;
   /** Performs the actual file upload and returns the URL string. */
-  upload: (file: File, options?: any) => Promise<string>;
+  upload: (file: File, options?: T) => Promise<string>;
   /** Optional renderer for provider-specific options (like expiry time). */
-  renderOptions?: (options: any, setOptions: (options: any) => void, isUploading: boolean) => React.ReactNode;
+  renderOptions?: (options: T, setOptions: (options: T | ((prev: T) => T)) => void, isUploading: boolean) => React.ReactNode;
   /** Default options for this provider. */
-  defaultOptions?: any;
+  defaultOptions?: T;
 }
 
 /**
  * Litterbox (Catbox) API provider implementation.
  * API: https://litterbox.catbox.moe/resources/internals/api.php
  */
-const LitterboxProvider: FileUploadProvider = {
+const LitterboxProvider: FileUploadProvider<{ time: LitterboxTime }> = {
   id: 'litterbox',
   name: 'Litterbox',
   defaultOptions: { time: '24h' },
@@ -63,8 +63,8 @@ const LitterboxProvider: FileUploadProvider = {
       <select
         value={options.time}
         onChange={(e) => {
-          const time = e.target.value;
-          setOptions((prev: any) => ({ ...prev, time }));
+          const time = e.target.value as LitterboxTime;
+          setOptions((prev) => ({ ...prev, time }));
         }}
         className="bg-white/10 text-white p-2 rounded border border-white/20 focus:outline-none focus:ring-1 focus:ring-white/50 cursor-pointer"
         disabled={isUploading}
@@ -78,7 +78,7 @@ const LitterboxProvider: FileUploadProvider = {
   )
 };
 
-const PROVIDERS: FileUploadProvider[] = [LitterboxProvider];
+const PROVIDERS: FileUploadProvider<unknown>[] = [LitterboxProvider as FileUploadProvider<unknown>];
 
 /**
  * A flexible file upload component that supports multiple external APIs.

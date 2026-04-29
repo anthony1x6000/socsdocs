@@ -1,8 +1,9 @@
+import type { MotionProps } from "framer-motion";
 import { 
   LEVEL_1_COLORS, LEVEL_2_COLORS, LEVEL_3_COLORS, LEVEL_4_COLORS, LEVEL_5_COLORS 
 } from "./colors";
 
-export const backgroundAnimations: Record<number, any> = {
+export const backgroundAnimations: Record<number, MotionProps> = {
   1: {},
   2: { animate: { x: [0, -1, 1, 0] }, transition: { repeat: Infinity, duration: 0.2 } },
   3: { animate: { x: [0, -2, 2, 0] }, transition: { repeat: Infinity, duration: 0.15 } },
