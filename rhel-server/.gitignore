@@ -1,0 +1,3 @@
+*.iso
+controlplane.toml
+worker.toml

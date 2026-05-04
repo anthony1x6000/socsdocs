@@ -1,0 +1,13 @@
+- name: "[RHEL] Update packages"
+  ansible.builtin.dnf:
+    update_cache: yes
+    name: "*"
+    state: latest
+    exclude: "{{ gbt_packages_versionlock|d() }}"
+    use_backend: dnf4
+  register: _gbt_packages_update_output
+
+- name: "[RHEL] [INFO] Print installed/updated packages"
+  when: _gbt_packages_update_output.skipped is not defined
+  ansible.builtin.debug:
+    var: _gbt_packages_update_output.results|d()
