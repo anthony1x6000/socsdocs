@@ -6,12 +6,27 @@ version = "0.0.1"
 hostname = "cplane"
 partitioning_mode = "auto-lvm"
 
-[customizations.subscription]
-organization = "${RHSM_ORG_ID}"
-activation-key = "${RHSM_ACTIVATION_KEY_CP_NODE}"
-server-url = "subscription.rhsm.redhat.com"
-base-url = "https://cdn.redhat.com/"
-insights = true
+[[customizations.files]]
+path = "/etc/systemd/system/rhsm-autoregister.service"
+data = """
+[Unit]
+Description=RHSM Auto Registration
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/subscription-manager register --org='${RHSM_ORG_ID}' --activationkey='${RHSM_ACTIVATION_KEY_CP_NODE}'
+ExecStartPost=/usr/bin/insights-client --register
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+"""
+mode = "0644"
+
+[customizations.services]
+enabled = ["rhsm-autoregister.service"]
 
 [customizations.locale]
 keyboard = "us"
