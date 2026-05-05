@@ -1,0 +1,87 @@
+name = "controlplane"
+description = "control plane node"
+version = "0.0.1"
+
+[customizations]
+hostname = "cplane"
+partitioning_mode = "auto-lvm"
+
+[customizations.subscription]
+organization = "${RHSM_ORG_ID}"
+activation-key = "${RHSM_ACTIVATION_KEY_CP_NODE}"
+server-url = "subscription.rhsm.redhat.com"
+base-url = "https://cdn.redhat.com/"
+insights = true
+
+[customizations.locale]
+keyboard = "us"
+languages = ["C.UTF-8"]
+
+[customizations.services]
+disabled = [
+    "kdump",
+    "rpcbind",
+    "nis-domainname",
+    "udisks2",
+    "sssd",
+    "mdmonitor",
+    "qemu-guest-agent"
+]
+enabled = ["sshd"]
+
+[customizations.timezone]
+timezone = "EST"
+
+[[customizations.user]]
+name = "ant"
+groups = ["wheel"]
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAUxSee5J4g84O8fzEIaRiha8Pw1h3d4ojNeHP6jhKzg anthony@anthonyis.online"
+password = "${CP_PASS_HASH}"
+
+[[modules]]
+name = "nodejs"
+stream = "24"
+
+[[packages]]
+name = "git-core"
+version = "*"
+
+[[packages]]
+name = "npm"
+version = "*"
+
+[[packages]]
+name = "nodejs"
+version = "*"
+
+[[packages]]
+name = "openssh-server"
+version = "*"
+
+[[packages]]
+name = "podman"
+version = "*"
+
+[[packages]]
+name = "zram-generator"
+version = "*"
+
+[[packages]]
+name = "osbuild-composer"
+version = "*"
+
+[[packages]]
+name = "composer-cli"
+version = "*"
+
+[[packages]]
+name = "container-selinux"
+version = "*"
+
+[[packages]]
+name = "dhcp-server"
+version = "*"
+
+[[packages]]
+name = "ansible-core"
+version = "*"

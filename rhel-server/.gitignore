@@ -1,3 +1,2 @@
 *.iso
-controlplane.toml
-worker.toml
+secrets.env
