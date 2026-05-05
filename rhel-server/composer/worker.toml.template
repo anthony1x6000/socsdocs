@@ -34,7 +34,6 @@ languages = ["C.UTF-8"]
 
 [customizations.services]
 disabled = [
-    "kdump",
     "rpcbind",
     "nis-domainname",
     "udisks2",
