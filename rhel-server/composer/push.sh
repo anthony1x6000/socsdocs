@@ -1,4 +1,3 @@
-
 #!/bin/bash 
 
 set -a 
@@ -11,7 +10,9 @@ envsubst < controlplane.toml.template > controlplane.toml
 composer-cli blueprints push worker.toml
 composer-cli blueprints push controlplane.toml
 
-composer-cli compose start controlplane image-installer
+# composer-cli compose start controlplane image-installer
+
+composer-cli compose start worker tar
 
 composer-cli compose status
 
