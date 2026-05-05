@@ -1,2 +1,3 @@
 *.iso
 secrets.env
+composer/*.toml
