@@ -25,9 +25,6 @@ WantedBy=multi-user.target
 """
 mode = "0644"
 
-[customizations.services]
-enabled = ["rhsm-autoregister.service"]
-
 [customizations.locale]
 keyboard = "us"
 languages = ["C.UTF-8"]
@@ -43,6 +40,7 @@ disabled = [
     "qemu-guest-agent"
 ]
 enabled = ["sshd"]
+enabled = ["rhsm-autoregister.service"]
 
 [customizations.timezone]
 timezone = "EST"

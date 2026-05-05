@@ -13,3 +13,6 @@ composer-cli blueprints push controlplane.toml
 
 composer-cli compose start controlplane image-installer
 
+composer-cli compose status
+
+echo "composer-cli compose image <uuid> # to pull image" 

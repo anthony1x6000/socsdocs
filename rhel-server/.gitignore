@@ -1,3 +1,4 @@
 *.iso
 secrets.env
 composer/*.toml
+*.tar
