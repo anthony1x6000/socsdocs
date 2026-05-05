@@ -1,0 +1,21 @@
+name: Log Git Size on Push
+
+on:
+  push:
+    branches:
+      - '**' # Triggers on every push to any branch
+
+jobs:
+  log-git-size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history for all tags and branches to get a realistic .git/ size
+          fetch-depth: 0
+
+      - name: Log size of .git/ directory
+        run: |
+          du -sh .git/
+          
