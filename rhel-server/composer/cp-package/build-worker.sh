@@ -8,7 +8,7 @@ envsubst < worker.toml.template > worker.toml
 
 composer-cli blueprints push worker.toml
 
-composer-cli compose start worker tar
+composer-cli compose start worker image-installer
 
 composer-cli compose status
 
@@ -22,12 +22,11 @@ while true; do
 
     if [[ "$STATUS" == "FINISHED" ]]; then 
         composer-cli compose image $UUID
-        ./pxe-extract.sh $UUID.tar.xz
         break
     elif [[ "$STATUS" == "FAILED" ]]; then
         echo "Error: Build $UUID failed"
         break
-    else 
+    else
         sleep 30
     fi
 done

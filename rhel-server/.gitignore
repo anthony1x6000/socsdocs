@@ -1,5 +1,6 @@
 pxe/
-composer/*.toml
+worker.toml
+controlplane.toml
 
 *.tar
 *.tar.xz
