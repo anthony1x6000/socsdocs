@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 set -a 
-source secrets.env
+source worker.secrets.env
 set +a 
 
 envsubst < worker.toml.template > worker.toml
@@ -22,6 +22,7 @@ while true; do
 
     if [[ "$STATUS" == "FINISHED" ]]; then 
         composer-cli compose image $UUID
+        ./pxe-extract.sh $UUID.tar.xz
         break
     elif [[ "$STATUS" == "FAILED" ]]; then
         echo "Error: Build $UUID failed"
