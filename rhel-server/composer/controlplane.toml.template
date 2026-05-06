@@ -16,7 +16,7 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/subscription-manager register --org='${RHSM_ORG_ID}' --activationkey='${RHSM_ACTIVATION_KEY_CP_NODE}'
+ExecStart=/usr/sbin/subscription-manager register --org=${RHSM_ORG_ID} --activationkey=${RHSM_ACTIVATION_KEY_CP_NODE}
 ExecStartPost=/usr/bin/insights-client --register
 RemainAfterExit=yes
 
@@ -39,15 +39,14 @@ disabled = [
     "mdmonitor",
     "qemu-guest-agent"
 ]
-enabled = ["sshd"]
-enabled = ["rhsm-autoregister.service"]
+enabled = ["sshd", "rhsm-autoregister.service"]
 
 [customizations.timezone]
 timezone = "EST"
 
 [[customizations.user]]
 name = "ant"
-groups = ["wheel"]
+groups = ["wheel", "weldr"]
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAUxSee5J4g84O8fzEIaRiha8Pw1h3d4ojNeHP6jhKzg anthony@anthonyis.online"
 password = "${CP_PASS_HASH}"
 
