@@ -1,6 +1,7 @@
 pxe/
 worker.toml
 controlplane.toml
+iso_web/
 
 *.tar
 *.tar.xz
