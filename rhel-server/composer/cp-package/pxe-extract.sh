@@ -12,9 +12,5 @@ if ! [[ -f "$ARCHIVE_FILE" && "$ARCHIVE_FILE" == *.tar.xz ]]; then
     exit 1
 fi
 
-mkdir pxe/
-
-VMLINUZ=$(tar -tf "$ARCHIVE_FILE" | grep "/vmlinuz")
-INITRAM_FS_IMG=$(tar -tf "$ARCHIVE_FILE" | grep "x86_64.img")
-
-tar -xf "$ARCHIVE_FILE" -C pxe/ $VMLINUZ $INITRAM_FS_IMG
+mkdir -p pxe/
+tar -xf "$ARCHIVE_FILE" -C pxe/ --wildcards '*vmlinuz*' '*x86_64.img'
