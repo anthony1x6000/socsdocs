@@ -1,4 +1,9 @@
-*.iso
-secrets.env
+pxe/
 composer/*.toml
+
 *.tar
+*.tar.xz
+*.iso
+
+secrets.env
+worker.secrets.env
