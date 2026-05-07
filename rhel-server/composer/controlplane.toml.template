@@ -25,6 +25,14 @@ WantedBy=multi-user.target
 """
 mode = "0644"
 
+[[customizations.files]]
+path = "/etc/systemd/logind.conf.d/99-ignore-lid.conf"
+data = """
+[Login]
+HandleLidSwitch=ignore
+"""
+mode = "0644"
+
 [customizations.locale]
 keyboard = "us"
 languages = ["C.UTF-8"]
@@ -83,7 +91,7 @@ name = "python3"
 version = "*"
 
 [[packages]]
-name = "tftp-server
+name = "tftp-server"
 version = "*"
 
 [[packages]]

@@ -24,6 +24,14 @@ WantedBy=multi-user.target
 """
 mode = "0644"
 
+[[customizations.files]]
+path = "/etc/systemd/logind.conf.d/99-ignore-lid.conf"
+data = """
+[Login]
+HandleLidSwitch=ignore
+"""
+mode = "0644"
+
 [customizations.kernel]
 append = "rd.live.ram=1 rd.writable.fsimg=1 rd.live.overlay.overlayfs=1 rd.live.overlay.size=1024"
 
