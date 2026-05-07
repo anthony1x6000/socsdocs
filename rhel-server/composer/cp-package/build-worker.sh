@@ -22,6 +22,7 @@ while true; do
 
     if [[ "$STATUS" == "FINISHED" ]]; then 
         composer-cli compose image $UUID
+        ./iso-http-setup.sh
         break
     elif [[ "$STATUS" == "FAILED" ]]; then
         echo "Error: Build $UUID failed"
