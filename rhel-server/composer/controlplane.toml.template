@@ -47,7 +47,7 @@ disabled = [
     "mdmonitor",
     "qemu-guest-agent"
 ]
-enabled = ["sshd", "rhsm-autoregister.service"]
+enabled = ["sshd", "rhsm-autoregister.service", "osbuild-composer.socket"]
 
 [customizations.timezone]
 timezone = "EST"
